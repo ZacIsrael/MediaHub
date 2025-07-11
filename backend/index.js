@@ -109,6 +109,16 @@ app.get("/api/clients", async (req, res) => {
   // return the bookings in a response
 });
 
+// retrieves a particular booking from the "bookings" table 
+// in media-hub-pro PostgreSQL database given its id 
+app.get("/api/clients/:id", async (req, res) => {
+  // obtain the id from the route parameter
+
+  // reterieve the specific bookings (SELECT * FROM bookings WHERE id = {id})
+
+  // return the booking in a response
+});
+
 // Start the Server
 // Start listening on the specified port
 app.listen(port, () => {
