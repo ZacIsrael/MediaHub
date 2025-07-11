@@ -53,7 +53,7 @@ app.use(
 );
 
 // Parses JSON data (from Postman or frontend apps sending JSON)
-app.use(bodyParser.json()); 
+app.use(bodyParser.json());
 
 // Enables CORS for all incoming requests
 // This is necessary if the frontend is running on a different port (e.g., React on localhost:5173)
@@ -167,8 +167,29 @@ app.post("/api/clients", async (req, res) => {
 // retrieves all of the clients from the "clients" table
 // in media-hub-pro PostgreSQL database
 app.get("/api/clients", async (req, res) => {
-  // reterieve all of the clients (SELECT * FROM clients)
-  // return the clients in a response
+  try {
+    // reterieve all of the clients (SELECT * FROM clients)
+    const result = await db.query(`SELECT * FROM ${clientsTable}`);
+
+    // Clients table is empty
+    if (result.rowCount === 0) {
+      res.status(200).json({
+        message: `The ${clientsTable} table is empty`,
+        clients: [],
+      });
+    } else {
+      // return the clients in a response
+      res.status(200).json({
+        clients: result.rows,
+      });
+    }
+  } catch (err) {
+    // error retrieving all clients
+    res.status(500).json({
+      error: `Error (\'/api/clients\' GET route): ${err.message}`,
+      stack: err.stack,
+    });
+  }
 });
 
 // creates a new booking and stores them it the "bookings" table
