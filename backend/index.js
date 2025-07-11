@@ -61,6 +61,20 @@ app.get("/", (req, res) => {
   });
 });
 
+// creates a new clients and stores them in the "clients" table 
+// in media-hub-pro PostgreSQL database
+app.post("/api/clients", async (req, res) => {
+  // retrieves necessary data from the body of the request (name, email, & phone #)
+
+  // checks to see if the fields in the body exist 
+
+  // checks to see that the name & email are not empty strings (phone # is optional)
+
+  // sends the client's information to the data
+
+  // return necessary response (status 200 & new client if successful, return error message otherwise)
+})
+
 // Start the Server
 // Start listening on the specified port
 app.listen(port, () => {
