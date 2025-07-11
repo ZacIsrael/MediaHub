@@ -52,6 +52,9 @@ app.use(
   })
 );
 
+// Parses JSON data (from Postman or frontend apps sending JSON)
+app.use(bodyParser.json()); 
+
 // Enables CORS for all incoming requests
 // This is necessary if the frontend is running on a different port (e.g., React on localhost:5173)
 app.use(cors());
@@ -72,21 +75,99 @@ app.get("/", (req, res) => {
 // in media-hub-pro PostgreSQL database
 app.post("/api/clients", async (req, res) => {
   // retrieves necessary data from the body of the request (name, email, & phone #)
-  
+  // console.log("req = ", req);
+  console.log("req.body = ", req.body);
+  // null check
+
   // checks to see if the fields in the body exist
-  
-  // checks to see that the name & email are not empty strings (phone # is optional)
-  
-  // sends the client's information to the database
-  
-  // return necessary response (status 200 & new client if successful, return error message otherwise)
+  if (req.body.hasOwnProperty("name") && req.body.hasOwnProperty("email")) {
+    // checks to see that the name & email are not empty strings (phone # is optional)
+    const { name, email } = req.body;
+    // ensures that both the name and email are strings
+    if (typeof name === "string" && typeof email === "string") {
+      if (name.trim().length === 0) {
+        res.status(400).json({
+          error: `Error (\'/api/clients\' POST route): \'name\' field is an empty string.`,
+        });
+      }
+      if (email.trim().length === 0) {
+        res.status(400).json({
+          error: `Error (\'/api/clients\' POST route): \'email\' field is an empty string.`,
+        });
+      }
+      // sends the client's information to the database
+      try {
+        let result;
+        // check to see if the phone # exists; checking for it at this point in the code because it's an optional field
+        if (req.body.hasOwnProperty("phone")) {
+          if (typeof req.body.phone === "string") {
+            if (req.body.phone.trim().length === 10) {
+              result = await db.query(
+                `INSERT INTO ${clientsTable} (name, email, phone) VALUES ($1, $2, $3) RETURNING *`,
+                [name, email, req.body.phone]
+              );
+            } else {
+              // phone # must be a string of 10 digits (well characters lol)
+              res.status(400).json({
+                error: `Error (\'/api/clients\' POST route): \'phone\'field must be 10 digits.`,
+              });
+            }
+          } else {
+            // For some reason, phone # is not of type string; throw error
+            res.status(400).json({
+              error: `Error (\'/api/clients\' POST route): \'phone\'field must be of type \'string\'.`,
+            });
+          }
+        } else {
+          result = await db.query(
+            `INSERT INTO ${clientsTable} (name, email) VALUES ($1, $2) RETURNING *`,
+            [name, email]
+          );
+        }
+        // Check to see if the insertion was successful
+        if (result.rowCount === 1) {
+          // Insertion into the clients table was successful
+          console.log(
+            `Successfully inserted client into the ${clientsTable} table: `,
+            result.rows[0]
+          );
+          res.status(201).json({
+            message: `Successfully inserted client into the ${clientsTable} table`,
+            // just incase I need the added client on the frontend for whatever reason
+            client: result.rows[0],
+          });
+        } else {
+          // Insertion into the clients table failed
+          console.error("Insert failed");
+          res.status(500).json({ error: `Failed to insert client` });
+        }
+      } catch (err) {
+        // error inserting client into the database
+        res.status(500).json({
+          error: `Error (\'/api/clients\' POST route): ${err.message}`,
+          stack: err.stack,
+        });
+      }
+
+      // return necessary response (status 200 & new client if successful, return error message otherwise)
+    } else {
+      // For some reason, name & email are not of type string; throw error
+      res.status(400).json({
+        error: `Error (\'/api/clients\' POST route): \'email\' & \'name\' fields must be of type \'string\'.`,
+      });
+    }
+  } else {
+    // client is missing necessary (name & email) fields; throw error
+    res.status(400).json({
+      error: `Error (\'/api/clients\' POST route): \'email\' & \'name\' fields are NOT in the request.`,
+    });
+  }
 });
 
 // retrieves all of the clients from the "clients" table
 // in media-hub-pro PostgreSQL database
 app.get("/api/clients", async (req, res) => {
   // reterieve all of the clients (SELECT * FROM clients)
-
   // return the clients in a response
 });
 
@@ -94,39 +175,27 @@ app.get("/api/clients", async (req, res) => {
 // in media-hub-pro PostgreSQL database
 app.post("/api/bookings", async (req, res) => {
   // retrieves necessary data from the body of the request (client id (references an id in the client table),
-  
   // event date, event type, price, status ('pending', 'confirmed', 'completed', 'cancelled'), )
-
   // checks to see if the fields in the body exist
-
   // checks to see if client id, event date, event type, & price are not empty strings (status will be pending by default)
-
   // checks to see that client id is valid (can't create a booking without a client)
-
   // sends the booking information to the database
-
   // return necessary response (status 200 & new booking information if successful, return error message otherwise)
-
 });
 
 // retrieves all of the bookings from the "bookings" table
 // in media-hub-pro PostgreSQL database
 app.get("/api/clients", async (req, res) => {
   // reterieve all of the bookings (SELECT * FROM bookings)
-  
   // return the bookings in a response
-
 });
 
 // retrieves a particular booking from the "bookings" table
 // in media-hub-pro PostgreSQL database given its id
 app.get("/api/clients/:id", async (req, res) => {
   // obtain the id from the route parameter
-  
   // reterieve the specific bookings (SELECT * FROM bookings WHERE id = {id})
-  
   // return the booking in a response
-
 });
 
 // Start the Server
