@@ -165,7 +165,7 @@ app.post("/api/clients", async (req, res) => {
 });
 
 // retrieves all of the clients from the "clients" table
-// in media-hub-pro PostgreSQL database
+// in MediaHub PostgreSQL database
 app.get("/api/clients", async (req, res) => {
   try {
     // reterieve all of the clients (SELECT * FROM clients)
