@@ -61,7 +61,7 @@ app.get("/", (req, res) => {
   });
 });
 
-// creates a new clients and stores them in the "clients" table 
+// creates a new client and stores them in the "clients" table 
 // in media-hub-pro PostgreSQL database
 app.post("/api/clients", async (req, res) => {
   // retrieves necessary data from the body of the request (name, email, & phone #)
@@ -70,7 +70,7 @@ app.post("/api/clients", async (req, res) => {
 
   // checks to see that the name & email are not empty strings (phone # is optional)
 
-  // sends the client's information to the data
+  // sends the client's information to the database
 
   // return necessary response (status 200 & new client if successful, return error message otherwise)
 });
@@ -81,6 +81,24 @@ app.get("/api/clients", async (req, res) => {
   // reterieve all of the clients (SELECT * FROM clients)
 
   // return the clients in a response
+});
+
+// creates a new booking and stores them it the "bookings" table 
+// in media-hub-pro PostgreSQL database
+app.post("/api/bookings", async (req, res) => {
+  // retrieves necessary data from the body of the request (client id (references an id in the client table), 
+  // event date, event type, price, status ('pending', 'confirmed', 'completed', 'cancelled'), )
+
+  // checks to see if the fields in the body exist 
+
+  // checks to see if client id, event date, event type, & price are not empty strings (status will be pending by default)
+
+  // checks to see that client id is valid (can't create a booking without a client)
+
+  // sends the bookinginformation to the database
+
+  // return necessary response (status 200 & new booking information if successful, return error message otherwise)
+
 });
 
 // Start the Server
