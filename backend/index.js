@@ -101,6 +101,14 @@ app.post("/api/bookings", async (req, res) => {
 
 });
 
+// retrieves all of the bookings from the "bookings" table 
+// in media-hub-pro PostgreSQL database
+app.get("/api/clients", async (req, res) => {
+  // reterieve all of the bookings (SELECT * FROM bookings)
+
+  // return the bookings in a response
+});
+
 // Start the Server
 // Start listening on the specified port
 app.listen(port, () => {
