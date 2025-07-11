@@ -6,6 +6,25 @@ CREATE TABLE clients (
   phone VARCHAR(20)               -- phone number (stored as text to handle dashes, parentheses, etc.)
 );
 
+-- Add a constraint to ensure all email addresses in the "clients" table are properly formatted
+ALTER TABLE clients
+ADD CONSTRAINT valid_email_format  -- Name of the new constraint (for easier debugging and management)
+CHECK (
+  -- Use a regular expression to validate that the email follows a realistic format
+  -- Breakdown of the regex:
+  -- ^                 : Start of string
+  -- [a-z0-9._%+-]+    : One or more valid characters for the username part
+  -- @                 : Must contain an "@" symbol
+  -- [a-z0-9.-]+       : One or more valid domain characters (letters, numbers, dots, hyphens)
+  -- \.                : A literal dot before the domain extension
+  -- [a-z]{2,}         : The domain extension must be at least 2 letters (e.g., com, org, co.uk)
+  -- $                 : End of string
+  -- ~*                : Case-insensitive regex match (PostgreSQL-specific)
+  email ~* '^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$'
+);
+
+
+
 -- 'bookings' table that stores info about photography/video jobs, shoots, or events
 CREATE TABLE bookings (
   -- Unique identifier for each booking
