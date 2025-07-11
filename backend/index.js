@@ -72,7 +72,7 @@ app.get("/", (req, res) => {
 });
 
 // creates a new client and stores them in the "clients" table
-// in media-hub-pro PostgreSQL database
+// in MediaHub PostgreSQL database
 app.post("/api/clients", async (req, res) => {
   // retrieves necessary data from the body of the request (name, email, & phone #)
   // console.log("req = ", req);
@@ -193,7 +193,7 @@ app.get("/api/clients", async (req, res) => {
 });
 
 // creates a new booking and stores them it the "bookings" table
-// in media-hub-pro PostgreSQL database
+// in MediaHub PostgreSQL database
 app.post("/api/bookings", async (req, res) => {
   // retrieves necessary data from the body of the request (client id (references an id in the client table),
   // event date, event type, price, status ('pending', 'confirmed', 'completed', 'cancelled'), )
@@ -205,14 +205,14 @@ app.post("/api/bookings", async (req, res) => {
 });
 
 // retrieves all of the bookings from the "bookings" table
-// in media-hub-pro PostgreSQL database
+// in MediaHub PostgreSQL database
 app.get("/api/clients", async (req, res) => {
   // reterieve all of the bookings (SELECT * FROM bookings)
   // return the bookings in a response
 });
 
 // retrieves a particular booking from the "bookings" table
-// in media-hub-pro PostgreSQL database given its id
+// in MediaHub PostgreSQL database given its id
 app.get("/api/clients/:id", async (req, res) => {
   // obtain the id from the route parameter
   // reterieve the specific bookings (SELECT * FROM bookings WHERE id = {id})
