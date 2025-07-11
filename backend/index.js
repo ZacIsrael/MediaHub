@@ -73,7 +73,15 @@ app.post("/api/clients", async (req, res) => {
   // sends the client's information to the data
 
   // return necessary response (status 200 & new client if successful, return error message otherwise)
-})
+});
+
+// retrieves all of the clients from the "clients" table 
+// in media-hub-pro PostgreSQL database
+app.get("/api/clients", async (req, res) => {
+  // reterieve all of the clients (SELECT * FROM clients)
+
+  // return the clients in a response
+});
 
 // Start the Server
 // Start listening on the specified port
