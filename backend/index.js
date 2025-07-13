@@ -206,14 +206,35 @@ app.post("/api/bookings", async (req, res) => {
 
 // retrieves all of the bookings from the "bookings" table
 // in MediaHub PostgreSQL database
-app.get("/api/clients", async (req, res) => {
-  // reterieve all of the bookings (SELECT * FROM bookings)
-  // return the bookings in a response
+app.get("/api/bookings", async (req, res) => {
+  try {
+    // reterieve all of the bookings (SELECT * FROM bookings)
+    const result = await db.query(`SELECT * FROM ${bookingsTable}`);
+
+    // Bookings table is empty
+    if (result.rowCount === 0) {
+      res.status(200).json({
+        message: `The ${bookingsTable} table is empty`,
+        bookings: [],
+      });
+    } else {
+      // return the bookings in a response
+      res.status(200).json({
+        bookings: result.rows,
+      });
+    }
+  } catch (err) {
+    // error retrieving all clients
+    res.status(500).json({
+      error: `Error (\'/api/bookings\' GET route): ${err.message}`,
+      stack: err.stack,
+    });
+  }
 });
 
 // retrieves a particular booking from the "bookings" table
 // in MediaHub PostgreSQL database given its id
-app.get("/api/clients/:id", async (req, res) => {
+app.get("/api/bookings/:id", async (req, res) => {
   // obtain the id from the route parameter
   // reterieve the specific bookings (SELECT * FROM bookings WHERE id = {id})
   // return the booking in a response
