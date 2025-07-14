@@ -60,6 +60,50 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // ==========================
+// Auxillary Functions
+// ==========================
+
+// Checks to see if an item with specified id exists in a given table
+// returns an object with a boolean value and the item (if it exists)
+async function itemtExistsById(id, tableName) {
+  try {
+    const result = await db.query(
+      `SELECT * FROM ${tableName} WHERE id = ($1)`,
+      [id]
+    );
+    if (result.rowCount === 1) {
+      console.log("itemExistsById(): item = ", result.rows[0]);
+      return {
+        booleanVal: true,
+        item: result.rows[0],
+      };
+    } else if (result.rowCount > 1) {
+      console.error(
+        `There is more than one item in the ${tableName} table with id = ${id}`
+      );
+      return {
+        booleanVal: false,
+        item: null,
+      };
+    } else {
+      console.error(
+        `There is no item in the ${tableName} table with id = ${id}`
+      );
+      return {
+        booleanVal: false,
+        item: null,
+      };
+    }
+  } catch (err) {
+    console.error("Error: ", err.message);
+    return {
+      booleanVal: false,
+      item: null
+    };
+  }
+}
+
+// ==========================
 // Routes
 // ==========================
 
@@ -195,13 +239,27 @@ app.get("/api/clients", async (req, res) => {
 // creates a new booking and stores them it the "bookings" table
 // in MediaHub PostgreSQL database
 app.post("/api/bookings", async (req, res) => {
-  // retrieves necessary data from the body of the request (client id (references an id in the client table),
-  // event date, event type, price, status ('pending', 'confirmed', 'completed', 'cancelled'), )
+  // Retrieves necessary data from the body of the request (client id (references an id in the client table),
+  // event date, event type, & price)
+  console.log("'/api/bookings' POST route: req.body = ", req.body);
   // checks to see if the fields in the body exist
   // checks to see if client id, event date, event type, & price are not empty strings (status will be pending by default)
+  let status = "pending";
   // checks to see that client id is valid (can't create a booking without a client)
-  // sends the booking information to the database
-  // return necessary response (status 200 & new booking information if successful, return error message otherwise)
+  let { booleanVal, item } = await itemtExistsById(req.body.client_id, clientsTable);
+  console.log('\'/api/bookings\' POST route: booleanVal = ', booleanVal, '\nitem = ', item);
+  if (booleanVal === true) {
+    // sends the booking information to the database
+    // return necessary response (status 200 & new booking information if successful)
+    res.status(200).json({
+      message: "testing",
+    });
+  } else {
+    // client with the specified id does not exist
+    res.status(404).json({
+      message: `\'/api/bookings\' POST route: Can't add this booking; client with ${req.body.client_id} does not exist.`,
+    });
+  }
 });
 
 // retrieves all of the bookings from the "bookings" table
