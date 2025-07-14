@@ -65,7 +65,7 @@ app.use(cors());
 
 // Checks to see if an item with specified id exists in a given table
 // returns an object with a boolean value and the item (if it exists)
-async function itemtExistsById(id, tableName) {
+async function itemExistsById(id, tableName) {
   try {
     const result = await db.query(
       `SELECT * FROM ${tableName} WHERE id = ($1)`,
@@ -275,7 +275,7 @@ app.post("/api/bookings", async (req, res) => {
     let { client_id, event_date, event_type, price } = req.body;
 
     // checks to see that a cleint with id = client_id exists (can't create a booking without a client)
-    let { booleanVal, item } = await itemtExistsById(client_id, clientsTable);
+    let { booleanVal, item } = await itemExistsById(client_id, clientsTable);
 
     if (booleanVal === true) {
       // checks to see if event date & event type are strings
@@ -401,9 +401,21 @@ app.get("/api/bookings", async (req, res) => {
 // retrieves a particular booking from the "bookings" table
 // in MediaHub PostgreSQL database given its id
 app.get("/api/bookings/:id", async (req, res) => {
-  // obtain the id from the route parameter
-  // reterieve the specific bookings (SELECT * FROM bookings WHERE id = {id})
-  // return the booking in a response
+  // obtain the booking's id from the route parameter
+  const { id } = req.params;
+  // reterieve the specific booking
+  const { booleanVal, item } = await itemExistsById(id, bookingsTable);
+  if (booleanVal) {
+    // return the booking in a response
+    res.status(200).json({
+      booking: item,
+    });
+  } else {
+    res.status(200).json({
+      message: `There is no booking with id = ${id} in the ${bookingsTable} table.`,
+      booking: item,
+    });
+  }
 });
 
 // Start the Server
