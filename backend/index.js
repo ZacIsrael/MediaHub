@@ -15,8 +15,12 @@ import pg from "pg";
 import mongoose from "mongoose";
 
 // import routes
+// postgreSQL
 import clientsRouter from "./routes/clients.js";
 import bookingsRouter from "./routes/bookings.js";
+// mongoDB
+import socialPostsRouter from "./routes/social-posts.js";
+import videosRouter from "./routes/videos.js";
 
 import { db, connectToPostgres, connectToMongoDB } from "./database.js";
 
@@ -66,6 +70,8 @@ app.use(cors());
 // routes
 app.use("/api/clients", clientsRouter);
 app.use("/api/bookings", bookingsRouter);
+app.use("/api/social-posts", socialPostsRouter);
+app.use("/api/videos", videosRouter);
 
 // Start the Server
 // Start listening on the specified port
