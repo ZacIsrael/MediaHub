@@ -11,6 +11,11 @@ import cors from "cors";
 // postgreSQL module
 import pg from "pg";
 
+// MongoDB module
+import mongoose from "mongoose";
+
+import { db, connectToPostgres, connectToMongoDB } from "./database.js";
+
 // Loads environment variables from a `.env` file into process.env
 // Used for storing sensitive data like database credentials, API keys, etc.
 import dotenv from "dotenv";
@@ -22,22 +27,30 @@ const app = express();
 // Define the port your Express server will listen on
 const port = process.env.PORT;
 
+
+
 // constants for tables in the postgreSQL database
 const clientsTable = "clients";
 const bookingsTable = "bookings";
 
+// connect to mongoDB database
+connectToMongoDB();
+
+// connect to postgreSQL database 
+connectToPostgres();
+
 // PostgreSQL client using the pg library
-const db = new pg.Client({
-  user: process.env.PG_USERNAME,
-  // Host where the PostgreSQL server is running
-  host: process.env.PG_HOST,
-  // access the Media Hub database in postgreSQL,
-  database: process.env.PG_DATABASE,
-  password: process.env.PG_PASSWORD,
-  port: process.env.PG_PORT,
-});
+// const db = new pg.Client({
+//   user: process.env.PG_USERNAME,
+//   // Host where the PostgreSQL server is running
+//   host: process.env.PG_HOST,
+//   // access the Media Hub database in postgreSQL,
+//   database: process.env.PG_DATABASE,
+//   password: process.env.PG_PASSWORD,
+//   port: process.env.PG_PORT,
+// });
 // Initiates the connection to the database using the credentials above
-db.connect();
+// db.connect();
 
 // ==========================
 // Middleware
