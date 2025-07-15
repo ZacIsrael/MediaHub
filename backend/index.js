@@ -39,19 +39,6 @@ connectToMongoDB();
 // connect to postgreSQL database 
 connectToPostgres();
 
-// PostgreSQL client using the pg library
-// const db = new pg.Client({
-//   user: process.env.PG_USERNAME,
-//   // Host where the PostgreSQL server is running
-//   host: process.env.PG_HOST,
-//   // access the Media Hub database in postgreSQL,
-//   database: process.env.PG_DATABASE,
-//   password: process.env.PG_PASSWORD,
-//   port: process.env.PG_PORT,
-// });
-// Initiates the connection to the database using the credentials above
-// db.connect();
-
 // ==========================
 // Middleware
 // ==========================
