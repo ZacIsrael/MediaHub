@@ -16,30 +16,80 @@ const router = express.Router();
 router.post("/", async (req, res) => {
   // Thoroughly check the body of the request for errors (will create a
   // an auxillary function in helpers.js later on)
+  if (
+    req.body.hasOwnProperty("platform") &&
+    req.body.hasOwnProperty("url") &&
+    req.body.hasOwnProperty("caption")
+  ) {
+    // happy path (for now)
+    // extract the necessary fields from the body of the request
+    // hashtags will be set to an empty array if it's not in the body of the request (it's an optional field)
+    const { platform, url, caption, hashtags = [], engagement } = req.body;
 
-  // happy path (for now)
-  // extract the necessary fields from the body of the request
-  const { platform, url, caption, hashtags, engagement } = req.body;
+    if (typeof platform !== "string") {
+      // For some reason, platform is not of type string; throw error
+      res.status(400).json({
+        error: `Error (\'/api/social-posts/\' POST route): \'platform\'field must be of type \'string\'.`,
+      });
+    }
 
-  try {
-    // insert the new video into the mongoDB collection
-    const newSocialPost = await SocialPosts.create({
-      platform,
-      url,
-      caption,
-      hashtags,
-      engagement,
-    });
+    if (typeof url !== "string") {
+      // For some reason, url is not of type string; throw error
+      res.status(400).json({
+        error: `Error (\'/api/social-posts/\' POST route): \'url\'field must be of type \'string\'.`,
+      });
+    }
 
-    res.status(201).json({
-      message: `Successfully inserted social post into the \'social_posts\' mongoDB collection.`,
-      socialPost: newSocialPost,
-    });
-  } catch (err) {
-    // Error inserting the social post into the mongoDB collection
-    res.status(500).json({
-      error: `Error (\'/api/social-posts/\' POST route): ${err.message}`,
-      stack: err.stack,
+    if (typeof caption !== "string") {
+      // For some reason, url is not of type string; throw error
+      res.status(400).json({
+        error: `Error (\'/api/social-posts/\' POST route): \'caption\'field must be of type \'string\'.`,
+      });
+    }
+
+    // check for empty strings
+    if (platform.trim().length === 0) {
+      res.status(400).json({
+        error: `Error (\'/api/social-posts/\' POST route): \'platform\' field is an empty string.`,
+      });
+    }
+    if (url.trim().length === 0) {
+      res.status(400).json({
+        error: `Error (\'/api/social-posts/\' POST route): \'url\' field is an empty string.`,
+      });
+    }
+
+    if (caption.trim().length === 0) {
+      res.status(400).json({
+        error: `Error (\'/api/social-posts/\' POST route): \'caption\' field is an empty string.`,
+      });
+    }
+
+    try {
+      // insert the new video into the mongoDB collection
+      const newSocialPost = await SocialPosts.create({
+        platform,
+        url,
+        caption,
+        hashtags,
+        engagement,
+      });
+
+      res.status(201).json({
+        message: `Successfully inserted social post into the \'social_posts\' mongoDB collection.`,
+        socialPost: newSocialPost,
+      });
+    } catch (err) {
+      // Error inserting the social post into the mongoDB collection
+      res.status(500).json({
+        error: `Error (\'/api/social-posts/\' POST route): ${err.message}`,
+        stack: err.stack,
+      });
+    }
+  } else {
+    // social post is missing necessary (platform, url, caption) fields; throw error
+    res.status(400).json({
+      error: `Error (\'/api/social-posts/\' POST route): At least 1 of the mandatory fields (\'platform\', \'url\', & \'caption\') are NOT in the request.`,
     });
   }
 });
