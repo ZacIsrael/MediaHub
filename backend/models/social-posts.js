@@ -9,6 +9,11 @@ const socialPostsSchema = new mongoose.Schema({
     required: true,
     maxLength: 100,
   },
+  // url of the post
+  url: {
+    type: String,
+    required: true
+  },
   // caption of the post
   caption: {
     type: String,
