@@ -33,5 +33,5 @@ const videosSchema = new mongoose.Schema({
     }
 });
 
-// create and export this Videos module
+// create and export this Videos model
 export const Videos = mongoose.model("Videos", videosSchema);
