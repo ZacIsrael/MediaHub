@@ -1,7 +1,7 @@
 // MongoDB module
 import mongoose from "mongoose";
 
-// schema for the "videos collection"
+// schema for the "videos" collection
 const videosSchema = new mongoose.Schema({
     // title of the video
     title: {
