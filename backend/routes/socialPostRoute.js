@@ -8,7 +8,7 @@ import bodyParser from "body-parser";
 // Enables Cross-Origin Resource Sharing, allowing frontend apps on different ports (like React) to make requests to this backend
 import cors from "cors";
 
-import { SocialPosts } from "../models/social-posts.js";
+import { SocialPosts } from "../models/socialPostModel.js";
 
 const router = express.Router();
 
