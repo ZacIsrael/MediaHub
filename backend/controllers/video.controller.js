@@ -26,7 +26,7 @@ export const createVideo = async (req, res) => {
 
     res.status(201).json({
       message: `Successfully inserted video into the \'videos\' mongoDB collection.`,
-      video: newVideo,
+      video,
     });
   } catch (err) {
     // Error inserting the video into the mongoDB collection
@@ -48,6 +48,7 @@ export const getAllVideos = async (req, res) => {
         videos.lenth === 0
           ? "There are no videos in the 'videos' mongoDB collection."
           : "Successfully retreived all videos from the 'videos' mongoDB collection.",
+      // send the returned videos back to the client side
       videos,
     });
   } catch (err) {

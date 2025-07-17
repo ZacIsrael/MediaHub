@@ -4,7 +4,8 @@ import { Videos } from "../models/video.model.js";
 
 export const videoService = {
     async createVideo(dto) {
-        // creates a video MongoDB document with cleaned up parameters passed in from video.dto.js
+        // creates a video MongoDB document with cleaned up parameters passed in 
+        // from the data transfer object (dto) from video.dto.js
         const video = new Videos({
             title: dto.title,
             url: dto.url,
@@ -18,7 +19,7 @@ export const videoService = {
     },
 
     async getAllVideos(){
-        // retrieves all of the video documents from the videos MongoDB collection
+        // retreives all of the video documents from the videos MongoDB collection
         return await Videos.find();
     }
 }
