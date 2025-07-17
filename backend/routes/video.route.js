@@ -8,7 +8,7 @@ import bodyParser from "body-parser";
 // Enables Cross-Origin Resource Sharing, allowing frontend apps on different ports (like React) to make requests to this backend
 import cors from "cors";
 
-import { Videos } from "../models/videoModel.js";
+import { Videos } from "../models/video.model.js";
 
 const router = express.Router();
 

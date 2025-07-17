@@ -16,11 +16,11 @@ import mongoose from "mongoose";
 
 // import routes
 // postgreSQL
-import clientsRouter from "./routes/clientRoute.js";
-import bookingsRouter from "./routes/bookingRoute.js";
+import clientsRouter from "./routes/client.route.js";
+import bookingsRouter from "./routes/booking.route.js";
 // mongoDB
-import socialPostsRouter from "./routes/socialPostRoute.js";
-import videosRouter from "./routes/videoRoute.js";
+import socialPostsRouter from "./routes/socialPost.route.js";
+import videosRouter from "./routes/video.route.js";
 
 import { db, connectToPostgres, connectToMongoDB } from "./database.js";
 
