@@ -9,6 +9,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 
 import { db } from "../database.js";
+import { getAllClients } from "../controllers/client.controller.js";
 
 const router = express.Router();
 
@@ -111,6 +112,8 @@ router.post("/", async (req, res) => {
 
 // retrieves all of the clients from the "clients" table
 // in MediaHub PostgreSQL database
+router.get("/", getAllClients);
+/*
 router.get("/", async (req, res) => {
   try {
     // reterieve all of the clients (SELECT * FROM clients)
@@ -136,5 +139,6 @@ router.get("/", async (req, res) => {
     });
   }
 });
+*/
 
 export default router;

@@ -9,6 +9,7 @@ export const clientService = {
   async createClient(dto) {
     // insert a client into the clients table with cleaned up parameters passed in
     // from the data transfer object (dto) from client.dto.js
+    // RETURNING * includes the inserted client in the result 
     return await db.query(
       `INSERT INTO ${clientsTable} (name, email, phone) VALUES ($1, $2, $3) RETURNING *`,
       [dto.name, dto.email, dto.phone]
