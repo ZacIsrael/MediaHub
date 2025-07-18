@@ -12,6 +12,7 @@ import cors from "cors";
 
 // auxillary functions
 import { itemExistsById, isValidPrice } from "../utils/helpers.js";
+import { getBookingById } from "../controllers/booking.controller.js";
 
 const router = express.Router();
 
@@ -34,7 +35,7 @@ router.post("/", async (req, res) => {
   ) {
     let { client_id, event_date, event_type, price } = req.body;
 
-    // checks to see that a cleint with id = client_id exists (can't create a booking without a client)
+    // checks to see that a client with id = client_id exists (can't create a booking without a client)
     let { booleanVal, item } = await itemExistsById(
       client_id,
       clientsTable,
@@ -164,6 +165,9 @@ router.get("/", async (req, res) => {
 
 // retrieves a particular booking from the "bookings" table
 // in MediaHub PostgreSQL database given its id
+router.get("/:id", getBookingById);
+
+/*
 router.get("/:id", async (req, res) => {
   // obtain the booking's id from the route parameter
   const { id } = req.params;
@@ -180,7 +184,7 @@ router.get("/:id", async (req, res) => {
       booking: item,
     });
   }
-});
+}); */
 
 
 export default router;
