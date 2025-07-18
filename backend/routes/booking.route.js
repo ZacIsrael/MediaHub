@@ -12,7 +12,10 @@ import cors from "cors";
 
 // auxillary functions
 import { itemExistsById, isValidPrice } from "../utils/helpers.js";
-import { getBookingById } from "../controllers/booking.controller.js";
+import {
+  getAllBookings,
+  getBookingById,
+} from "../controllers/booking.controller.js";
 
 const router = express.Router();
 
@@ -137,54 +140,10 @@ router.post("/", async (req, res) => {
 
 // retrieves all of the bookings from the "bookings" table
 // in MediaHub PostgreSQL database
-router.get("/", async (req, res) => {
-  try {
-    // reterieve all of the bookings (SELECT * FROM bookings)
-    const result = await db.query(`SELECT * FROM ${bookingsTable}`);
-
-    // Bookings table is empty
-    if (result.rowCount === 0) {
-      res.status(200).json({
-        message: `The ${bookingsTable} table is empty`,
-        bookings: [],
-      });
-    } else {
-      // return the bookings in a response
-      res.status(200).json({
-        bookings: result.rows,
-      });
-    }
-  } catch (err) {
-    // error retrieving all clients
-    res.status(500).json({
-      error: `Error (\'/api/bookings\' GET route): ${err.message}`,
-      stack: err.stack,
-    });
-  }
-});
+router.get("/", getAllBookings);
 
 // retrieves a particular booking from the "bookings" table
 // in MediaHub PostgreSQL database given its id
 router.get("/:id", getBookingById);
-
-/*
-router.get("/:id", async (req, res) => {
-  // obtain the booking's id from the route parameter
-  const { id } = req.params;
-  // reterieve the specific booking
-  const { booleanVal, item } = await itemExistsById(id, bookingsTable, db);
-  if (booleanVal) {
-    // return the booking in a response
-    res.status(200).json({
-      booking: item,
-    });
-  } else {
-    res.status(200).json({
-      message: `There is no booking with id = ${id} in the ${bookingsTable} table.`,
-      booking: item,
-    });
-  }
-}); */
-
 
 export default router;
