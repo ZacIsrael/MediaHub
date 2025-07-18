@@ -37,6 +37,6 @@ export class CreateBookingDTO {
     this.event_date = dateToBeAdded;
     this.event_type = event_type.trim();
     this.price = price;
-    this.status = "PENDING";
+    this.status = "pending";
   }
 }

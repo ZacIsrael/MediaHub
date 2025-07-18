@@ -1,7 +1,9 @@
 // This file is responsible for handling API requests that come in for clients
 
+import { db } from "../database.js";
 import { CreateBookingDTO } from "../dtos/booking.dto.js";
 import { bookingService } from "../services/booking.service.js";
+import { itemExistsById } from "../utils/helpers.js";
 
 // constants for tables in the postgreSQL database
 const clientsTable = "clients";
@@ -14,12 +16,54 @@ export const createBooking = async (req, res) => {
 
   // process the body of the request (see client.dto.js)
   try {
-    dto = CreateBookingDTO(req.body);
+    dto = new CreateBookingDTO(req.body);
   } catch (err) {
     // Error stems from client-side/body of the request
     // see (bookings.dto.js) to see all possible error messages
     res.status(400).json({
       error: `Bad Request (POST /api/bookings/): ${err.message}`,
+      stack: err.stack,
+    });
+  }
+
+  // check if a client with id = dto.client_id exists
+  try {
+    // checks to see that a client with id = client_id exists (can't create a booking without a client)
+    let { booleanVal, item } = await itemExistsById(
+      dto.client_id,
+      clientsTable,
+      db
+    );
+    console.log("(POST /api/bookings/): booleanVal = ", booleanVal, "\nitem = ", item, "\n");
+    if (!booleanVal) {
+      // There is no client with id = dto.client_id exists
+      res.status(404).json({
+        error: `Not Found (POST /api/bookings/): Can't add this booking; client with ${dto.client_id} does not exist.`,
+      });
+    }
+  } catch (err) {
+    // Error executing query that checks if client exists
+    res.status(500).json({
+      error: `Server Error (POST /api/bookings/) while checking client existence: ${err.message}`,
+      stack: err.stack,
+    });
+  }
+
+  // insert booking into the bookings table
+  try {
+    const result = await bookingService.createBooking(dto);
+
+    // Insertion into the bookings table was successful
+    // return necessary response (status 200 & new booking information if successful)
+    res.status(201).json({
+      message: `Successfully inserted booking into the ${bookingsTable} table`,
+      // just incase I need the added booking on the frontend for whatever reason
+      booking: result.rows[0],
+    });
+  } catch (err) {
+    // error inserting booking into the database
+    res.status(500).json({
+      error: `Server Error (POST /api/bookings/): ${err.message}`,
       stack: err.stack,
     });
   }
