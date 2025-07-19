@@ -30,20 +30,12 @@ export const createClient = async (req, res) => {
     const result = await clientService.createClient(dto);
 
     // "RETURNING * " is in the insertion query so the entry in the clients table should be returned
-    if (result.rowCount === 1) {
-      // Insertion into the clients table was successful
-      res.status(201).json({
-        message: `Successfully inserted client into the ${clientsTable} table`,
-        // just incase I need the added client on the frontend for whatever reason
-        client: result.rows[0],
-      });
-    } else {
-      // Insertion into the clients table failed
-      res.status(500).json({
-        error:
-          "Server Error (POST /api/clients/): Insertion query with 'RETURNING *' returned more than 1 client or none at all.",
-      });
-    }
+    // Insertion into the clients table was successful
+    res.status(201).json({
+      message: `Successfully inserted client into the ${clientsTable} table`,
+      // just incase I need the added client on the frontend for whatever reason
+      client: result.rows[0],
+    });
   } catch (err) {
     // Error inserting the client into the postgreSQL database
     res.status(500).json({
@@ -61,7 +53,7 @@ export const getAllClients = async (req, res) => {
 
     res.status(200).json({
       message:
-      // different message is returned in the response depending on if there are any clients in the database
+        // different message is returned in the response depending on if there are any clients in the database
         clientResults.rows.length === 0
           ? `The ${clientsTable} table is empty`
           : "Successfully retreived all clients from the 'clients' table in the postgreSQL database.",
