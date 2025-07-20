@@ -20,7 +20,7 @@ const db = new pg.Client({
   // access the Media Hub database in postgreSQL,
   database: process.env.PG_DATABASE,
   password: process.env.PG_PASSWORD,
-  port: process.env.PG_PORT,
+  port: Number(process.env.PG_PORT),
 });
 
 // connect to postgreSQL database
@@ -38,7 +38,8 @@ async function connectToPostgres() {
 // connect to mongoDB database
 async function connectToMongoDB() {
   try {
-    await mongoose.connect(process.env.MONGO_DB_URI);
+    // "as string" ensures that the Mongo DB URI is a string
+    await mongoose.connect(process.env.MONGO_DB_URI as string);
   } catch (err) {
     console.error("Error connecting to MongoDB: ", err);
     process.exit(1);

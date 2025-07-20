@@ -1,8 +1,10 @@
 // MongoDB module
-import mongoose from "mongoose";
+import mongoose, {Schema, Document} from "mongoose";
+
+import { ISocialPost } from "../types/socialPost.interface";
 
 // schema for the "social-posts" collection
-const socialPostsSchema = new mongoose.Schema({
+const socialPostsSchema: Schema<ISocialPost> = new mongoose.Schema({
   // platform that the content was posted on (instagram, tiktok, youtube, etc.)
   platform: {
     type: String,
@@ -18,13 +20,13 @@ const socialPostsSchema = new mongoose.Schema({
   caption: {
     type: String,
     required: true,
-    // captions can be a bit lengthy depending on the platform (doubt it'll ever be 300 characters though)
-    maxLength: 300,
+    // captions on instagram can be a bit lengthy depending on the platform (doubt it'll ever be 300 characters though)
+    maxLength: 500,
   },
   // hashtags applied to the content
   hashtags: {
-    // there can be multiple hashtags for a post
-    type: Array,
+    // Array of strings; there can be multiple hashtags for a post
+    type: [String],
     // not every piece of content will have hashtags
     required: false,
   },
@@ -36,4 +38,4 @@ const socialPostsSchema = new mongoose.Schema({
 });
 
 // create and export this Social Posts model
-export const SocialPosts = mongoose.model("SocialPosts", socialPostsSchema);
+export const SocialPosts = mongoose.model<ISocialPost>("SocialPosts", socialPostsSchema);

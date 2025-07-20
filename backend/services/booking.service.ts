@@ -1,14 +1,17 @@
 // This file handles the interaction between the API & the bookings table in the postgreSQL database
 
-import { db } from "../database.js";
-import { itemExistsById } from "../utils/helpers.js";
+import { CreateBookingDTO } from "../dtos/booking.dto";
+import { db } from "../database";
+import { itemExistsById } from "../utils/helpers";
+import { Booking } from "../types/booking.interface";
 
 // constants for tables in the postgreSQL database
 const clientsTable = "clients";
 const bookingsTable = "bookings";
 
 export const bookingService = {
-  async createBooking(dto) {
+  // ts ensure that this dto parameter passed in is of type CreateBookingtDTO (see booking.dto.ts)
+  async createBooking(dto: CreateBookingDTO): Promise<{ rows: Booking[] }> {
     // insert a booking into the bookings table with cleaned up parameters passed in
     // from the data transfer object (dto) from boking.dto.js
     // RETURNING * includes the inserted booking in the result
@@ -18,12 +21,13 @@ export const bookingService = {
     );
   },
 
-  async getAllBookings(){
+  async getAllBookings(): Promise<{ rows: Booking[] }> {
     // reterieve all of the bookings (SELECT * FROM bookings)
     return await db.query(`SELECT * FROM ${bookingsTable}`);
   },
 
-  async getBookingById(id){
+  // itemExistsById returns a boolean value (indicates whether or not the item exists) & the item itself
+  async getBookingById(id: number): Promise<{ booleanVal: boolean; item: Booking | null}> {
     return await itemExistsById(id, bookingsTable, db);
-  }
+  },
 };

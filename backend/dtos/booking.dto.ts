@@ -1,8 +1,22 @@
-import { isValidPrice } from "../utils/helpers.js";
 
 // This file validates and sanitizes the data coming from API requests for bookings
-export class CreateBookingDTO {
-  constructor({ client_id, event_date, event_type, price }) {
+import { BookingCreateInput } from "../types/booking.interface";
+import { isValidPrice } from "../utils/helpers";
+
+
+
+export class CreateBookingDTO implements BookingCreateInput {
+
+  // Declare class properties with their expected types 
+  client_id: number;
+  event_date: string;
+  event_type: string;
+  price: number;
+  // hardcoded for safety and consistency
+  status: 'pending' = 'pending';
+  
+   // Ensure that the object passed to this constructor matches the shape of BookingCreateInput
+  constructor({ client_id, event_date, event_type, price }: BookingCreateInput) {
     // ensure that event_date & event_type are strings and not empty
     if (typeof event_date !== "string" || event_date.trim().length === 0) {
       throw new Error(
@@ -28,13 +42,13 @@ export class CreateBookingDTO {
         // date is not in the correct format so throw an error
         throw new Error ("Error (POST /api/bookings/): 'event_date' string is incorrectly formatted. Please use ISO format like 'YYYY-MM-DDTHH:mm:ssZ'");
     }
-    // postgreSQL expects a date object for the event_date field
-    const dateToBeAdded = new Date(event_date);
+    // postgreSQL expects a date object for the event_date field (javascript; not typescript)
+    // const dateToBeAdded = new Date(event_date);
 
     // Assign validated and cleaned values to the DTO instance
     // we'll check if client id is valid in the service & controller files
     this.client_id = client_id;
-    this.event_date = dateToBeAdded;
+    this.event_date = event_date;
     this.event_type = event_type.trim();
     this.price = price;
     this.status = "pending";

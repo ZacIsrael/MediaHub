@@ -1,9 +1,19 @@
 // This file contains any auxillary functions
 
+// Import type for PostgreSQL query result type safety
+import { Client } from "pg";
+
+// Define the shape of the object that itemExistsById returns
+interface ItemExistsResult<T> {
+  // boolean value that indicates whether or not the item has been found or exists
+  booleanVal: boolean;
+  // the item itself 
+  item: T | null;
+}
 // Checks to see if an item with specified id exists in a given table 
 // in a given postgreSQL database
 // returns an object with a boolean value and the item (if it exists)
-export async function itemExistsById(id, tableName, db) {
+export async function itemExistsById<T = any>(id: number, tableName: string, db: Client): Promise<ItemExistsResult<T>> {
   try {
     const result = await db.query(
       `SELECT * FROM ${tableName} WHERE id = ($1)`,
@@ -15,7 +25,7 @@ export async function itemExistsById(id, tableName, db) {
         booleanVal: true,
         item: result.rows[0],
       };
-    } else if (result.rowCount > 1) {
+    } else if (result.rowCount !== null && result.rowCount > 1) {
       console.error(
         `There is more than one item in the ${tableName} table with id = ${id}`
       );
@@ -32,7 +42,7 @@ export async function itemExistsById(id, tableName, db) {
         item: null,
       };
     }
-  } catch (err) {
+  } catch (err: any) {
     console.error("Error: ", err.message);
     return {
       booleanVal: false,
@@ -42,7 +52,8 @@ export async function itemExistsById(id, tableName, db) {
 }
 
 // checks to see if a number is in the correct format for $
-export function isValidPrice(price) {
+// this function returns a boolan
+export function isValidPrice(price: number): boolean {
   // check to see if price is actually a number
   if (isNaN(price)) {
     return false;

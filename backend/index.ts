@@ -1,5 +1,5 @@
 // Import the express framework to create and manage the web server
-import express from "express";
+import express, { Application, Request, Response } from "express";
 
 // Middleware to parse form data (e.g., from HTML forms or Postman)
 // Parses data in x-www-form-urlencoded format and makes it available in req.body
@@ -16,13 +16,13 @@ import mongoose from "mongoose";
 
 // import routes
 // postgreSQL
-import clientsRouter from "./routes/client.route.js";
-import bookingsRouter from "./routes/booking.route.js";
+import clientsRouter from "./routes/client.route";
+import bookingsRouter from "./routes/booking.route";
 // mongoDB
-import socialPostsRouter from "./routes/socialPost.route.js";
-import videosRouter from "./routes/video.route.js";
+import socialPostsRouter from "./routes/socialPost.route";
+import videosRouter from "./routes/video.route";
 
-import { db, connectToPostgres, connectToMongoDB } from "./database.js";
+import { db, connectToPostgres, connectToMongoDB } from "./database";
 
 // Loads environment variables from a `.env` file into process.env
 // Used for storing sensitive data like database credentials, API keys, etc.
@@ -31,11 +31,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Create an Express application instance
-const app = express();
+const app: Application = express();
 // Define the port your Express server will listen on
-const port = process.env.PORT;
-
-
+const port: number = parseInt( process.env.PORT || "3000", 10);
 
 // constants for tables in the postgreSQL database
 const clientsTable = "clients";
@@ -44,7 +42,7 @@ const bookingsTable = "bookings";
 // connect to mongoDB database
 connectToMongoDB();
 
-// connect to postgreSQL database 
+// connect to postgreSQL database
 connectToPostgres();
 
 // ==========================
@@ -67,11 +65,16 @@ app.use(bodyParser.json());
 // This is necessary if the frontend is running on a different port (e.g., React on localhost:5173)
 app.use(cors());
 
-// routes
+// mount the routes
 app.use("/api/clients", clientsRouter);
 app.use("/api/bookings", bookingsRouter);
 app.use("/api/social-posts", socialPostsRouter);
 app.use("/api/videos", videosRouter);
+
+// dfeault GET route
+app.get("/", (req: Request, res: Response): void => {
+  res.send("Welcome to the Media Hub API!");
+});
 
 // Start the Server
 // Start listening on the specified port

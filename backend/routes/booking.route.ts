@@ -1,22 +1,11 @@
 // Import the express framework to create and manage the web server
 import express from "express";
 
-import { db } from "../database.js";
-
-// Middleware to parse form data (e.g., from HTML forms or Postman)
-// Parses data in x-www-form-urlencoded format and makes it available in req.body
-import bodyParser from "body-parser";
-
-// Enables Cross-Origin Resource Sharing, allowing frontend apps on different ports (like React) to make requests to this backend
-import cors from "cors";
-
-// auxillary functions
-import { itemExistsById, isValidPrice } from "../utils/helpers.js";
 import {
   createBooking,
   getAllBookings,
   getBookingById,
-} from "../controllers/booking.controller.js";
+} from "../controllers/booking.controller";
 
 const router = express.Router();
 
