@@ -11,7 +11,7 @@ export interface IUser {
   email: string;
 
   // password_hash is a TEXT in SQL; its equivalent in typescript is a string
-  // password_hash has a '?' behind it because it's optional (if a user logs in 
+  // password_hash has a '?' behind it because it's optional (if a user logs in
   // or registers using OAuth (Google, GitHub, etc.), they enter a password)
   password_hash?: string;
 
@@ -24,4 +24,24 @@ export interface IUser {
   provider_id?: string;
   created_at: Date;
   updated_at: Date;
+}
+
+// body of a request will only contain the following at most (no need to add created_at & updated_at)
+// will be used in user.dto.ts
+export interface CreateUserInterface {
+  // email is a VARCHAR in SQL; its equivalent in typescript is a string
+  email: string;
+
+  // password_hash is a TEXT in SQL; its equivalent in typescript is a string
+  // password_hash has a '?' behind it because it's optional (if a user logs in
+  // or registers using OAuth (Google, GitHub, etc.), they enter a password)
+  password_hash?: string;
+
+  // "local", "google", & "github" are the only valid entries for a provider
+  // local = logging in/registering with username & password, google & github = OAuth
+  provider: "local" | "google" | "github";
+
+  // provider_id is a VARCHAR in SQL; its equivalent in typescript is a string
+  // unique ID from OAuth provider (e.g., Google ID)
+  provider_id?: string;
 }
