@@ -9,10 +9,6 @@ import {
 
 const router = express.Router();
 
-// constants for tables in the postgreSQL database
-const clientsTable = "clients";
-const bookingsTable = "bookings";
-
 // creates a new booking and stores it in the "bookings" table
 // in MediaHub PostgreSQL database
 router.post("/", createBooking);

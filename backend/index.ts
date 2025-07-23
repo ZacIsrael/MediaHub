@@ -18,6 +18,7 @@ import mongoose from "mongoose";
 // postgreSQL
 import clientsRouter from "./routes/client.route";
 import bookingsRouter from "./routes/booking.route";
+import usersRouter from "./routes/user.route";
 // mongoDB
 import socialPostsRouter from "./routes/socialPost.route";
 import videosRouter from "./routes/video.route";
@@ -70,6 +71,7 @@ app.use("/api/clients", clientsRouter);
 app.use("/api/bookings", bookingsRouter);
 app.use("/api/social-posts", socialPostsRouter);
 app.use("/api/videos", videosRouter);
+app.use("/api/auth", usersRouter);
 
 // dfeault GET route
 app.get("/", (req: Request, res: Response): void => {

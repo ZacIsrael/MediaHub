@@ -13,7 +13,7 @@ const bookingsTable = "bookings";
 
 // called for (POST /api/bookings/) route
 export const createBooking = async (req: Request, res: Response) => {
-  // data transfer object (object that will contained the processed request)
+  // data transfer object (object that will hold the processed request)
   let dto: CreateBookingDTO;
 
   // process the body of the request (see client.dto.ts)

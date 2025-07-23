@@ -15,8 +15,8 @@ export const usersService = {
     // from the data transfer object (dto) from user.dto.ts
     // RETURNING * includes the inserted user in the result
     return await db.query(
-      `INSERT INTO ${usersTable} (email, password_hash, provider, provider_id) VALUES ($1, $2, $3, $4) RETURNING *`,
-      [dto.email, dto.password_hash, dto.provider, dto.provider_id]
+      `INSERT INTO ${usersTable} (email, name, password_hash, provider, provider_id) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      [dto.email, dto.name, dto.password, dto.provider, dto.provider_id]
     );
   },
 
