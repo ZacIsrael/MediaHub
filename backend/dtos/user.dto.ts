@@ -1,6 +1,9 @@
 // This file validates and sanitizes the data coming from API requests for users (logging in & registering)
 
-import { CreateUserInterface } from "../types/user.interface";
+import {
+  CreateUserInterface,
+  LoginUserInterface,
+} from "../types/user.interface";
 
 // Import bcrypt to hash passwords securely (automatically adds a salt and hashes it)
 import bcrypt from "bcrypt";
@@ -61,25 +64,23 @@ export class CreateUserDTO {
 
     // check that provider is either local, google, or github
     if (
-      provider !== "local" &&
-      provider !== "google" &&
-      provider !== "github"
+      provider.trim().toLowerCase() !== "local" &&
+      provider.trim().toLowerCase() !== "google" &&
+      provider.trim().toLowerCase() !== "github"
     ) {
       throw new Error(
-        "Error (POST /api/users/): 'provider' must 'local', 'google', or 'github'."
+        "Error (POST /api/users/): 'provider' must be 'local', 'google', or 'github'."
       );
     }
 
     let hashedPassword;
-    // if the provider is 'local', check for a password_hash
+    // if the provider is 'local', check for a password
     if (provider === "local") {
       if (typeof password !== "string" || password.trim().length === 0) {
         throw new Error(
           "Error (POST /api/users/): provider is 'local'; hashed password field must be a non-empty string."
         );
       }
-
-      //   hashedPassword = await bcrypt.hash(password, saltRounds);
     }
 
     // Assign validated and cleaned values to the DTO instance
@@ -87,7 +88,7 @@ export class CreateUserDTO {
     this.email = email.trim().toLowerCase();
     this.name = name.trim();
     this.password = password;
-    this.provider = provider;
+    this.provider = provider.trim().toLowerCase();
     this.provider_id = provider_id;
   }
 
@@ -105,3 +106,50 @@ export class CreateUserDTO {
 }
 
 // class for logging a user in will go here
+export class LoginUserDTO {
+  // declare class properties with their expected types
+  email: string;
+
+  password: string;
+
+  provider: string;
+
+  constructor({ email, password, provider }: LoginUserInterface) {
+    // check for empty strings
+    if (typeof email !== "string" || email.trim().length === 0) {
+      throw new Error(
+        "Error (POST /api/auth/register): 'email' field must be a non-empty string."
+      );
+    }
+
+    // check for empty strings
+    if (typeof provider !== "string" || provider.trim().length === 0) {
+      throw new Error(
+        "Error (POST /api/auth/register): 'provider' field must be a non-empty string of 'local', 'google', or 'github'."
+      );
+    }
+
+    if (
+      provider.trim().toLowerCase() !== "local" &&
+      provider.trim().toLowerCase() !== "google" &&
+      provider.trim().toLowerCase() !== "github"
+    ) {
+      throw new Error(
+        "Error (POST /api/auth/register): 'provider' field must be 'local', 'google', or 'github'."
+      );
+    }
+
+    // if the provider is 'local', check for a password
+    if (provider === "local") {
+      if (typeof password !== "string" || password.trim().length === 0) {
+        throw new Error(
+          "Error (POST /api/users/): provider is 'local'; hashed password field must be a non-empty string."
+        );
+      }
+    }
+
+    this.email = email.trim().toLowerCase();
+    this.password = password.trim();
+    this.provider = provider.trim().toLowerCase();
+  }
+}

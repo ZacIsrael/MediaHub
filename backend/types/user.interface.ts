@@ -51,3 +51,10 @@ export interface CreateUserInterface {
   // unique ID from OAuth provider (e.g., Google ID)
   provider_id?: string;
 }
+
+// used for loggin users in; body of the request will only contain email & password
+export interface LoginUserInterface {
+  email: string;
+  password: string;
+  provider: "local" | "google" | "github";
+}

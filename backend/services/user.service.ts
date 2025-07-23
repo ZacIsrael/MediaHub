@@ -1,8 +1,14 @@
 // This file handles the interaction between the API & the users table in the postgreSQL database
 
+import { emit } from "process";
 import { db } from "../database";
-import { CreateUserDTO } from "../dtos/user.dto";
+import { CreateUserDTO, LoginUserDTO } from "../dtos/user.dto";
 import { IUser } from "../types/user.interface";
+
+// Import bcrypt to hash passwords securely (automatically adds a salt and hashes it)
+import bcrypt from "bcrypt";
+// Define the number of salt rounds to be used with bcrypt for hashing passwords
+const saltRounds = 10;
 
 // constants for tables in the postgreSQL database
 const usersTable = "users";
@@ -21,5 +27,38 @@ export const usersService = {
   },
 
   // loginUser will go here
-  
+  async loginUser(dto: LoginUserDTO): Promise<IUser> {
+    let result = { rows: [] }; // Initialize result with a default value
+    try {
+      // see if the user with specified email exists
+      result = await db.query(`SELECT * FROM ${usersTable} WHERE email = $1`, [
+        dto.email,
+      ]);
+      // user was found
+      if (result.rows.length === 1) {
+        const user: IUser = result.rows[0];
+
+        // null check, password_hash is undefined for some reason
+        if (!user.password_hash) {
+          throw new Error("User does not have a password hash.");
+        }
+        let userHashedPW = user.password_hash;
+
+        // compare password entered to user's password in the database
+        const isMatch = await bcrypt.compare(dto.password, userHashedPW);
+        if (!isMatch) {
+          throw new Error("Invalid password.");
+        }
+
+        return user;
+      } else if (result.rows.length === 0) {
+        throw new Error(`User with email = ${dto.email} not found`);
+      } else {
+        throw new Error(`Error: More than 1 user has email = ${dto.email}`);
+      }
+    } catch (err: any) {
+      // error retrieving user with specified email
+      throw new Error(err.message);
+    }
+  },
 };
