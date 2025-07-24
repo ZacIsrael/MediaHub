@@ -27,7 +27,7 @@ export const usersService = {
   },
 
   // loginUser will go here
-  async loginUser(dto: LoginUserDTO): Promise<IUser> {
+  async loginUser(dto: LoginUserDTO): Promise<{ user: IUser; token: string }> {
     let result = { rows: [] }; // Initialize result with a default value
     try {
       // see if the user with specified email exists
@@ -36,13 +36,13 @@ export const usersService = {
       ]);
       // user was found
       if (result.rows.length === 1) {
-        const user: IUser = result.rows[0];
+        const loggedInUser: IUser = result.rows[0];
 
         // null check, password_hash is undefined for some reason
-        if (!user.password_hash) {
+        if (!loggedInUser.password_hash) {
           throw new Error("User does not have a password hash.");
         }
-        let userHashedPW = user.password_hash;
+        let userHashedPW = loggedInUser.password_hash;
 
         // compare password entered to user's password in the database
         const isMatch = await bcrypt.compare(dto.password, userHashedPW);
@@ -50,7 +50,11 @@ export const usersService = {
           throw new Error("Invalid password.");
         }
 
-        return user;
+        return {
+          user: loggedInUser,
+          // jwt token
+          token: "",
+        };
       } else if (result.rows.length === 0) {
         throw new Error(`User with email = ${dto.email} not found`);
       } else {
