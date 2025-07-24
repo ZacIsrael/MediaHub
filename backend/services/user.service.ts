@@ -7,6 +7,7 @@ import { IUser } from "../types/user.interface";
 
 // Import bcrypt to hash passwords securely (automatically adds a salt and hashes it)
 import bcrypt from "bcrypt";
+import { generateToken } from "../utils/jwt";
 // Define the number of salt rounds to be used with bcrypt for hashing passwords
 const saltRounds = 10;
 
@@ -50,10 +51,12 @@ export const usersService = {
           throw new Error("Invalid password.");
         }
 
+        // generate token using the user's email & id
+        const json_web_token = generateToken({email: loggedInUser.email, id: loggedInUser.id });
         return {
           user: loggedInUser,
           // jwt token
-          token: "",
+          token: json_web_token,
         };
       } else if (result.rows.length === 0) {
         throw new Error(`User with email = ${dto.email} not found`);
