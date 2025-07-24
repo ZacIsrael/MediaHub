@@ -17,14 +17,23 @@ const usersTable = "users";
 export const usersService = {
   // ts ensure that this dto parameter passed in is of type CreateUserDTO (see users.dto.ts)
   // returns a promise of row(s) of type IUser (see IUser interface user.interface.t)
-  async createUser(dto: CreateUserDTO): Promise<{ rows: IUser[] }> {
+  async createUser(dto: CreateUserDTO): Promise<{ user: IUser; token: string }> {
     // insert a user into the users table with cleaned up parameters passed in
     // from the data transfer object (dto) from user.dto.ts
     // RETURNING * includes the inserted user in the result
-    return await db.query(
+    const result = await db.query(
       `INSERT INTO ${usersTable} (email, name, password_hash, provider, provider_id) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
       [dto.email, dto.name, dto.password, dto.provider, dto.provider_id]
     );
+
+    const user = result.rows[0];
+    // generate token using the user's email & id
+    const json_web_token = generateToken({email: user.email, id: user.id });
+
+    return {
+      user: user,
+      token: json_web_token
+    }
   },
 
   // loginUser will go here

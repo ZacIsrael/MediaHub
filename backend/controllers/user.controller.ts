@@ -33,7 +33,8 @@ export const createUser = async (req: Request, res: Response) => {
     res.status(201).json({
       message: `Successfully registered user.`,
       // send the newUser back to the client side (just incase I need it for whatever reason)
-      newUser: result.rows[0],
+      newUser: result.user,
+      token: result.token
     });
   } catch (err: any) {
     res.status(500).json({
