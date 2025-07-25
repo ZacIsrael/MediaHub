@@ -13,6 +13,20 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // PostgreSQL client using the pg library
+// local testing
+/*
+const db = new pg.Client({
+  user: process.env.PG_USERNAME,
+  // Host where the PostgreSQL server is running
+  host: process.env.PG_HOST,
+  // access the Media Hub database in postgreSQL,
+  database: process.env.PG_DATABASE,
+  password: process.env.PG_PASSWORD,
+  port: Number(process.env.PG_PORT),
+});
+*/
+
+// Docker testing
 const db = new pg.Client({
   user: process.env.PG_USERNAME,
   // Host where the PostgreSQL server is running
@@ -39,7 +53,10 @@ async function connectToPostgres() {
 async function connectToMongoDB() {
   try {
     // "as string" ensures that the Mongo DB URI is a string
-    await mongoose.connect(process.env.MONGO_DB_URI as string);
+    // local host testing
+    // await mongoose.connect(process.env.MONGO_DB_URI as string);
+    // Docker 
+    await mongoose.connect(process.env.MONGO_URI as string);
   } catch (err) {
     console.error("Error connecting to MongoDB: ", err);
     process.exit(1);

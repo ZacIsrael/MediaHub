@@ -1,22 +1,21 @@
-# backend/Dockerfile
+# Use official Node image
+FROM node:20
 
-# Use official Node.js LTS image
-FROM node:18
-
-# Set the working directory inside the container
+# Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json first to install dependencies
+# Copy package files and install dependencies
 COPY package*.json ./
-
-# Install backend dependencies
 RUN npm install
 
-# Copy the rest of the backend code into the container
+# Copy the rest of the code
 COPY . .
 
-# Expose the port defined in your .env (e.g., 3000)
-EXPOSE 3000
+# Install TypeScript and ts-node globally (optional)
+RUN npm install -g ts-node typescript
 
-# Start the server
-CMD ["npm", "start"]
+# Expose port (adjust if needed)
+EXPOSE 4000
+
+# Start the app
+CMD ["npx", "nodemon"]
