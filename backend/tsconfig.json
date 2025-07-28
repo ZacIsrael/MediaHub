@@ -4,11 +4,13 @@
     "module": "commonjs", 
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "outDir": "dist",
     "rootDir": ".",
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["jest"]
   },
-  "include": ["**/*.ts"],
+  "include": ["tests", "utils", "**/*.ts"],
   "exclude": ["node_modules"]
 }
