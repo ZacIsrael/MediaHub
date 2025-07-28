@@ -1,10 +1,11 @@
-// Tell jest to mock the postgreSQL database so tests aren't
+
 
 import { db } from "../database";
 import { CreateClientDTO } from "../dtos/client.dto";
 import { clientService } from "../services/client.service";
 
-// actualy connecting to the real database
+// Tell jest to mock the postgreSQL database so tests aren't 
+// actually connecting to the real database
 jest.mock("../database", () => ({
   db: {
     // mock query function used to interact with the PostgreSQL database
@@ -25,14 +26,14 @@ describe("clientService", () => {
   // testing the createClient() function
   describe("createClient", () => {
     it("should create a new client and return the created client", async () => {
-      // Define input DTO that creates a client
+      // Define input for the DTO that creates a client
       const mockDTO: CreateClientDTO = {
         name: "Test Name",
         email: "test123@email.com",
         phone: "2708934412",
       };
 
-      // Define the mock result that PostgreSQL would return (the created user)
+      // Mock result that PostgreSQL returns (the created user)
       const mockResult = {
         // returns the result object that has an array with 1 row (see client.service.ts)
         // this row should have an id and whatever was pased in mockDTO
@@ -49,10 +50,10 @@ describe("clientService", () => {
       // mock db.query to resolve with mockResult when called
       (db.query as jest.Mock).mockResolvedValue(mockResult);
 
-      // call the createClient fucntion so that it can be tested
+      // call the createClient function so that it can be tested
       const result = await service.createClient(mockDTO);
 
-      // Ensure that db.query wascalled with the correct SQL query and parameters
+      // Ensure that db.query was called with the correct SQL query and parameters
       expect(db.query).toHaveBeenCalledWith(
         "INSERT INTO clients (name, email, phone) VALUES ($1, $2, $3) RETURNING *",
         [mockDTO.name, mockDTO.email, mockDTO.phone]
