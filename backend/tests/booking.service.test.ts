@@ -69,7 +69,7 @@ describe("bookingService", () => {
       );
 
       // Ensure that createBooking returned the result object
-      expect(result).toEqual(mockResult);
+      expect(result).toEqual(mockResult); 
     });
   });
 });
