@@ -65,11 +65,90 @@ describe("bookingService", () => {
       // Esnure that the db.query was called with the correct SQL query and parameters
       expect(db.query).toHaveBeenCalledWith(
         "INSERT INTO bookings (client_id, event_date, event_type, price, status) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-        [mockDTO.client_id, mockDTO.event_date, mockDTO.event_type, mockDTO.price, mockDTO.status]
+        [
+          mockDTO.client_id,
+          mockDTO.event_date,
+          mockDTO.event_type,
+          mockDTO.price,
+          mockDTO.status,
+        ]
       );
 
       // Ensure that createBooking returned the result object
-      expect(result).toEqual(mockResult); 
+      expect(result).toEqual(mockResult);
+    });
+  });
+
+  // testing getAllBookings() function
+  describe("getAllBookings", () => {
+    it("should return all bookings", async () => {
+      const mockBookings = {
+        rows: [
+          {
+            id: 1,
+            client_id: 3,
+            event_date: "2025-09-16T14:00:00.000Z",
+            event_type: "Drake Concert (4 Hours)",
+            price: "700.00",
+            status: "pending",
+            created_at: "2025-07-25T19:59:44.359Z",
+            updated_at: "2025-07-25T19:59:44.359Z",
+          },
+          {
+            id: 2,
+            client_id: 1,
+            event_date: "2026-03-19T14:00:00.000Z",
+            event_type: "1 year-old birthday party",
+            price: "250.00",
+            status: "pending",
+            created_at: "2025-07-25T19:59:48.602Z",
+            updated_at: "2025-07-25T19:59:48.602Z",
+          },
+          {
+            id: 3,
+            client_id: 2,
+            event_date: "2027-01-28T14:00:00.000Z",
+            event_type: "Networking Event",
+            price: "400.00",
+            status: "pending",
+            created_at: "2025-07-25T19:59:52.924Z",
+            updated_at: "2025-07-25T19:59:52.924Z",
+          },
+          {
+            id: 4,
+            client_id: 2,
+            event_date: "2025-11-02T14:00:00.000Z",
+            event_type: "Pictures for Instagram",
+            price: "180.00",
+            status: "pending",
+            created_at: "2025-07-25T20:00:34.596Z",
+            updated_at: "2025-07-25T20:00:34.596Z",
+          },
+          {
+            id: 5,
+            client_id: 1,
+            event_date: "2025-10-31T14:00:00.000Z",
+            event_type: "Halloween Photoshoot",
+            price: "150.00",
+            status: "pending",
+            created_at: "2025-07-28T15:52:24.006Z",
+            updated_at: "2025-07-28T15:52:24.006Z",
+          },
+        ],
+      };
+
+      // Mock db.query to resolve with the mock list of bookings
+      (db.query as jest.Mock).mockResolvedValue(mockBookings);
+
+      // call the method
+      const result = await service.getAllBookings();
+
+      // verify that the expected query was executed
+      expect(db.query).toHaveBeenCalledWith("SELECT * FROM bookings");
+
+      // verify that the query returned the mock bookings
+      expect(result).toEqual(mockBookings);
+
     });
   });
 });
