@@ -5,6 +5,10 @@ import { db } from "../database";
 import { CreateBookingDTO } from "../dtos/booking.dto";
 import { bookingService } from "../services/booking.service";
 import { mock } from "node:test";
+import * as helper from "../utils/helpers";
+
+import { itemExistsById } from "../utils/helpers";
+import { getBookingById } from "../controllers/booking.controller";
 
 // actually connecting to the real database
 jest.mock("../database", () => ({
@@ -12,6 +16,12 @@ jest.mock("../database", () => ({
     // mock query function used to interact with the PostgreSQL database
     query: jest.fn(),
   },
+}));
+
+// needed for retreiving a booking by its id (see booking.service.ts)
+jest.mock("../utils/helpers", () => ({
+  ...jest.requireActual("../utils/helpers"),
+  itemExistsById: jest.fn(),
 }));
 
 describe("bookingService", () => {
@@ -148,7 +158,53 @@ describe("bookingService", () => {
 
       // verify that the query returned the mock bookings
       expect(result).toEqual(mockBookings);
+    });
+  });
 
+  // test getByBookingId() function
+
+  describe("getBookingById", () => {
+    it("should return the booking with the specified id", async () => {
+      const bookingId = 1;
+      const expectedBooking = {
+        id: bookingId,
+        client_id: 2,
+        event_date: "2025-11-02T14:00:00.000Z",
+        event_type: "Pictures for Instagram",
+        price: "180.00",
+        status: "pending",
+        created_at: "2025-07-25T20:00:34.596Z",
+        updated_at: "2025-07-25T20:00:34.596Z",
+      };
+
+      // Set up mock return value for itemExistsById
+      (helper.itemExistsById as jest.Mock).mockResolvedValue({
+        // expected return value for when a booking with a given id exists
+        booleanVal: true,
+        item: expectedBooking,
+      });
+
+      // call the function
+      const result = await service.getBookingById(bookingId);
+      // verify that result returned from getBookingId matches up with the expected result
+      expect(result).toEqual({ booleanVal: true, item: expectedBooking });
+    });
+
+    it("should return false and null when the booking is not found", async () => {
+      // fake id (no booking in the PostgreSQL database will have an id of -1)
+      const fakeId = -1;
+
+      // Set up mock return value for itemExistsById
+      (helper.itemExistsById as jest.Mock).mockResolvedValue({
+        // expected returned value when a booking with a given id does not exist
+        booleanVal: false,
+        item: null,
+      });
+
+      // call the function
+      const result = await service.getBookingById(fakeId);
+      // verify that result returned from getBookingId matches up with the expected result
+      expect(result).toEqual({ booleanVal: false, item: null });
     });
   });
 });
