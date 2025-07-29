@@ -14,7 +14,7 @@ const saltRounds = 10;
 // constants for tables in the postgreSQL database
 const usersTable = "users";
 
-export const usersService = {
+export const userService = {
   // ts ensure that this dto parameter passed in is of type CreateUserDTO (see users.dto.ts)
   // returns a promise of row(s) of type IUser (see IUser interface user.interface.t)
   async createUser(dto: CreateUserDTO): Promise<{ user: IUser; token: string }> {

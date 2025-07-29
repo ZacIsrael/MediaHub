@@ -2,7 +2,7 @@
 
 import { Request, Response } from "express";
 import { CreateUserDTO, LoginUserDTO } from "../dtos/user.dto";
-import { usersService } from "../services/user.service";
+import { userService } from "../services/user.service";
 // constant(s) for the necessary table(s) in the postgreSQL database
 const usersTable = "users";
 
@@ -28,7 +28,7 @@ export const createUser = async (req: Request, res: Response) => {
 
   // register/store the user in the users table in postgreSQL
   try {
-    const result = await usersService.createUser(dto);
+    const result = await userService.createUser(dto);
 
     res.status(201).json({
       message: `Successfully registered user.`,
@@ -63,7 +63,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
   // log user in
   try {
-    const result = await usersService.loginUser(dto);
+    const result = await userService.loginUser(dto);
 
     if(result instanceof Error){
       // if result is an error, then that means that the login credentials were invalid (see user.service.ts)
