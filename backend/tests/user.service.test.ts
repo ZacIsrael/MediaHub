@@ -1,7 +1,8 @@
 import { mock } from "node:test";
 import { db } from "../database";
-import { CreateUserDTO } from "../dtos/user.dto";
+import { CreateUserDTO, LoginUserDTO } from "../dtos/user.dto";
 import { userService } from "../services/user.service";
+import { compare } from "bcrypt";
 
 // Tell jest to mock the postgreSQL database so tests aren't actually connecting to the real database
 jest.mock("../database", () => ({
@@ -9,6 +10,12 @@ jest.mock("../database", () => ({
     // mock query function used to interact with the PostgreSQL database
     query: jest.fn(),
   },
+}));
+
+// needing for logInUser test
+jest.mock("bcrypt", () => ({
+  // Always return true during tests (comparing passwords)
+  compare: jest.fn(() => true),
 }));
 
 describe("userService", () => {
@@ -36,7 +43,7 @@ describe("userService", () => {
         hashPassword: jest.fn(),
       };
 
-      // Structure of what is returned from usersService.createUser() (see users.service.ts)
+      // Structure of what is returned from userService.createUser() (see users.service.ts)
       const mockResult = {
         // the created user from PostgreSQL
         user: {
@@ -55,8 +62,8 @@ describe("userService", () => {
         token: expect.any(String),
       };
 
-      // The actual query in createUser returns an array (rows) of obejects
-      // The first and inly object in the array is the created user
+      // The actual query in createUser returns an array (rows) of objects
+      // The first and only object in the array is the created user
       (db.query as jest.Mock).mockResolvedValue({ rows: [mockResult.user] });
       // call the createClient function so that it can be tested
       const result = await service.createUser(mockDTO);
@@ -74,6 +81,53 @@ describe("userService", () => {
       );
 
       // Ensure that createUser returned an object that contains the
+      // user returned from PostgreSQL AND a jwtoken
+      expect(result).toEqual(mockResult);
+    });
+  });
+
+  // testing loginUser() function
+  describe("loginUser", () => {
+    it("should log a user in ", async () => {
+      // Define input for the DTO that creates a user
+      const mockDTO: LoginUserDTO = {
+        email: "test123@email.com",
+        password: "Password123!",
+        provider: "local",
+      };
+
+      // Structure of what is returned from userService.loginUser() (see users.service.ts)
+      const mockResult = {
+        // the created user from PostgreSQL
+        user: {
+          id: 5,
+          name: expect.any(String),
+          email: mockDTO.email,
+          password_hash:
+            "$6b$34$xnPoYvylaCdHmL8YDDBwdOzJYk7EOh0yC6bPHMAZGFPmYTlQCzEzM",
+          provider: mockDTO.provider,
+          provider_id: expect.any(String),
+          created_at: "2025-07-29T13:03:40.176Z",
+          updated_at: "2025-07-29T13:03:40.176Z",
+        },
+        // jwtoken
+        // expect any string for the token; this is just the structure of the result
+        token: expect.any(String),
+      };
+
+      // The actual query in loginUser returns an array (rows) of objects
+      // The first and only object in the array is the created user
+      (db.query as jest.Mock).mockResolvedValue({ rows: [mockResult.user] });
+      // call the loginUser function so that it can be tested
+      const result = await service.loginUser(mockDTO);
+
+      // Ensure that db.query was called with the correct SQL query and parameters
+      expect(db.query).toHaveBeenCalledWith(
+        "SELECT * FROM users WHERE email = $1",
+        [mockDTO.email]
+      );
+
+      // Ensure that loginUser returned an object that contains the
       // user returned from PostgreSQL AND a jwtoken
       expect(result).toEqual(mockResult);
     });
