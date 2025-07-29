@@ -1,4 +1,4 @@
-// Tell jest to mock the postgreSQL database so tests aren't
+
 
 import { now } from "mongoose";
 import { db } from "../database";
@@ -10,7 +10,7 @@ import * as helper from "../utils/helpers";
 import { itemExistsById } from "../utils/helpers";
 import { getBookingById } from "../controllers/booking.controller";
 
-// actually connecting to the real database
+// Tell jest to mock the postgreSQL database so tests aren't actually connecting to the real database
 jest.mock("../database", () => ({
   db: {
     // mock query function used to interact with the PostgreSQL database
@@ -20,7 +20,7 @@ jest.mock("../database", () => ({
 
 // needed for retreiving a booking by its id (see booking.service.ts)
 jest.mock("../utils/helpers", () => ({
-  ...jest.requireActual("../utils/helpers"),
+  ...jest.requireActual("../utils/helpers"), 
   itemExistsById: jest.fn(),
 }));
 
