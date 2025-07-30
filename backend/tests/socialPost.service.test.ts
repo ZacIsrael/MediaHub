@@ -81,4 +81,45 @@ describe("socialPostService", () => {
       });
     });
   });
+
+  // testing getAllSocialPosts() function
+  describe("getAllSocialPosts", () => {
+    it("should return all social posts", async () => {
+      const mockSocialPosts = [
+        {
+          _id: "6883e3f2837c683090b9c86a",
+          platform: "Instagram",
+          url: "https://www.instagram.com/dc.artists2/p/DMQcHEIMLhw/?img_index=1",
+          caption: "Caption 1",
+          hashtags: ["#Rap", "#Money"],
+          __v: 0,
+        },
+        {
+          _id: "688a3d63d8efa565b0eaab99",
+          platform: "Instagram",
+          url: "https://www.instagram.com/dc.artists2/p/DMQcHEIMLhw/?img_index=1",
+          caption: "Caption 2",
+          hashtags: ["#promo", "#DC"],
+          __v: 0,
+        },
+        {
+          _id: "688a3f47c3d3a69557cdbcd8",
+          platform: "Instagram",
+          url: "https://www.instagram.com/dc.artists2/p/DMquRyqMxDJ/?img_index=1",
+          caption: "Caption 3",
+          hashtags: ["#Hip", "#Hop"],
+          __v: 0,
+        },
+      ];
+
+      // Ensure that the mocked find() returns all of the mockSocialPosts
+      (SocialPosts.find as jest.Mock).mockResolvedValue(mockSocialPosts);
+
+      // call the getAllSocialPosts() function so that it can be tested
+      const result = await service.getAllSocialPosts();
+
+      // result from getAllSocialPosts() should have the same structure as the mockSocialPosts array
+      expect(result).toEqual(mockSocialPosts);
+    });
+  });
 });
