@@ -23,7 +23,11 @@ jest.mock("../models/video.model", () => {
 });
 
 describe("videoService", () => {
+  let service: typeof videoService;
+  // Before each test, create a new instance of
+  // videoService and reset any previous mocks
   beforeEach(() => {
+    service = videoService;
     // ensures that each test starts with a clean slate
     jest.clearAllMocks();
   });
@@ -46,7 +50,7 @@ describe("videoService", () => {
       };
 
       // call the createVideo function so that it can be tested
-      const result = await videoService.createVideo(mockDTO);
+      const result = await service.createVideo(mockDTO);
 
       expect(result).toMatchObject({
         // Structure of what is returned from videoService.createVideo
@@ -62,90 +66,3 @@ describe("videoService", () => {
     });
   });
 });
-
-/*
-// import mongoose from "mongoose";
-import { videoService } from "../services/video.service";
-import { CreateVideoDTO } from "../dtos/video.dto";
-
-import { mongoose } from "../database";
-
-import { ObjectId } from "mongodb";
-
-// Tell jest to mock the mongoDB database so tests aren't actually connecting to the real database
-jest.mock("../database", () => ({
-  mongoose: {
-    model: jest.fn(() => {
-      return function (doc: any) {
-        return {
-          ...doc,
-          save: jest.fn().mockResolvedValue(doc),
-        };
-      };
-    }),
-
-    collection: {
-      collection: jest.fn(() => ({
-        findOne: jest.fn(),
-        insertOne: jest.fn(),
-        updateOne: jest.fn(),
-        deleteOne: jest.fn(),
-        find: jest.fn(() => ({
-          toArray: jest.fn(),
-        })),
-      })),
-    },
-  },
-}));
-
-describe("videoService", () => {
-  let service: typeof videoService;
-  // Before each test, create a new instance of
-  // videoService and reset any previous mocks
-  beforeEach(() => {
-    service = videoService;
-    // ensures that each test starts with a clean slate
-    jest.clearAllMocks();
-  });
-
-  // testing the createVideo() function
-  describe("createVideo", () => {
-    it("should create a new video and return it", async () => {
-      // Define input for the DTO that creates a video
-      const mockDTO: CreateVideoDTO = {
-        title: "A Rapper Interview!",
-        url: "https://www.youtube.com/watch?",
-        tags: ["DMV", "Rap", "Hip-Hop"],
-        viewCount: 25000,
-        publishedAt: expect.any(Date),
-      };
-
-      // Structure of what is returned from videoService.createVideo() (see video.service.ts)
-      const mockResult = {
-        // the created video document from MongoDB
-        title: mockDTO.title,
-        url: mockDTO.url,
-        tags: mockDTO.tags,
-        viewCount: mockDTO.viewCount,
-        publishedAt: new Date(),
-        _id: expect.any(ObjectId),
-        __v: expect.any(Number),
-      };
-
-      // mongoose.model.save is the function that needs to be mocked (see video.service.ts)
-      (mongoose.model as jest.Mock).mockImplementation(() => {
-        return jest.fn().mockImplementation(() => ({
-          ...mockResult,
-          save: jest.fn().mockResolvedValue(mockResult),
-        }));
-      });
-
-      // call the createVideo function so that it can be tested
-      const result = await service.createVideo(mockDTO);
-
-      // Ensure that createVideo returned an object of the new video document (mockResult)
-      expect(result).toEqual(mockResult);
-    });
-  });
-});
-*/
