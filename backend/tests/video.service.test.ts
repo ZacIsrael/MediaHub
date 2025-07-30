@@ -5,25 +5,6 @@ import { Videos } from "../models/video.model";
 
 // Tell jest to mock the Videos model itself so these tests aren't actually
 // connecting to the real MongoDB database
-/*
-jest.mock("../models/video.model", () => {
-  return {
-    Videos: jest.fn().mockImplementation((doc: any) => ({
-      ...doc,
-      // mock the save function (save() adds a document to a MongoDB collection)
-      save: jest.fn().mockResolvedValue({
-        _id: new ObjectId().toString(),
-        title: doc.title,
-        url: doc.url,
-        tags: doc.tags,
-        viewCount: doc.viewCount,
-        publishedAt: doc.publishedAt,
-        __v: 0,
-      }),
-    })),
-  };
-});
-*/
 
 jest.mock("../models/video.model", () => {
   return {
