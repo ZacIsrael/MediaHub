@@ -21,7 +21,7 @@ jest.mock("bcrypt", () => ({
 describe("userService", () => {
   let service: typeof userService;
   // Before each test, create a new instance of
-  // clientService and reset any previous mocks
+  // userService and reset any previous mocks
   beforeEach(() => {
     service = userService;
     // ensures that each test starts with a clean slate
