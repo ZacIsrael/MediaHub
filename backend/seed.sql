@@ -1,7 +1,7 @@
 -- Insert sample clients
 INSERT INTO clients (name, email, phone) VALUES
-('John Doe', 'john@example.com', '555-1234'),
-('Jane Smith', 'jane@example.com', '555-5678');
+('John Doe', 'john@example.com', '2515551234'),
+('Jane Smith', 'jane@example.com', '8505555678');
 
 -- Insert sample bookings
 INSERT INTO bookings (client_id, event_date, event_type, price, status) VALUES
