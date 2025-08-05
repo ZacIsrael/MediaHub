@@ -34,7 +34,7 @@ export const createUser = async (req: Request, res: Response) => {
       message: `Successfully registered user.`,
       // send the newUser back to the client side (just incase I need it for whatever reason)
       newUser: result.user,
-      token: result.token
+      token: result.token,
     });
   } catch (err: any) {
     res.status(500).json({
@@ -65,25 +65,27 @@ export const loginUser = async (req: Request, res: Response) => {
   try {
     const result = await userService.loginUser(dto);
 
-    if(result instanceof Error){
+    if (result instanceof Error) {
       // if result is an error, then that means that the login credentials were invalid (see user.service.ts)
       res.status(401).json({
-        error: result
-      })
+        error: result,
+      });
     } else {
       res.status(200).json({
         message: `User has been logged in.`,
         // result is a Promise<IUser, string (jwt token)> (see user.service.ts)
         user: result.user,
-        token: result.token
+        token: result.token,
       });
     }
-
   } catch (err: any) {
-    // error occured executing the query 
+    // error occured executing the query
     res.status(500).json({
       error: `Server Error (POST /api/auth/register): ${err.message}`,
       stack: err.stack,
     });
   }
 };
+
+// POST /api/auth/oauth-login
+// export const oauthLoginController = async (req: Request, res: Response) => {};

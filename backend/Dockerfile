@@ -1,23 +1,22 @@
-# Use official Node image
-FROM node:20
+# Use a lightweight Node.js base image
+FROM node:18
 
 # Set working directory
 WORKDIR /app
 
-# Copy package files and install dependencies
+# Install app dependencies
 COPY package*.json ./
 RUN npm install
 
-# Copy the rest of the code
+# Copy source code
 COPY . .
 
-# Install TypeScript and ts-node globally (optional)
-RUN npm install -g ts-node typescript
+# Build TypeScript to JavaScript
+RUN npm install -g typescript
+RUN tsc
 
-# Expose port (adjust if needed)
+# Expose port
 EXPOSE 4000
 
-# Start the app
-# CMD ["npx", "nodemon"]
-CMD ["npx", "ts-node", "index.ts"]
-
+# Run the compiled JavaScript
+CMD ["node", "dist/index.js"]

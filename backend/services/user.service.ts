@@ -4,6 +4,7 @@ import { emit } from "process";
 import { db } from "../database";
 import { CreateUserDTO, LoginUserDTO } from "../dtos/user.dto";
 import { IUser } from "../types/user.interface";
+import axios from "axios";
 
 // Import bcrypt to hash passwords securely (automatically adds a salt and hashes it)
 import bcrypt from "bcrypt";
@@ -17,7 +18,9 @@ const usersTable = "users";
 export const userService = {
   // ts ensure that this dto parameter passed in is of type CreateUserDTO (see users.dto.ts)
   // returns a promise of row(s) of type IUser (see IUser interface user.interface.t)
-  async createUser(dto: CreateUserDTO): Promise<{ user: IUser; token: string }> {
+  async createUser(
+    dto: CreateUserDTO
+  ): Promise<{ user: IUser; token: string }> {
     // insert a user into the users table with cleaned up parameters passed in
     // from the data transfer object (dto) from user.dto.ts
     // RETURNING * includes the inserted user in the result
@@ -28,12 +31,12 @@ export const userService = {
 
     const user = result.rows[0];
     // generate token using the user's email & id
-    const json_web_token = generateToken({email: user.email, id: user.id });
+    const json_web_token = generateToken({ email: user.email, id: user.id });
 
     return {
       user: user,
-      token: json_web_token
-    }
+      token: json_web_token,
+    };
   },
 
   // loginUser will go here
@@ -61,7 +64,10 @@ export const userService = {
         }
 
         // generate token using the user's email & id
-        const json_web_token = generateToken({email: loggedInUser.email, id: loggedInUser.id });
+        const json_web_token = generateToken({
+          email: loggedInUser.email,
+          id: loggedInUser.id,
+        });
         return {
           user: loggedInUser,
           // jwt token
@@ -77,4 +83,7 @@ export const userService = {
       throw new Error(err.message);
     }
   },
+
+  // Log in or register a user using a Google access token
+  // async oauthLogin(provider: string, access_token: string) {},
 };

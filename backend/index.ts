@@ -66,6 +66,9 @@ app.use(bodyParser.json());
 // This is necessary if the frontend is running on a different port (e.g., React on localhost:5173)
 app.use(cors());
 
+// debug
+console.log("INDEX FILE RAN");
+
 // mount the routes
 app.use("/api/clients", clientsRouter);
 app.use("/api/bookings", bookingsRouter);
