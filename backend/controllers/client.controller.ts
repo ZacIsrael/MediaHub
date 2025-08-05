@@ -11,6 +11,9 @@ const bookingsTable = "bookings";
 
 // called for (POST /api/clients/) route
 export const createClient = async (req: Request, res: Response) => {
+  // debugging
+  console.log("🚨 POST /api/clients hit");
+  
   // data transfer object (object that will contained the processed request)
   let dto: CreateClientDTO;
 
