@@ -1,26 +1,39 @@
-# Step 1: Use a lightweight Node base image
-FROM node:20-alpine
+# ----------- Stage 1: Build -----------
+FROM node:18 AS build
 
-# Step 2: Set the working directory
+# Set working directory
 WORKDIR /app
 
-# Step 3: Copy only the package files first (leverage Docker layer caching)
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Step 4: Install dependencies
+# Install dependencies
 RUN npm install
 
-# Step 5: Copy the rest of your app
+# Copy the rest of the app (including tsconfig and src)
 COPY . .
 
-# Step 6: Build the TypeScript project
+# Compile TypeScript to JavaScript
 RUN npm run build
 
-# Step 7: DEBUG - Check if dist/index.js was created
-RUN echo "Contents of dist directory:" && ls -al dist
+# ----------- Stage 2: Runtime -----------
+FROM node:18 AS production
 
-# Step 8: Expose the app port (Railway will use PORT env variable)
+# Set working directory
+WORKDIR /app
+
+# Copy only production dependencies
+COPY --from=build /app/package*.json ./
+RUN npm install --omit=dev
+
+# Copy compiled output from build stage
+COPY --from=build /app/dist ./dist
+
+# Set environment variable
+ENV NODE_ENV=production
+
+# Expose your port if needed (optional for Railway)
 EXPOSE 4000
 
-# Step 9: Start the app using the built JavaScript file
-CMD ["node", "dist/index.js"] 
+# Run the compiled app
+CMD ["node", "dist/index.js"]
