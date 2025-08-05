@@ -34,7 +34,7 @@ dotenv.config();
 // Create an Express application instance
 const app: Application = express();
 // Define the port your Express server will listen on
-const port: number = parseInt( process.env.PORT || "3000", 10);
+const port: number = parseInt(process.env.PORT || "3000", 10);
 
 // constants for tables in the postgreSQL database
 const clientsTable = "clients";
@@ -69,8 +69,9 @@ app.use(cors());
 // debug
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
-  console.log('Headers:', req.headers);
-  console.log('Body:', req.body);
+  console.log("req.url = ", req.url);
+  console.log("Headers:", req.headers);
+  console.log("Body:", req.body);
   next();
 });
 
