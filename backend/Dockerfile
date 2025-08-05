@@ -1,23 +1,23 @@
-# Step 1: Build the TypeScript code
-FROM node:18-alpine AS builder
+# Use official Node.js image
+FROM node:20
 
+# Set working directory
 WORKDIR /app
 
+# Copy package.json and package-lock.json if available
 COPY package*.json ./
+
+# Install all dependencies including devDependencies (like typescript)
 RUN npm install
 
+# Copy the rest of your application code
 COPY . .
-RUN npm run build
 
-# Step 2: Run the compiled JavaScript in a lightweight image
-FROM node:18-alpine
+# Build the TypeScript project
+RUN npx tsc
 
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm install --omit=dev
-
-COPY --from=builder /app/dist ./dist
-
+# Expose the port your app runs on
 EXPOSE 4000
+
+# Start the application
 CMD ["node", "dist/index.js"]
