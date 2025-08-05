@@ -23,4 +23,4 @@ RUN echo "Contents of dist directory:" && ls -al dist
 EXPOSE 4000
 
 # Step 9: Start the app using the built JavaScript file
-CMD ["node", "dist/index.js"]
+CMD ["node", "dist/index.js"] 
