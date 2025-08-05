@@ -39,14 +39,14 @@ const db = new pg.Client({
 }); 
 */
 
-// railway
 
+// railway
 const db = new pg.Client({
   connectionString: process.env.DATABASE_URL,
   ssl:{
     rejectUnauthorized: false
   }
-}); 
+});  
 
 
 // connect to postgreSQL database
