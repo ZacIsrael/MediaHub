@@ -67,6 +67,13 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // debug
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+  console.log('Headers:', req.headers);
+  console.log('Body:', req.body);
+  next();
+});
+
 console.log("INDEX FILE RAN");
 
 // mount the routes
