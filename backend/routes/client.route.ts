@@ -10,6 +10,7 @@ const router: Router = Router();
 const clientsTable = "clients";
 const bookingsTable = "bookings";
 
+console.log("🚨 POST /api/clients. Reached client.route.ts.\n");
 // creates a new client and stores them in the "clients" table
 // in MediaHub PostgreSQL database
 router.post("/", createClient);

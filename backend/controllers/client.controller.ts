@@ -55,6 +55,8 @@ export const createClient = async (req: Request, res: Response) => {
 // called for (GET /api/clients/) route
 export const getAllClients = async (req: Request, res: Response): Promise<void> => {
   try {
+    // debug
+    console.log("🚨 GET /api/clients hit");
     // retreive all of the clients
     const clientResults = await clientService.getAllClients();
 
