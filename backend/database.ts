@@ -27,6 +27,7 @@ const db = new pg.Client({
 */
 
 // Docker testing
+/*
 const db = new pg.Client({
   user: process.env.PG_USERNAME,
   // Host where the PostgreSQL server is running
@@ -35,7 +36,18 @@ const db = new pg.Client({
   database: process.env.PG_DATABASE,
   password: process.env.PG_PASSWORD,
   port: Number(process.env.PG_PORT),
-});
+}); 
+*/
+
+// railway
+
+const db = new pg.Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl:{
+    rejectUnauthorized: false
+  }
+}); 
+
 
 // connect to postgreSQL database
 async function connectToPostgres() {
