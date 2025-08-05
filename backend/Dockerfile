@@ -18,4 +18,6 @@ RUN npm install -g ts-node typescript
 EXPOSE 4000
 
 # Start the app
-CMD ["npx", "nodemon"]
+# CMD ["npx", "nodemon"]
+CMD ["npx", "ts-node", "index.ts"]
+
