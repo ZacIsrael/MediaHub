@@ -123,4 +123,32 @@ curl -X POST https://mediahub-production-0e7b.up.railway.app/api/auth/login
    "provider": "local"
 }'
 
+
+📹 Videos
+
+• Add Video — Situation Slim Interview
+curl -X POST https://mediahub-production-0e7b.up.railway.app/api/videos/
+ -H "Content-Type: application/json"
+ -d '{
+   "title": "Situation Slim on His 8 Years in Prison, DMV Rap Fame, & Road to Redemption (Full Interview)",
+   "url": "https://www.youtube.com/watch?v=yPtTZiW_3xw&t=12s",
+   "tags": ["DMV", "Rap", "Hip-Hop", "Producer"],
+   "viewCount": 20255,
+   "publishedAt": "2024-03-19T14:00:00Z"
+}'
+
+• Add Video — Nino Paid Interview
+curl -X POST https://mediahub-production-0e7b.up.railway.app/api/videos/
+ -H "Content-Type: application/json"
+ -d '{
+   "title": "Nino Paid: From Physical Abuse in Childhood, & Multiple Incarcerations to Big Moves in Music Scene",
+   "url": "https://www.youtube.com/watch?v=xjzYY4UozmY&t=9s",
+   "tags": ["DMV", "Rap", "Hip-Hop"],
+   "viewCount": 77272,
+   "publishedAt": "2024-02-06T14:00:00Z"
+}'
+
+• Retrieve All Videos
+curl -X GET https://mediahub-production-0e7b.up.railway.app/api/videos/
+
 ───────────────────────────────────────────────
