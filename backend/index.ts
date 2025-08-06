@@ -85,7 +85,7 @@ app.use("/api/videos", videosRouter);
 app.use("/api/auth", usersRouter);
 
 // test route
-app.post("/api/post-test", (req, res): void => {
+app.post("/api/post-test", (req: Request, res: Response): void => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
   console.log("req.url = ", req.url);
   console.log("Headers:", req.headers);
@@ -94,6 +94,7 @@ app.post("/api/post-test", (req, res): void => {
     message: 'POST works'
   });
 });
+
 
 // Healthcheck route to verify backend is running
 app.get("/api/healthcheck", (_, res) => {
