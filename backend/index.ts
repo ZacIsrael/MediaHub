@@ -67,16 +67,23 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // debug
-app.use((req, res, next) => {
+// app.use((req, res, next) => {
+//   console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+//   console.log("req.url = ", req.url);
+//   console.log("Headers:", req.headers);
+//   console.log("Body:", req.body);
+//   next();
+// });
+
+console.log("INDEX FILE RAN");
+
+// test route
+app.post("/api/post-test", (req: Request, res: Response): void => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
   console.log("req.url = ", req.url);
   console.log("Headers:", req.headers);
   console.log("Body:", req.body);
-  next();
-});
-
-console.log("INDEX FILE RAN");
-
+})
 // mount the routes
 app.use("/api/clients", clientsRouter);
 app.use("/api/bookings", bookingsRouter);
