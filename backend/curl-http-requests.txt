@@ -1,0 +1,126 @@
+───────────────────────────────────────────────
+
+curl-http-requests.txt
+This file contains HTTP requests that you can execute via the command line using curl.
+
+───────────────────────────────────────────────
+
+📂 Clients
+
+• Create Client — Jody Johnson
+curl -X POST https://mediahub-production-0e7b.up.railway.app/api/clients
+ -H "Content-Type: application/json"
+ -d '{
+   "name": "Jody Johnson",
+   "email": "jj3900@gmail.com",
+   "phone": "8907624431"
+}'
+
+• Create Client — Thomas Allen
+curl -X POST https://mediahub-production-0e7b.up.railway.app/api/clients
+ -H "Content-Type: application/json"
+ -d '{
+   "name": "Thomas Allen",
+   "email": "tallen4600@gmail.com"
+}'
+
+• Retrieve All Clients
+curl -X GET https://mediahub-production-0e7b.up.railway.app/api/clients/
+
+• Invalid Request — Missing Email
+curl -X POST https://mediahub-production-0e7b.up.railway.app/api/clients
+ -H "Content-Type: application/json"
+ -d '{
+   "name": "Thomas Allen",
+   "email": ""
+}'
+
+• Invalid Request — Missing Name
+curl -X POST https://mediahub-production-0e7b.up.railway.app/api/clients
+ -H "Content-Type: application/json"
+ -d '{
+   "name": "",
+   "email": "tallen4600@gmail.com"
+}'
+
+───────────────────────────────────────────────
+
+📅 Bookings
+
+• Booking — Drake Concert (Client ID 3)
+curl -X POST https://mediahub-production-0e7b.up.railway.app/api/bookings
+ -H "Content-Type: application/json"
+ -d '{
+   "client_id": 3,
+   "event_date": "2025-09-16T14:00:00Z",
+   "event_type": "Drake Concert (4 Hours)",
+   "price": 700
+}'
+
+• Booking — 1st Birthday Party (Client ID 1)
+curl -X POST https://mediahub-production-0e7b.up.railway.app/api/bookings
+ -H "Content-Type: application/json"
+ -d '{
+   "client_id": 1,
+   "event_date": "2026-03-19T14:00:00Z",
+   "event_type": "1 year-old birthday party",
+   "price": 250.00
+}'
+
+• Booking — Halloween Photoshoot (Client ID 1)
+curl -X POST https://mediahub-production-0e7b.up.railway.app/api/bookings
+ -H "Content-Type: application/json"
+ -d '{
+   "client_id": 1,
+   "event_date": "2025-10-31T14:00:00Z",
+   "event_type": "Halloween Photoshoot",
+   "price": 150.00
+}'
+
+───────────────────────────────────────────────
+
+👤 User Authentication
+
+• Register — Test User
+curl -X POST https://mediahub-production-0e7b.up.railway.app/api/auth/register
+ -H "Content-Type: application/json"
+ -d '{
+   "email": "testuser@gmail.com",
+   "name": "Test User",
+   "password": "Password123!",
+   "provider": "local",
+   "provider_id": ""
+}'
+
+• Register — Hugo Johnson
+curl -X POST https://mediahub-production-0e7b.up.railway.app/api/auth/register
+ -H "Content-Type: application/json"
+ -d '{
+   "email": "hjohnson46@gmail.com",
+   "name": "Hugo Johnson",
+   "password": "Password123!",
+   "provider": "local",
+   "provider_id": ""
+}'
+
+• Register — Jordan Phillips
+curl -X POST https://mediahub-production-0e7b.up.railway.app/api/auth/register
+ -H "Content-Type: application/json"
+ -d '{
+   "email": "jphil08@gmail.com",
+   "name": "Jordan Phillips",
+   "password": "Password123!",
+   "provider": "local",
+   "provider_id": ""
+}'
+
+• Login — Hugo Johnson
+curl -X POST https://mediahub-production-0e7b.up.railway.app/api/auth/login
+ -H "Content-Type: application/json"
+ -d '{
+   "email": "hjohnson46@gmail.com",
+   "password": "Password123!",
+   "provider": "local"
+}'
+
+───────────────────────────────────────────────
