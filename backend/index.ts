@@ -77,19 +77,20 @@ app.use(cors());
 
 console.log("INDEX FILE RAN");
 
-// test route
-app.post("/api/post-test", (req: Request, res: Response): void => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
-  console.log("req.url = ", req.url);
-  console.log("Headers:", req.headers);
-  console.log("Body:", req.body);
-})
 // mount the routes
 app.use("/api/clients", clientsRouter);
 app.use("/api/bookings", bookingsRouter);
 app.use("/api/social-posts", socialPostsRouter);
 app.use("/api/videos", videosRouter);
 app.use("/api/auth", usersRouter);
+
+// test route
+app.post("/api/post-test", (req: Request, res: Response): void => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+  console.log("req.url = ", req.url);
+  console.log("Headers:", req.headers);
+  console.log("Body:", req.body);
+});
 
 // dfeault GET route
 app.get("/", (req: Request, res: Response): void => {
