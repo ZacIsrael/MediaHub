@@ -151,4 +151,21 @@ curl -X POST https://mediahub-production-0e7b.up.railway.app/api/videos/
 • Retrieve All Videos
 curl -X GET https://mediahub-production-0e7b.up.railway.app/api/videos/
 
+📲 Social Posts (GET & POST)
+
+• Retreive All Social Posts
+curl -X GET https://mediahub-production-0e7b.up.railway.app/api/social-posts/
+
+• POST Create a New Social Post
+curl -X POST https://mediahub-production-0e7b.up.railway.app/api/social-posts/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "platform": "Instagram",
+    "url": "https://www.instagram.com/dc.artists2/p/DMquRyqMxDJ/?img_index=1",
+    "caption": "#Gizwop & #NoSavage’s “Spin Ina Coupe” music video just hit 100K views on YouTube! 👏🏾📈 Are they the best rap duo in the city right now?",
+    "hashtags": ["#Gizwop", "#NoSavage"],
+    "engagement": ""
+  }'
+
+
 ───────────────────────────────────────────────
