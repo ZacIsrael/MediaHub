@@ -67,13 +67,13 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // debug
-// app.use((req, res, next) => {
-//   console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
-//   console.log("req.url = ", req.url);
-//   console.log("Headers:", req.headers);
-//   console.log("Body:", req.body);
-//   next();
-// });
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+  console.log("req.url = ", req.url);
+  console.log("Headers:", req.headers);
+  console.log("Body:", req.body);
+  next();
+});
 
 console.log("INDEX FILE RAN");
 
@@ -90,6 +90,9 @@ app.post("/api/post-test", (req: Request, res: Response): void => {
   console.log("req.url = ", req.url);
   console.log("Headers:", req.headers);
   console.log("Body:", req.body);
+  res.status(200).json({
+    message: 'POST works'
+  });
 });
 
 // dfeault GET route
