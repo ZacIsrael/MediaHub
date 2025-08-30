@@ -40,7 +40,7 @@ export type Paginated<T> = {
 
   export type ListBookingsQuery = { page?: number; limit?: number; q?: string };
 
-  export async function listBookings(params: ListBookingsQuery = {}): Promise<Paginated<Booking>> {
+  export async function getBookings(params: ListBookingsQuery = {}): Promise<Paginated<Booking>> {
     // data retreived from GET request sent to the backend API
     const { data } = await api.get('/api/bookings', { params });
 
