@@ -5,6 +5,7 @@ import ProtectedLayout from "../layout/ProtectedLayout";
 import ClientsPage from "../features/clients/ClientsPage";
 // import LoginPage from "../features/auth/LoginPage";
 import BookingsPage from "../features/bookings/BookingsPage";
+import BookingDetailPage from "../features/bookings/BookingDetailPage";
 // import VideosPage from "../features/videos/VideosPage";
 // import SocialPostsPage from "../features/socialposts/SocialPostsPage";
 
@@ -17,6 +18,8 @@ export default function AppRoutes() {
         <Route index element={<Navigate to="clients" replace />} />
         <Route path="clients" element={<ClientsPage />} />
         <Route path="bookings" element={<BookingsPage />} />
+        {/* page that displays a specific booking given its id */}
+        <Route path="bookings/:id" element={<BookingDetailPage />} />
         {/* <Route path="videos" element={<VideosPage />} /> */}
         {/* <Route path="social-posts" element={<SocialPostsPage />} /> */}
       </Route>

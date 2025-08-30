@@ -21,6 +21,8 @@ import {
 } from "../../lib/api/bookings";
 import BookingForm, { type BookingFormValues } from "./BookingForm";
 
+import { Link } from "react-router-dom";
+
 // Encapsulate the query so the component stays readable.
 // - queryKey includes page + q → separate cache entries per search/page
 // - placeholderData keeps old page results visible during fetch for smooth UX
@@ -134,17 +136,26 @@ export default function BookingsPage() {
               )}
 
               {/* Data rows */}
-              {items.map((c) => (
-                <tr key={c.id} className="border-t">
-                  <td className="p-3">{c.client_id}</td>
-                  <td className="p-3">{c.event_date}</td>
-                  <td className="p-3">{c.event_type}</td>
-                  <td className="p-3">{c.price}</td>
+              {items.map((b) => (
+                <tr key={b.id} className="border-t">
+                  <td className="p-3">{b.client_id}</td>
+                  <td className="p-3">{b.event_date}</td>
+                  <td className="p-3">{b.event_type}</td>
+                  <td className="p-3">{b.price}</td>
+                  // inside your table row map
+                  <td className="p-3">
+                    <Link
+                      className="underline"
+                      to={`/dashboard/bookings/${b.id}`}
+                    >
+                      View
+                    </Link>
+                  </td>
                   <td className="p-3">
                     <button
                       className="border rounded px-2 py-1"
                       // open Edit modal with current row
-                      onClick={() => setEditing(c)}
+                      onClick={() => setEditing(b)}
                     >
                       Edit
                     </button>
