@@ -21,7 +21,7 @@ const ClientSchema = z.object({
 });
 
 // Infer a TypeScript type directly from the Zod schema,
-// so your form values stay in sync with validation.
+// so the form values stay in sync with validation.
 export type ClientFormValues = z.infer<typeof ClientSchema>;
 
 // Props for the reusable form component.
