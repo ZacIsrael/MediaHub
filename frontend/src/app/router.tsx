@@ -4,7 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedLayout from "../layout/ProtectedLayout";
 import ClientsPage from "../features/clients/ClientsPage";
 // import LoginPage from "../features/auth/LoginPage";
-// import BookingsPage from "../features/bookings/BookingsPage";
+import BookingsPage from "../features/bookings/BookingsPage";
 // import VideosPage from "../features/videos/VideosPage";
 // import SocialPostsPage from "../features/socialposts/SocialPostsPage";
 
@@ -16,7 +16,7 @@ export default function AppRoutes() {
         {/* If a user visits /dashboard with no child path, automatically redirect them to /dashboard/clients. */}
         <Route index element={<Navigate to="clients" replace />} />
         <Route path="clients" element={<ClientsPage />} />
-        {/* <Route path="bookings" element={<BookingsPage />} /> */}
+        <Route path="bookings" element={<BookingsPage />} />
         {/* <Route path="videos" element={<VideosPage />} /> */}
         {/* <Route path="social-posts" element={<SocialPostsPage />} /> */}
       </Route>
