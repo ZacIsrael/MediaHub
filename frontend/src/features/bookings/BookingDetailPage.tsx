@@ -68,7 +68,7 @@ export default function BookingDetailPage() {
   } 
   */
 
-  // If server returned 200 but with booking: null
+  // If server returned 200 or 404 but with booking: null
   if (!response || !response.booking) {
     return (
       <div className="p-4">

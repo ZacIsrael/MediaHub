@@ -17,8 +17,11 @@ import {
   getBookings,
   getBookingById,
   createBooking,
-  type Booking,
+  
 } from "../../lib/api/bookings";
+
+// structure of a Booking
+import { type  Booking } from "../../lib/api/types"
 import BookingForm, { type BookingFormValues } from "./BookingForm";
 
 import { Link } from "react-router-dom";
