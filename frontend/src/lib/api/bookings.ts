@@ -58,6 +58,7 @@ export async function createBooking(
     payload: CreateBookingInput
 ): Promise<Booking> {
     const { data } = await api.post("/api/bookings", payload);
+    console.log('CreateBooking(): data = ', data);
     return data;
 }
 
