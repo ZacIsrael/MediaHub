@@ -79,7 +79,10 @@ export default function VideosPage() {
         <h1 className="page-title">Videos</h1>
         <div className="toolbar">
           <button
-            onClick={() => setCreateOpen(true)}
+            onClick={() => {
+              console.log("'New Video' button clicked.");
+              setCreateOpen(true);
+            }}
             className="btn btn-primary"
           >
             New Video
@@ -157,9 +160,7 @@ export default function VideosPage() {
                       {v.url}
                     </a>
                   </td> */}
-                  <td>
-                    {Array.isArray(v.tags) ? v.tags.join(", ") : ""}
-                  </td>
+                  <td>{Array.isArray(v.tags) ? v.tags.join(", ") : ""}</td>
                   <td className="right">{v.viewCount}</td>
                   <td className="nowrap">
                     {v.publishedAt
@@ -213,11 +214,27 @@ export default function VideosPage() {
       </div>
 
       {/* Create Modal */}
-      {isCreateOpen && (
+      {/* {isCreateOpen && (
         <div className="modal-backdrop">
           <div className="modal">
             <h2>New Video</h2>
             <p className="subtitle">Add a new video to your catalog.</p>
+            <VideoForm
+              onSubmit={(v) => createMut.mutate(v)}
+              onCancel={() => setCreateOpen(false)}
+              submitLabel="Add"
+            />
+          </div>
+        </div>
+      )} */}
+
+      {isCreateOpen && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg relative">
+            <h2 className="text-lg font-semibold pb-2">New Video</h2>
+            <p className="text-sm text-gray-600 pb-4">
+              Add a new video to your catalog.
+            </p>
             <VideoForm
               onSubmit={(v) => createMut.mutate(v)}
               onCancel={() => setCreateOpen(false)}

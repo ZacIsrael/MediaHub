@@ -147,20 +147,20 @@ export default function VideoForm({
     });
   }, [defaultValues, reset]);
 
-  
   return (
     <form
       noValidate // disable native browser validation UI
       onSubmit={handleSubmit((v) => onSubmit(v))}
-      className="grid gap-3"
+      className="form-card"
     >
       {/* Title */}
       <div className="field">
-        <label className="label" htmlFor="video-title">
+        <label style={{ color: "white" }} className="label" htmlFor="video-title">
           Title
         </label>
         <input
           id="video-title"
+          style={{ color: "#111827" }}
           className={`input ${errors.title ? "input--error" : ""}`}
           placeholder="e.g., KP Skywalka Interview"
           aria-invalid={!!errors.title}
@@ -176,12 +176,13 @@ export default function VideoForm({
 
       {/* URL */}
       <div className="field">
-        <label className="label" htmlFor="video-url">
+        <label style={{ color: "white" }} className="label" htmlFor="video-url">
           Video URL
         </label>
         <input
           id="video-url"
-          className={`input ${errors.url ? "input--error" : ""}`}
+          style={{ color: "#111827" }}
+          className={`input ${errors.title ? "input--error" : ""}`}
           placeholder="https://www.youtube.com/watch?v=..."
           aria-invalid={!!errors.url}
           aria-describedby={errors.url ? "video-url-error" : "video-url-help"}
@@ -201,12 +202,13 @@ export default function VideoForm({
 
       {/* Tags (comma-separated) */}
       <div className="field">
-        <label className="label" htmlFor="video-tags">
+        <label style={{ color: "white" }} className="label" htmlFor="video-tags">
           Tags (comma-separated)
         </label>
         <input
           id="video-tags"
-          className={`input ${errors.tags ? "input--error" : ""}`}
+          style={{ color: "#111827" }}
+          className={`input ${errors.title ? "input--error" : ""}`}
           placeholder="dmv, interview, studio"
           aria-invalid={!!errors.tags}
           aria-describedby={
@@ -229,14 +231,15 @@ export default function VideoForm({
 
       {/* View Count */}
       <div className="field">
-        <label className="label" htmlFor="video-views">
+        <label style={{ color: "white" }} className="label" htmlFor="video-views">
           View Count
         </label>
         <input
           id="video-views"
+          style={{ color: "#111827" }}
           type="number"
           min={0}
-          className={`input ${errors.viewCount ? "input--error" : ""}`}
+          className={`input ${errors.title ? "input--error" : ""}`}
           placeholder="e.g., 12345"
           aria-invalid={!!errors.viewCount}
           aria-describedby={errors.viewCount ? "video-views-error" : undefined}
@@ -251,13 +254,14 @@ export default function VideoForm({
 
       {/* Published At */}
       <div className="field">
-        <label className="label" htmlFor="video-published">
+        <label style={{ color: "white" }} className="label" htmlFor="video-published">
           Published At
         </label>
         <input
           id="video-published"
+          style={{ color: "#111827" }}
           type="datetime-local"
-          className={`input ${errors.publishedAt ? "input--error" : ""}`}
+          className={`input ${errors.title ? "input--error" : ""}`}
           placeholder="YYYY-MM-DDTHH:mm"
           aria-invalid={!!errors.publishedAt}
           aria-describedby={
@@ -280,12 +284,22 @@ export default function VideoForm({
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-2 pt-2">
-        <button type="button" onClick={onCancel} className="btn btn--ghost">
+      <div className="flex items-center justify-end gap-3 pt-3">
+        <button
+          type="button"
+          onClick={onCancel}
+          // Visible on white modal; clear affordance
+          className="px-4 py-2 rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
           Cancel
         </button>
-        {/* Disable the Add button if title currently has an error */}
-        <button type="submit" disabled={isSubmitting || !!errors.title} className="btn">
+
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          // High-contrast primary
+          className="px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
           {isSubmitting ? "Saving..." : submitLabel}
         </button>
       </div>
