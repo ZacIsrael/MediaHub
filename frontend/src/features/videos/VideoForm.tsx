@@ -47,9 +47,11 @@ export const VideoSchema = z.object({
       // Anything else → treat as empty array
       return [];
     },
-    z.array(z.string().min(1)).optional().default([]) // optional, defaults to []
+    // optional, defaults to []
+    z.array(z.string().min(1)).optional().default([])
   ),
-  viewCount: z
+  // coerce converts the input to a number (i.e "9087" --> 9087)
+  viewCount: z.coerce
     .number()
     // a video can't have a negative view count
     .min(0, "View count must be at least 0.")
@@ -126,7 +128,7 @@ export default function VideoForm({
       title: defaultValues?.url ?? "",
       url: defaultValues?.url ?? "",
       tags: defaultValues?.tags ?? [""],
-      viewCount: (defaultValues?.viewCount as any) ?? ("" as any),
+      viewCount: defaultValues?.viewCount ?? 0,
       publishedAt: defaultValues?.url ?? "",
     },
   });

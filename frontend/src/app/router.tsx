@@ -6,7 +6,7 @@ import ClientsPage from "../features/clients/ClientsPage";
 // import LoginPage from "../features/auth/LoginPage";
 import BookingsPage from "../features/bookings/BookingsPage";
 import BookingDetailPage from "../features/bookings/BookingDetailPage";
-// import VideosPage from "../features/videos/VideosPage";
+import VideosPage from "../features/videos/VideosPage";
 // import SocialPostsPage from "../features/socialposts/SocialPostsPage";
 
 export default function AppRoutes() {
@@ -20,7 +20,7 @@ export default function AppRoutes() {
         <Route path="bookings" element={<BookingsPage />} />
         {/* page that displays a specific booking given its id */}
         <Route path="bookings/:id" element={<BookingDetailPage />} />
-        {/* <Route path="videos" element={<VideosPage />} /> */}
+        <Route path="videos" element={<VideosPage />} />
         {/* <Route path="social-posts" element={<SocialPostsPage />} /> */}
       </Route>
       {/* Catch-all route: if no path matches, redirect user back to /dashboard. */}

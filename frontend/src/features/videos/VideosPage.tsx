@@ -192,7 +192,7 @@ export default function VideosPage(){
             <VideoForm
               onSubmit={(v) => createMut.mutate(v)}
               onCancel={() => setCreateOpen(false)}
-              submitLabel="Create"
+              submitLabel="Add"
             />
           </div>
         </div>
