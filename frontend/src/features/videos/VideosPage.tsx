@@ -12,7 +12,7 @@ import {
 // non-blocking success/error messages
 import { toast } from "react-hot-toast";
 
-// Typed API functions for Bookings
+// Typed API functions for Videos
 import { getVideos, addVideo } from "../../lib/api/videos";
 
 // structure of a Video
