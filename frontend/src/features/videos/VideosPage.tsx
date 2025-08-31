@@ -24,18 +24,18 @@ import { Link } from "react-router-dom";
 // Encapsulate the query so the component stays readable.
 // - queryKey includes page + q → separate cache entries per search/page
 // - placeholderData keeps old page results visible during fetch for smooth UX
-function useVideosTable(page: number, q: string){
-    return useQuery({
-        queryKey: ["videos", {page, q}],
-        // backend may ignore q (future-proof)
-        queryFn: () => getVideos({page, limit: 10, q}),
-        // smoother pagination UX
-        placeholderData: keepPreviousData,
-    });
+function useVideosTable(page: number, q: string) {
+  return useQuery({
+    queryKey: ["videos", { page, q }],
+    // backend may ignore q (future-proof)
+    queryFn: () => getVideos({ page, limit: 10, q }),
+    // smoother pagination UX
+    placeholderData: keepPreviousData,
+  });
 }
 
-export default function VideosPage(){
-    // Local UI state for pagination, search, and modal/edit states
+export default function VideosPage() {
+  // Local UI state for pagination, search, and modal/edit states
   const [page, setPage] = useState(1);
   const [q, setQ] = useState(""); // optional search keyword (future-proof)
   const [isCreateOpen, setCreateOpen] = useState(false);
@@ -61,7 +61,6 @@ export default function VideosPage(){
   // Add video
   // - On success: show toast, close modal, and invalidate cache
   const createMut = useMutation({
-   
     mutationFn: (values: VideoFormValues) => addVideo(values),
     onSuccess: () => {
       toast.success("Video added");
@@ -85,7 +84,7 @@ export default function VideosPage(){
           New Video
         </button>
       </div>
-  
+
       {/* Search (future-proof; backend may ignore q today) */}
       <div className="flex items-center gap-2 pb-3">
         <input
@@ -98,7 +97,7 @@ export default function VideosPage(){
           }}
         />
       </div>
-  
+
       {/* Loading & Error states */}
       {isLoading && <div>Loading...</div>}
       {isError && (
@@ -106,7 +105,7 @@ export default function VideosPage(){
           {(error as any)?.message ?? "Failed to load videos"}
         </div>
       )}
-  
+
       {/* Table */}
       {!isLoading && !isError && (
         <div className="overflow-x-auto border rounded">
@@ -130,31 +129,47 @@ export default function VideosPage(){
                   </td>
                 </tr>
               )}
-  
+
               {/* Data rows */}
               {items.map((v) => (
                 <tr key={v._id} className="border-t">
                   <td className="p-3">{v.title}</td>
                   <td className="p-3 truncate max-w-[280px]">
-                    <a className="underline" href={v.url} target="_blank" rel="noreferrer">
+                    <a
+                      className="underline"
+                      href={v.url}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       {v.url}
                     </a>
                   </td>
-                  <td className="p-3">{Array.isArray(v.tags) ? v.tags.join(", ") : ""}</td>
+                  <td className="p-3">
+                    {Array.isArray(v.tags) ? v.tags.join(", ") : ""}
+                  </td>
                   <td className="p-3">{v.viewCount}</td>
                   <td className="p-3">
-                    {v.publishedAt ? new Date(v.publishedAt).toLocaleString() : "—"}
+                    {v.publishedAt
+                      ? new Date(v.publishedAt).toLocaleString()
+                      : "—"}
                   </td>
                   <td className="p-3 flex gap-3">
-                    <Link className="underline" to={`/dashboard/videos/${v._id}`}>
+                    <a
+                      className="underline"
+                      href={v.url}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       View
-                    </Link>
-                    <button
+                    </a>
+
+                    {/* Will get back to this whenever I implement the PATCH method (backend) */}
+                    {/* <button
                       className="border rounded px-2 py-1"
                       onClick={() => setEditing(v)}
                     >
                       Edit
-                    </button>
+                    </button> */}
                   </td>
                 </tr>
               ))}
@@ -162,7 +177,7 @@ export default function VideosPage(){
           </table>
         </div>
       )}
-  
+
       {/* Pagination */}
       <div className="flex items-center gap-2 pt-3">
         <button
@@ -183,7 +198,7 @@ export default function VideosPage(){
           Next
         </button>
       </div>
-  
+
       {/* Create Modal */}
       {isCreateOpen && (
         <div className="fixed inset-0 bg-black/30 grid place-items-center p-4">
@@ -199,5 +214,4 @@ export default function VideosPage(){
       )}
     </div>
   );
-  
 }
