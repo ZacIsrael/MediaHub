@@ -6,7 +6,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface ISocialPost extends Document {
-  // When creating a new video, _id doesn’t exist yet. But when reading or updating documents, it will.
+  // When creating a new social post, _id doesn’t exist yet. But when reading or updating documents, it will.
   _id: string;
   platform: string;
   url: string;
