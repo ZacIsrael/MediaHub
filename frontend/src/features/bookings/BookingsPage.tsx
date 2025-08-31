@@ -13,15 +13,10 @@ import {
 import { toast } from "react-hot-toast";
 
 // Typed API functions for Bookings
-import {
-  getBookings,
-  getBookingById,
-  createBooking,
-  
-} from "../../lib/api/bookings";
+import { getBookings, createBooking } from "../../lib/api/bookings";
 
 // structure of a Booking
-import { type  Booking } from "../../lib/api/types"
+import { type Booking } from "../../lib/api/types";
 import BookingForm, { type BookingFormValues } from "./BookingForm";
 
 import { Link } from "react-router-dom";
