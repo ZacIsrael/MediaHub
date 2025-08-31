@@ -89,16 +89,19 @@ export default function BookingForm({
 }: BookingFormProps) {
   // Initialize React Hook Form
   const {
-    register, // wires inputs → form state
-    handleSubmit, // wraps submit handler with validation
-    formState: { errors, isSubmitting }, // built-in state (validation errors, submission status)
-    reset, // imperatively set values (used when editing)
+    // wires inputs → form state
+    register, 
+    // wraps submit handler with validation
+    handleSubmit, 
+    // built-in state (validation errors, submission status)
+    formState: { errors, isSubmitting }, 
+    // imperatively set values (used when editing)
+    reset, 
   } = useForm<BookingFormValues>({
     resolver: zodResolver(BookingSchema), // use Zod schema for validation
     /**
-     * NOTE: RHF inputs emit strings. Because our schema uses z.coerce.number(),
-     * we can safely seed number fields as "" (empty string) and they’ll coerce on submit.
-     * If you prefer, you can seed numbers (e.g., 0), but "" keeps the inputs visually empty.
+     * NOTE: RHF inputs emit strings. Schema uses z.coerce.number(),
+     * number fields can be safely seeded as "" (empty string) and they’ll coerce on submit.
      */
     defaultValues: {
       client_id: (defaultValues?.client_id as any) ?? ("" as any),
@@ -139,9 +142,8 @@ export default function BookingForm({
       {/* Event Date */}
       <label className="grid gap-1">
         <span className="text-sm font-medium">Event Date & Time</span>
-        {/* You can switch to type="date" if you only want dates.
-            With datetime-local, the browser returns "YYYY-MM-DDTHH:mm" in local time.
-            Our z.preprocess converts it to strict UTC ISO with seconds. */}
+        {/* With datetime-local, the browser returns "YYYY-MM-DDTHH:mm" in local time.
+            z.preprocess converts it to strict UTC ISO with seconds. */}
         <input
           type="datetime-local"
           className="border rounded px-3 py-2"
@@ -191,14 +193,16 @@ export default function BookingForm({
       <div className="flex items-center gap-2 pt-2">
         <button
           type="button"
-          onClick={onCancel} // let parent close modal
+          // let parent close modal
+          onClick={onCancel} 
           className="border rounded px-3 py-2"
         >
           Cancel
         </button>
         <button
           type="submit"
-          disabled={isSubmitting} // prevents double-submits
+          // prevents double-submits
+          disabled={isSubmitting} 
           className="bg-black text-white rounded px-3 py-2"
         >
           {isSubmitting ? "Saving..." : submitLabel}
