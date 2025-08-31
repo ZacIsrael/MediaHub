@@ -72,7 +72,7 @@ export type Video = {
 // Will be used as the parameter in the addVideo() function (see videos.ts)
 // - title: required, string
 // - url: required, string
-// - tags: optional, Array of strings
+// - tags: optional, Array of stringss
 // - viewCount: required, number
 // - publishedAt: required, string (Date)
 export type AddVideoInput = {

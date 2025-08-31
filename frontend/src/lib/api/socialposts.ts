@@ -20,7 +20,7 @@ export type ListSocialPostsQuery = {
   q?: string;
 };
 
-async function getSocialPosts(
+export async function getSocialPosts(
   params: ListSocialPostsQuery = {}
 ): Promise<Paginated<SocialPost>> {
   // data retreived from GET request sent to the backend API
