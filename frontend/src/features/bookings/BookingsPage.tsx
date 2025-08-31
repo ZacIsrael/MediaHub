@@ -145,7 +145,6 @@ export default function BookingsPage() {
                   <td className="p-3">{b.event_date}</td>
                   <td className="p-3">{b.event_type}</td>
                   <td className="p-3">{b.price}</td>
-                  // inside your table row map
                   <td className="p-3">
                     <Link
                       className="underline"
