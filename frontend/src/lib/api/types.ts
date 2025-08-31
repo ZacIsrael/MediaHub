@@ -49,7 +49,12 @@ export type GetBookingByIdResponse = {
 // - event_date: required, string (date)
 // - event_type: required, string
 // - price: required, number
-export type CreateBookingInput = { client_id: number; event_date: string, event_type: string; price: number}
+export type CreateBookingInput = {
+  client_id: number;
+  event_date: string;
+  event_type: string;
+  price: number;
+};
 
 // structure of a video document from MongoDB
 export type Video = {
@@ -66,8 +71,39 @@ export type Video = {
 // Define the structure for what gets sent with the POST request for adding a video
 // Will be used as the parameter in the addVideo() function (see videos.ts)
 // - title: required, string
-// - url: required, string 
+// - url: required, string
 // - tags: optional, Array of strings
 // - viewCount: required, number
 // - publishedAt: required, string (Date)
-export type AddVideoInput = { title: string; url: string, tags?: string[], viewCount: number, publishedAt: string};
+export type AddVideoInput = {
+  title: string;
+  url: string;
+  tags?: string[];
+  viewCount: number;
+  publishedAt: string;
+};
+
+// structure of a social post document from MongoDB
+export type SocialPost = {
+  // When creating a new social post, _id doesn’t exist yet. But when reading or updating documents, it will.
+  _id: string;
+  platform: string;
+  url: string;
+  caption: string;
+  // hashtags has a '?' at the end because its optional
+  hashtags?: string[];
+  engagement?: string;
+};
+
+// Define the structure for what gets sent with the POST request for adding a social post
+// Will be used as the parameter in the addSocialPost() function (see socialposts.ts)
+// - platform: string;
+// - url: string;
+// - caption: string;
+// - hashtags?: string[];
+export type AddSocialPostInput = {
+  platform: string;
+  url: string;
+  caption: string;
+  hashtags?: string[];
+};
