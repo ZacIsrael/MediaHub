@@ -269,7 +269,7 @@ export default function VideoForm({
               ? "video-published-error"
               : "video-published-help"
           }
-          {...register("publishedAt")}
+          {...register("publishedAt")} 
         />
         {!errors.publishedAt && (
           <div id="video-published-help" className="help">
