@@ -113,7 +113,7 @@ export default function VideosPage() {
             <thead>
               <tr className="bg-gray-50">
                 <th className="p-3">Title</th>
-                <th className="p-3">URL</th>
+                {/* <th className="p-3">URL</th> */}
                 <th className="p-3">Tags</th>
                 <th className="p-3">Views</th>
                 <th className="p-3">Published</th>
@@ -134,7 +134,9 @@ export default function VideosPage() {
               {items.map((v) => (
                 <tr key={v._id} className="border-t">
                   <td className="p-3">{v.title}</td>
-                  <td className="p-3 truncate max-w-[280px]">
+                  {/* Redundant; "View Video" button opens the video in a new tab for the user;
+                  There's no need for the user to see the full url on this page. */}
+                  {/* <td className="p-3 truncate max-w-[280px]">
                     <a
                       className="underline"
                       href={v.url}
@@ -143,7 +145,7 @@ export default function VideosPage() {
                     >
                       {v.url}
                     </a>
-                  </td>
+                  </td> */}
                   <td className="p-3">
                     {Array.isArray(v.tags) ? v.tags.join(", ") : ""}
                   </td>
@@ -160,7 +162,7 @@ export default function VideosPage() {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      View
+                      View Video
                     </a>
 
                     {/* Will get back to this whenever I implement the PATCH method (backend) */}
