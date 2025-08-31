@@ -23,12 +23,14 @@ const toIsoSeconds = (d: Date) => d.toISOString().replace(/\.\d{3}Z$/, "Z");
 export const VideoSchema = z.object({
   title: z
     .string()
-    .min(1, "A title for this video is required")
     // remove all leading and trailing white spaces
-    .transform((s) => s.trim()),
+    .trim()
+    .min(1, "A title for this video is required"),
 
   url: z
     .string()
+    // remove all leading and trailing white spaces
+    .trim()
     // .url ensures that the input is a valid url
     .url("Please enter a valid URL (must start with http/https)"),
   tags: z.preprocess(
@@ -282,7 +284,8 @@ export default function VideoForm({
         <button type="button" onClick={onCancel} className="btn btn--ghost">
           Cancel
         </button>
-        <button type="submit" disabled={isSubmitting} className="btn">
+        {/* Disable the Add button if title currently has an error */}
+        <button type="submit" disabled={isSubmitting || !!errors.title} className="btn">
           {isSubmitting ? "Saving..." : submitLabel}
         </button>
       </div>
