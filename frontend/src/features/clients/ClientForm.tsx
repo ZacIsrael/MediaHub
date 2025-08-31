@@ -15,8 +15,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 // - email: must be a valid email
 // - phone: optional
 const ClientSchema = z.object({
-  name: z.string().min(2, "Name is too short"),
-  email: z.string().email("Invalid email"),
+  name: z.string().trim().min(2, "Name is too short"),
+  email: z.string().trim().email("Invalid email"),
   phone: z.string().optional(),
 });
 
