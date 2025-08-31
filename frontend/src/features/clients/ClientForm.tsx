@@ -2,13 +2,13 @@
 // Tech used: React Hook Form for state/validation plumbing, Zod for schema validation.
 
 // React effect (to reset form when defaultValues change)
-import { useEffect } from 'react';
+import { useEffect } from "react";
 // React Hook Form main API
-import { useForm } from 'react-hook-form';
+import { useForm } from "react-hook-form";
 // Zod: schema & runtime validation
-import { z } from 'zod';
+import { z } from "zod";
 // Bridge so React Hook Form can use Zod for validation
-import { zodResolver } from '@hookform/resolvers/zod';
+import { zodResolver } from "@hookform/resolvers/zod";
 
 // Define the validation rules for a Client.
 // - name: required, min length 2
@@ -47,22 +47,22 @@ export default function ClientForm({
   // Initialize React Hook Form
   const {
     // wires inputs → form state
-    register,   
-    // wraps submit handler with validation               
-    handleSubmit,              
+    register,
+    // wraps submit handler with validation
+    handleSubmit,
     // built-in state (validation errors, submission status)
-    formState: { errors, isSubmitting }, 
-     // imperatively set values (used when editing)
-    reset,                    
+    formState: { errors, isSubmitting },
+    // imperatively set values (used when editing)
+    reset,
   } = useForm<ClientFormValues>({
-     // use Zod schema for validation
+    // use Zod schema for validation
     resolver: zodResolver(ClientSchema),
     // initial values (safe defaults + optional overrides)
-    defaultValues: {                     
+    defaultValues: {
       name: "",
       email: "",
       phone: "",
-      ...defaultValues
+      ...defaultValues,
     },
   });
 
@@ -78,48 +78,78 @@ export default function ClientForm({
 
   // Basic, accessible form layout with inline error messages.
   return (
-    <form onSubmit={handleSubmit((v) => onSubmit(v))} className="grid gap-3">
-      <label className="grid gap-1">
-        <span className="text-sm font-medium">Name</span>
+    <form
+      // disable native browser validation UI
+      onSubmit={handleSubmit((v) => onSubmit(v))}
+      className="grid gap-3"
+    >
+      {/* Name */}
+
+      <div className="field">
+        <label className="label" htmlFor="client-name">
+          Name
+        </label>
         <input
-          className="border rounded px-3 py-2"
-          placeholder="Client name"
+          id="client-name"
+          className={`input ${errors.name ? "input--error" : ""}`}
+          placeholder="Enter your first & last name here"
+          aria-invalid={!!errors.name}
+          aria-describedby={errors.name ? "client-title-error" : undefined}
           {...register("name")}
         />
         {errors.name && (
-          <span className="text-red-600 text-sm">{errors.name.message}</span>
+          <div id="video-title-error" className="error">
+            {errors.name.message?.toString()}
+          </div>
         )}
-      </label>
+      </div>
 
-      <label className="grid gap-1">
-        <span className="text-sm font-medium">Email</span>
+      {/* Email */}
+      <div className="field">
+        <label className="label" htmlFor="client-email">
+          Email
+        </label>
         <input
-          className="border rounded px-3 py-2"
-          placeholder="name@email.com"
+          id="client-email"
+          className={`input ${errors.email ? "input--error" : ""}`}
+          placeholder="e.g., john.doe@email.com"
+          aria-invalid={!!errors.email}
+          aria-describedby={errors.email ? "client-email-error" : undefined}
           {...register("email")}
         />
         {errors.email && (
-          <span className="text-red-600 text-sm">{errors.email.message}</span>
+          <div id="client-email-error" className="error">
+            {errors.email.message?.toString()}
+          </div>
         )}
-      </label>
+      </div>
 
-      <label className="grid gap-1">
-        <span className="text-sm font-medium">Phone (optional)</span>
+      {/* Phone */}
+      <div className="field">
+        <label className="label" htmlFor="client-phone">
+          Phone (optional)
+        </label>
         <input
-          className="border rounded px-3 py-2"
-          placeholder="(xxx) xxx-xxxx"
+          id="client-phone"
+          className={`input ${errors.phone ? "input--error" : ""}`}
+          placeholder="Enter your 10 digit phone # here (no spaces or dashes)"
+          aria-invalid={!!errors.phone}
+          aria-describedby={errors.phone ? "client-phone-error" : undefined}
           {...register("phone")}
         />
         {errors.phone && (
-          <span className="text-red-600 text-sm">{errors.phone.message}</span>
+          <div id="client-phone-error" className="error">
+            {errors.phone.message?.toString()}
+          </div>
         )}
-      </label>
+      </div>
+
 
       <div className="flex items-center gap-2 pt-2">
         <button
           type="button"
           // let parent close modal
-          onClick={onCancel}                 
+          onClick={onCancel}
           className="border rounded px-3 py-2"
         >
           Cancel
@@ -127,7 +157,7 @@ export default function ClientForm({
         <button
           type="submit"
           // prevents double-submits
-          disabled={isSubmitting}            
+          disabled={isSubmitting}
           className="bg-black text-white rounded px-3 py-2"
         >
           {isSubmitting ? "Saving..." : submitLabel}
