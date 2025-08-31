@@ -125,11 +125,11 @@ export default function VideoForm({
       // - tags: optional, Array of strings
       // - viewCount: required, number
       // - publishedAt: required, string (Date)
-      title: defaultValues?.url ?? "",
+      title: defaultValues?.title ?? "",
       url: defaultValues?.url ?? "",
       tags: defaultValues?.tags ?? [""],
       viewCount: defaultValues?.viewCount ?? 0,
-      publishedAt: defaultValues?.url ?? "",
+      publishedAt: defaultValues?.publishedAt ?? "",
     },
   });
 
