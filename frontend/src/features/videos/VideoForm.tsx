@@ -145,102 +145,144 @@ export default function VideoForm({
     });
   }, [defaultValues, reset]);
 
+  // ... inside VideoForm component
   return (
-    <form onSubmit={handleSubmit((v) => onSubmit(v))} className="grid gap-3">
+    <form
+      noValidate // disable native browser validation UI
+      onSubmit={handleSubmit((v) => onSubmit(v))}
+      className="grid gap-3"
+    >
       {/* Title */}
-      <label className="grid gap-1">
-        <span className="text-sm font-medium">Title</span>
+      <div className="field">
+        <label className="label" htmlFor="video-title">
+          Title
+        </label>
         <input
-          className="border rounded px-3 py-2"
+          id="video-title"
+          className={`input ${errors.title ? "input--error" : ""}`}
           placeholder="e.g., KP Skywalka Interview"
+          aria-invalid={!!errors.title}
+          aria-describedby={errors.title ? "video-title-error" : undefined}
           {...register("title")}
         />
         {errors.title && (
-          <span className="text-red-600 text-sm">
+          <div id="video-title-error" className="error">
             {errors.title.message?.toString()}
-          </span>
+          </div>
         )}
-      </label>
+      </div>
 
       {/* URL */}
-      <label className="grid gap-1">
-        <span className="text-sm font-medium">Video URL</span>
+      <div className="field">
+        <label className="label" htmlFor="video-url">
+          Video URL
+        </label>
         <input
-          className="border rounded px-3 py-2"
+          id="video-url"
+          className={`input ${errors.url ? "input--error" : ""}`}
           placeholder="https://www.youtube.com/watch?v=..."
+          aria-invalid={!!errors.url}
+          aria-describedby={errors.url ? "video-url-error" : "video-url-help"}
           {...register("url")}
         />
-        {errors.url && (
-          <span className="text-red-600 text-sm">
-            {errors.url.message?.toString()}
-          </span>
+        {!errors.url && (
+          <div id="video-url-help" className="help">
+            Must start with http/https
+          </div>
         )}
-      </label>
+        {errors.url && (
+          <div id="video-url-error" className="error">
+            {errors.url.message?.toString()}
+          </div>
+        )}
+      </div>
 
       {/* Tags (comma-separated) */}
-      <label className="grid gap-1">
-        <span className="text-sm font-medium">Tags (comma-separated)</span>
+      <div className="field">
+        <label className="label" htmlFor="video-tags">
+          Tags (comma-separated)
+        </label>
         <input
-          className="border rounded px-3 py-2"
+          id="video-tags"
+          className={`input ${errors.tags ? "input--error" : ""}`}
           placeholder="dmv, interview, studio"
+          aria-invalid={!!errors.tags}
+          aria-describedby={
+            errors.tags ? "video-tags-error" : "video-tags-help"
+          }
           // schema preprocess accepts either a string or an array
           {...register("tags" as any)}
         />
-        {errors.tags && (
-          <span className="text-red-600 text-sm">
-            {errors.tags.message?.toString()}
-          </span>
+        {!errors.tags && (
+          <div id="video-tags-help" className="help">
+            Example: dmv, interview, studio
+          </div>
         )}
-      </label>
+        {errors.tags && (
+          <div id="video-tags-error" className="error">
+            {errors.tags.message?.toString()}
+          </div>
+        )}
+      </div>
 
       {/* View Count */}
-      <label className="grid gap-1">
-        <span className="text-sm font-medium">View Count</span>
+      <div className="field">
+        <label className="label" htmlFor="video-views">
+          View Count
+        </label>
         <input
+          id="video-views"
           type="number"
           min={0}
-          className="border rounded px-3 py-2"
+          className={`input ${errors.viewCount ? "input--error" : ""}`}
           placeholder="e.g., 12345"
+          aria-invalid={!!errors.viewCount}
+          aria-describedby={errors.viewCount ? "video-views-error" : undefined}
           {...register("viewCount" as const)}
         />
         {errors.viewCount && (
-          <span className="text-red-600 text-sm">
+          <div id="video-views-error" className="error">
             {errors.viewCount.message?.toString()}
-          </span>
+          </div>
         )}
-      </label>
+      </div>
 
       {/* Published At */}
-      <label className="grid gap-1">
-        <span className="text-sm font-medium">Published At</span>
-        {/* Browser returns 'YYYY-MM-DDTHH:mm' in local time; schema preprocess normalizes to strict UTC ISO seconds */}
+      <div className="field">
+        <label className="label" htmlFor="video-published">
+          Published At
+        </label>
         <input
+          id="video-published"
           type="datetime-local"
-          className="border rounded px-3 py-2"
+          className={`input ${errors.publishedAt ? "input--error" : ""}`}
           placeholder="YYYY-MM-DDTHH:mm"
+          aria-invalid={!!errors.publishedAt}
+          aria-describedby={
+            errors.publishedAt
+              ? "video-published-error"
+              : "video-published-help"
+          }
           {...register("publishedAt")}
         />
-        {errors.publishedAt && (
-          <span className="text-red-600 text-sm">
-            {errors.publishedAt.message?.toString()}
-          </span>
+        {!errors.publishedAt && (
+          <div id="video-published-help" className="help">
+            We’ll convert local time to strict UTC (YYYY-MM-DDTHH:mm:ssZ)
+          </div>
         )}
-      </label>
+        {errors.publishedAt && (
+          <div id="video-published-error" className="error">
+            {errors.publishedAt.message?.toString()}
+          </div>
+        )}
+      </div>
 
       {/* Actions */}
       <div className="flex items-center gap-2 pt-2">
-        <button
-          type="button"
-          onClick={onCancel}
-          className="border rounded px-3 py-2"
-        >
+        <button type="button" onClick={onCancel} className="btn btn--ghost">
           Cancel
         </button>
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="bg-black text-white rounded px-3 py-2"
-        >
+        <button type="submit" disabled={isSubmitting} className="btn">
           {isSubmitting ? "Saving..." : submitLabel}
         </button>
       </div>

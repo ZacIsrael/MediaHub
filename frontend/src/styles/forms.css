@@ -1,0 +1,79 @@
+/* Container for each labeled field */
+.field {
+    display: grid;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  
+  /* Label text */
+  .label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #0f172a; /* slate-900 */
+  }
+  
+  /* Inputs */
+  .input {
+    border: 1px solid #cbd5e1;          /* slate-300 */
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    transition: border-color .15s ease, box-shadow .15s ease;
+    background: #ffffff;
+  }
+  
+  .input:focus {
+    outline: none;
+    border-color: #2563eb;               /* blue-600 */
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .15);
+  }
+  
+  /* Error state for inputs */
+  .input.input--error {
+    border-color: #dc2626;               /* red-600 */
+    background: #fef2f2;                 /* red-50 */
+  }
+  
+  /* Error text below an input */
+  .error {
+    margin-top: 2px;
+    color: #dc2626;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  
+  /* Helper text (optional, neutral) */
+  .help {
+    color: #475569;                      /* slate-600 */
+    font-size: 0.8rem;
+  }
+  
+  /* Buttons */
+  .btn {
+    border: 1px solid #0f172a;
+    border-radius: 8px;
+    padding: 10px 14px;
+    background: #0f172a;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  .btn:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+  }
+  
+  .btn--ghost {
+    background: transparent;
+    color: #0f172a;
+  }
+  
+  /* Simple card container (for modals/sections) */
+  .card {
+    border: 1px solid #e2e8f0;           /* slate-200 */
+    border-radius: 10px;
+    padding: 16px;
+    background: #fff;
+  }
+  
