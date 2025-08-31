@@ -73,22 +73,24 @@ export default function VideosPage() {
   });
 
   return (
-    <div className="p-4">
+    <>
       {/* Header + “New” button */}
-      <div className="flex items-center justify-between gap-3 pb-3">
-        <h1 className="text-2xl font-semibold">Videos</h1>
-        <button
-          onClick={() => setCreateOpen(true)}
-          className="bg-black text-white rounded px-3 py-2"
-        >
-          New Video
-        </button>
-      </div>
+      <header className="page-header">
+        <h1 className="page-title">Videos</h1>
+        <div className="toolbar">
+          <button
+            onClick={() => setCreateOpen(true)}
+            className="btn btn-primary"
+          >
+            New Video
+          </button>
+        </div>
+      </header>
 
       {/* Search (future-proof; backend may ignore q today) */}
-      <div className="flex items-center gap-2 pb-3">
+      <div className="row" style={{ marginBottom: 12 }}>
         <input
-          className="border rounded px-3 py-2 w-full max-w-md"
+          className="input"
           placeholder="Search by title or URL"
           value={q}
           onChange={(e) => {
@@ -99,41 +101,50 @@ export default function VideosPage() {
       </div>
 
       {/* Loading & Error states */}
-      {isLoading && <div>Loading...</div>}
+      {isLoading && (
+        <div className="empty">
+          <div className="title">Loading…</div>
+          <div>Fetching videos from the server.</div>
+        </div>
+      )}
       {isError && (
-        <div className="text-red-600">
-          {(error as any)?.message ?? "Failed to load videos"}
+        <div className="empty">
+          <div className="title">Couldn’t load videos</div>
+          <div>{(error as any)?.message ?? "Failed to load videos."}</div>
         </div>
       )}
 
       {/* Table */}
       {!isLoading && !isError && (
-        <div className="overflow-x-auto border rounded">
-          <table className="min-w-full text-left">
+        <div className="table-wrap">
+          <table className="table">
             <thead>
-              <tr className="bg-gray-50">
-                <th className="p-3">Title</th>
+              <tr>
+                <th>Title</th>
                 {/* <th className="p-3">URL</th> */}
-                <th className="p-3">Tags</th>
-                <th className="p-3">Views</th>
-                <th className="p-3">Published</th>
-                <th className="p-3 w-40">Actions</th>
+                <th>Tags</th>
+                <th className="right">Views</th>
+                <th className="nowrap">Published</th>
+                <th className="nowrap">Actions</th>
               </tr>
             </thead>
             <tbody>
               {/* Empty state */}
               {items.length === 0 && (
                 <tr>
-                  <td className="p-3" colSpan={6}>
-                    No videos found
+                  <td colSpan={5}>
+                    <div className="empty">
+                      <div className="title">No videos found</div>
+                      <div>Try adjusting your search.</div>
+                    </div>
                   </td>
                 </tr>
               )}
 
               {/* Data rows */}
               {items.map((v) => (
-                <tr key={v._id} className="border-t">
-                  <td className="p-3">{v.title}</td>
+                <tr key={v._id}>
+                  <td className="truncate">{v.title}</td>
                   {/* Redundant; "View Video" button opens the video in a new tab for the user;
                   There's no need for the user to see the full url on this page. */}
                   {/* <td className="p-3 truncate max-w-[280px]">
@@ -146,18 +157,18 @@ export default function VideosPage() {
                       {v.url}
                     </a>
                   </td> */}
-                  <td className="p-3">
+                  <td>
                     {Array.isArray(v.tags) ? v.tags.join(", ") : ""}
                   </td>
-                  <td className="p-3">{v.viewCount}</td>
-                  <td className="p-3">
+                  <td className="right">{v.viewCount}</td>
+                  <td className="nowrap">
                     {v.publishedAt
                       ? new Date(v.publishedAt).toLocaleString()
                       : "—"}
                   </td>
-                  <td className="p-3 flex gap-3">
+                  <td className="actions nowrap">
                     <a
-                      className="underline"
+                      className="link"
                       href={v.url}
                       target="_blank"
                       rel="noreferrer"
@@ -181,21 +192,21 @@ export default function VideosPage() {
       )}
 
       {/* Pagination */}
-      <div className="flex items-center gap-2 pt-3">
+      <div className="pagination">
         <button
           disabled={page <= 1}
           onClick={() => setPage((p) => Math.max(1, p - 1))}
-          className="border rounded px-3 py-2 disabled:opacity-50"
+          className="btn btn-ghost"
         >
           Prev
         </button>
-        <span className="text-sm">
+        <span className="badge">
           Page {page} of {maxPage}
         </span>
         <button
           disabled={page >= maxPage}
           onClick={() => setPage((p) => Math.min(maxPage, p + 1))}
-          className="border rounded px-3 py-2 disabled:opacity-50"
+          className="btn btn-ghost"
         >
           Next
         </button>
@@ -203,9 +214,10 @@ export default function VideosPage() {
 
       {/* Create Modal */}
       {isCreateOpen && (
-        <div className="fixed inset-0 bg-black/30 grid place-items-center p-4">
-          <div className="bg-white rounded-lg p-4 w-full max-w-md">
-            <h2 className="text-lg font-semibold pb-2">New Video</h2>
+        <div className="modal-backdrop">
+          <div className="modal">
+            <h2>New Video</h2>
+            <p className="subtitle">Add a new video to your catalog.</p>
             <VideoForm
               onSubmit={(v) => createMut.mutate(v)}
               onCancel={() => setCreateOpen(false)}
@@ -214,6 +226,6 @@ export default function VideosPage() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }

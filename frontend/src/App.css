@@ -40,3 +40,46 @@
 .read-the-docs {
   color: #888;
 }
+
+/* ---------- Modal layering (always on top) ---------- */
+.mh-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  z-index: 9998;                /* overlay just below the dialog */
+}
+
+.mh-modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 9999;                /* higher than anything else */
+  pointer-events: none;         /* let dialog handle clicks */
+}
+
+.mh-modal-dialog {
+  pointer-events: auto;
+  width: min(720px, 92vw);
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.55),
+    0 10px 30px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  padding: 20px 20px 24px;
+}
+
+/* Optional: prevent body scroll when modal open */
+body.mh-no-scroll {
+  overflow: hidden;
+}
+
+/* Lower table header a bit just to be safe */
+.mh-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;   /* NOTE: modal uses 9999, so it will always be above */
+}
