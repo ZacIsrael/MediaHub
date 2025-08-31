@@ -137,11 +137,11 @@ export default function VideoForm({
   // by calling reset() whenever defaultValues change (e.g., editing a different video row).
   useEffect(() => {
     reset({
-      title: defaultValues?.url ?? "",
+      title: defaultValues?.title ?? "",
       url: defaultValues?.url ?? "",
       tags: defaultValues?.tags ?? [""],
-      viewCount: (defaultValues?.viewCount as any) ?? ("" as any),
-      publishedAt: defaultValues?.url ?? "",
+      viewCount: (defaultValues?.viewCount as any) ?? (0 as any),
+      publishedAt: defaultValues?.publishedAt ?? "",
     });
   }, [defaultValues, reset]);
 
