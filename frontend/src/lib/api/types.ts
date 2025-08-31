@@ -1,8 +1,6 @@
 // structures of each feature
 
-
-
-// define the structure of a client 
+// define the structure of a client
 export type Client = {
   id: number;
   name: string;
@@ -45,6 +43,14 @@ export type GetBookingByIdResponse = {
   booking: Booking | null;
 };
 
+// Define the structure for what gets sent with the POST request for adding a booking
+// Will be used as the parameter in the createBooking() function (see bookings.ts)
+// - client_id: required, number
+// - event_date: required, string (date)
+// - event_type: required, string
+// - price: required, number
+export type CreateBookingInput = { client_id: number; event_date: string, event_type: string; price: number}
+
 // structure of a video document from MongoDB
 export type Video = {
   // When creating a new video, _id doesn’t exist yet. But when reading or updating documents, it will.
@@ -55,4 +61,13 @@ export type Video = {
   tags?: string[];
   viewCount: number;
   publishedAt: Date;
-}
+};
+
+// Define the structure for what gets sent with the POST request for adding a video
+// Will be used as the parameter in the addVideo() function (see videos.ts)
+// - title: required, string
+// - url: required, string 
+// - tags: optional, Array of strings
+// - viewCount: required, number
+// - publishedAt: required, string (Date)
+export type AddVideoInput = { title: string; url: string, tags?: string[], viewCount: number, publishedAt: string};
