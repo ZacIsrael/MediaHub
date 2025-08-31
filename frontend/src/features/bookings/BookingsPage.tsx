@@ -149,13 +149,14 @@ export default function BookingsPage() {
                     </Link>
                   </td>
                   <td className="p-3">
-                    <button
+                    {/* Will come back to this once I implement PUT/PATCH backend request for bookings */}
+                    {/* <button
                       className="border rounded px-2 py-1"
                       // open Edit modal with current row
                       onClick={() => setEditing(b)}
                     >
                       Edit
-                    </button>
+                    </button> */}
                   </td>
                 </tr>
               ))}

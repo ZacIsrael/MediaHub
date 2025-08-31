@@ -20,8 +20,9 @@ import {
   listClients,
   createClient,
   updateClient,
-  type Client,
 } from "../../lib/api/clients";
+
+import { type Client} from "../../lib/api/types"
 
 // Reusable form (validates + gathers values)
 import ClientForm, { type ClientFormValues } from "./ClientForm";
@@ -137,7 +138,7 @@ export default function ClientsPage() {
                 <th className="p-3">Name</th>
                 <th className="p-3">Email</th>
                 <th className="p-3">Phone</th>
-                <th className="p-3 w-40">Actions</th>
+                {/* <th className="p-3 w-40">Actions</th> */}
               </tr>
             </thead>
             <tbody>
@@ -157,13 +158,14 @@ export default function ClientsPage() {
                   <td className="p-3">{c.email}</td>
                   <td className="p-3">{c.phone || "—"}</td>
                   <td className="p-3">
-                    <button
+                    {/* Will come back to this later once I implement PATCH/PUT backend requests for clients */}
+                    {/* <button
                       className="border rounded px-2 py-1"
                       // open Edit modal with current row
                       onClick={() => setEditing(c)} 
                     >
                       Edit
-                    </button>
+                    </button> */}
                   </td>
                 </tr>
               ))}
