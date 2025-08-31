@@ -4,7 +4,7 @@
 import api from "./axios";
 
 // define structure of a booking & response for getBookingById API call
-import { type Booking, type GetBookingByIdResponse } from "./types";
+import { type Booking, type GetBookingByIdResponse, type CreateBookingInput } from "./types";
 
 // structure for basic pagination
 export type Paginated<T> = {
@@ -48,12 +48,6 @@ export async function getBookingById(id: number): Promise<GetBookingByIdResponse
 }
 
 // create a booking
-// Define the structure for the parameter of this function (see booking.dto file in backend)
-// - client_id: required, number
-// - event_date: required, string (date)
-// - event_type: required, string
-// - price: required, number
-export type CreateBookingInput = { client_id: number; event_date: string, event_type: string; price: number}
 export async function createBooking(
     payload: CreateBookingInput
 ): Promise<Booking> {
