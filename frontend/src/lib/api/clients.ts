@@ -3,15 +3,7 @@
 // Import the axios library, a promise-based HTTP client
 import api from "./axios";
 
-// define the structure of a client 
-export type Client = {
-  id: number;
-  name: string;
-  email: string;
-  phone?: string;
-  createdAt?: string;
-  updatedAt?: string;
-};
+import { type Client } from "./types";
 
 // structure for basic pagination
 export type Paginated<T> = {
