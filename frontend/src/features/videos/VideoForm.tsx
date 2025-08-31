@@ -273,7 +273,7 @@ export default function VideoForm({
         />
         {!errors.publishedAt && (
           <div id="video-published-help" className="help">
-            We’ll convert local time to strict UTC (YYYY-MM-DDTHH:mm:ssZ)
+            {/* We’ll convert local time to strict UTC (YYYY-MM-DDTHH:mm:ssZ) */}
           </div>
         )}
         {errors.publishedAt && (
