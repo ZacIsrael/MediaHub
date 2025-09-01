@@ -4,25 +4,21 @@
 import { useMemo, useState } from "react";
 import {
   // fetch data + cache
-  useQuery,   
-  // create/update actions      
-  useMutation,  
-  // cache instance (invalidate/refetch)    
-  useQueryClient,   
+  useQuery,
+  // create/update actions
+  useMutation,
+  // cache instance (invalidate/refetch)
+  useQueryClient,
   // keeps last page’s data while new page loads
-  keepPreviousData, 
+  keepPreviousData,
 } from "@tanstack/react-query";
 // non-blocking success/error messages
-import { toast } from "react-hot-toast";    
+import { toast } from "react-hot-toast";
 
 // Typed API functions for Client
-import {
-  listClients,
-  createClient,
-  updateClient,
-} from "../../lib/api/clients";
+import { listClients, createClient, updateClient } from "../../lib/api/clients";
 
-import { type Client} from "../../lib/api/types"
+import { type Client } from "../../lib/api/types";
 
 // Reusable form (validates + gathers values)
 import ClientForm, { type ClientFormValues } from "./ClientForm";
@@ -34,9 +30,9 @@ function useClientsTable(page: number, q: string) {
   return useQuery({
     queryKey: ["clients", { page, q }],
     // backend may ignore q (future-proof)
-    queryFn: () => listClients({ page, limit: 10, q }), 
+    queryFn: () => listClients({ page, limit: 10, q }),
     // smoother pagination UX
-    placeholderData: keepPreviousData,                  
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -72,7 +68,7 @@ export default function ClientsPage() {
       toast.success("Client created");
       setCreateOpen(false);
       // refetch list
-      qc.invalidateQueries({ queryKey: ["clients"] }); 
+      qc.invalidateQueries({ queryKey: ["clients"] });
     },
     onError: (e: any) =>
       toast.error(e?.response?.data?.message ?? "Failed to create client"),
@@ -93,46 +89,57 @@ export default function ClientsPage() {
   });
 
   return (
-    <div className="p-4">
+    <>
       {/* Header + “New” button */}
-      <div className="flex items-center justify-between gap-3 pb-3">
-        <h1 className="text-2xl font-semibold">Clients</h1>
-        <button
-        // open Create modal
-          onClick={() => setCreateOpen(true)}        
-          className="bg-black text-white rounded px-3 py-2"
-        >
-          New Client
-        </button>
-      </div>
+      <header className="page-header">
+        <h1 className="page-title">Clients</h1>
+        <div className="toolbar">
+          <button
+            // open Create modal
+            onClick={() => {
+              // debugging
+              console.log("'New Client' button clicked.");
+              setCreateOpen(true);
+            }}
+            className="btn btn-primary"
+          >
+            New Client
+          </button>
+        </div>
+      </header>
 
       {/* Search input (future-proof: backend may ignore q today) */}
-      <div className="flex items-center gap-2 pb-3">
+      <div className="row" style={{ marginBottom: 12 }}>
         <input
-          className="border rounded px-3 py-2 w-full max-w-md"
+          className="input"
           placeholder="Search by name or email…"
           value={q}
           onChange={(e) => {
             // update query
-            setQ(e.target.value);        
-            // reset to first page on new search            
-            setPage(1);                              
+            setQ(e.target.value);
+            // reset to first page on new search
+            setPage(1);
           }}
         />
       </div>
 
       {/* Loading & Error states (friendly UX) */}
-      {isLoading && <div>Loading...</div>}
+      {isLoading && (
+        <div className="empty">
+          <div className="title">Loading...</div>
+        </div>
+      )}
       {isError && (
-        <div className="text-red-600">
+        <div className="empty">
+          <div className="title">Couldn’t load clients</div>
           {(error as any)?.message ?? "Failed to load clients"}
         </div>
       )}
 
       {/* Table (only when loaded without error) */}
       {!isLoading && !isError && (
-        <div className="overflow-x-auto border rounded">
-          <table className="min-w-full text-left">
+        <div className="table-wrap">
+          <table className="table">
             <thead>
               <tr className="bg-gray-50">
                 <th className="p-3">Name</th>
@@ -145,8 +152,11 @@ export default function ClientsPage() {
               {/* Empty-state row */}
               {items.length === 0 && (
                 <tr>
-                  <td className="p-3" colSpan={4}>
-                    No clients found
+                  <td colSpan={5}>
+                    <div className="empty">
+                      <div className="title">No clients found</div>
+                      <div>Try adjusting your search.</div>
+                    </div>
                   </td>
                 </tr>
               )}
@@ -174,22 +184,22 @@ export default function ClientsPage() {
         </div>
       )}
 
-      {/* Pagination controls */}
-      <div className="flex items-center gap-2 pt-3">
+      {/* Pagination */}
+      <div className="pagination">
         <button
           disabled={page <= 1}
           onClick={() => setPage((p) => Math.max(1, p - 1))}
-          className="border rounded px-3 py-2 disabled:opacity-50"
+          className="btn btn-ghost"
         >
           Prev
         </button>
-        <span className="text-sm">
+        <span className="badge" style={{ color: "white" }}>
           Page {page} of {maxPage}
         </span>
         <button
           disabled={page >= maxPage}
           onClick={() => setPage((p) => Math.min(maxPage, p + 1))}
-          className="border rounded px-3 py-2 disabled:opacity-50"
+          className="btn btn-ghost"
         >
           Next
         </button>
@@ -197,20 +207,24 @@ export default function ClientsPage() {
 
       {/* Create Modal */}
       {isCreateOpen && (
-        <div className="fixed inset-0 bg-black/30 grid place-items-center p-4">
-          <div className="bg-white rounded-lg p-4 w-full max-w-md">
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg relative">
             <h2 className="text-lg font-semibold pb-2">New Client</h2>
+            <p className="text-sm text-gray-600 pb-4">Add a new Client.</p>
             <ClientForm
-              onSubmit={(v) => createMut.mutate(v)} // call mutation
-              onCancel={() => setCreateOpen(false)} // close modal
+              // call mutation
+              onSubmit={(v) => createMut.mutate(v)}
+              // close modal
+              onCancel={() => setCreateOpen(false)}
               submitLabel="Create"
             />
           </div>
         </div>
       )}
 
+      {/* Will come back to this once I've implemented a PATCH/PUT route to the Clients backend api */}
       {/* Edit Modal */}
-      {editing && (
+      {/* {editing && (
         <div className="fixed inset-0 bg-black/30 grid place-items-center p-4">
           <div className="bg-white rounded-lg p-4 w-full max-w-md">
             <h2 className="text-lg font-semibold pb-2">Edit Client</h2>
@@ -226,7 +240,7 @@ export default function ClientsPage() {
             />
           </div>
         </div>
-      )}
-    </div>
+      )} */}
+    </>
   );
 }
