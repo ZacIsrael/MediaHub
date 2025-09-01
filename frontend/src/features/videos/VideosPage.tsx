@@ -201,7 +201,7 @@ export default function VideosPage() {
         >
           Prev
         </button>
-        <span className="badge">
+        <span className="badge" style={{ color: "white" }}>
           Page {page} of {maxPage}
         </span>
         <button
