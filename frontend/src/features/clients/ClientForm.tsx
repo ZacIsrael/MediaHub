@@ -80,17 +80,23 @@ export default function ClientForm({
   return (
     <form
       // disable native browser validation UI
+      noValidate
       onSubmit={handleSubmit((v) => onSubmit(v))}
       className="grid gap-3"
     >
       {/* Name */}
 
       <div className="field">
-        <label className="label" htmlFor="client-name">
+        <label
+          style={{ color: "white" }}
+          className="label"
+          htmlFor="client-name"
+        >
           Name
         </label>
         <input
           id="client-name"
+          style={{ color: "#111827" }}
           className={`input ${errors.name ? "input--error" : ""}`}
           placeholder="Enter your first & last name here"
           aria-invalid={!!errors.name}
@@ -106,11 +112,16 @@ export default function ClientForm({
 
       {/* Email */}
       <div className="field">
-        <label className="label" htmlFor="client-email">
+        <label
+          style={{ color: "white" }}
+          className="label"
+          htmlFor="client-email"
+        >
           Email
         </label>
         <input
           id="client-email"
+          style={{ color: "#111827" }}
           className={`input ${errors.email ? "input--error" : ""}`}
           placeholder="e.g., john.doe@email.com"
           aria-invalid={!!errors.email}
@@ -126,11 +137,16 @@ export default function ClientForm({
 
       {/* Phone */}
       <div className="field">
-        <label className="label" htmlFor="client-phone">
+        <label
+          style={{ color: "white" }}
+          className="label"
+          htmlFor="client-phone"
+        >
           Phone (optional)
         </label>
         <input
           id="client-phone"
+          style={{ color: "#111827" }}
           className={`input ${errors.phone ? "input--error" : ""}`}
           placeholder="Enter your 10 digit phone # here (no spaces or dashes)"
           aria-invalid={!!errors.phone}
@@ -144,13 +160,13 @@ export default function ClientForm({
         )}
       </div>
 
-
       <div className="flex items-center gap-2 pt-2">
         <button
           type="button"
           // let parent close modal
           onClick={onCancel}
-          className="border rounded px-3 py-2"
+          // Visible on white modal; clear affordance
+          className="px-4 py-2 rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           Cancel
         </button>
@@ -158,7 +174,8 @@ export default function ClientForm({
           type="submit"
           // prevents double-submits
           disabled={isSubmitting}
-          className="bg-black text-white rounded px-3 py-2"
+          // High-contrast primary
+          className="px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           {isSubmitting ? "Saving..." : submitLabel}
         </button>
