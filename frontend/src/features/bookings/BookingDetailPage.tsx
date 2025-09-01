@@ -121,7 +121,7 @@ export default function BookingDetailPage() {
 function DetailRow({ label, value }: { label: string; value: any }) {
   return (
     <div className="grid grid-cols-[160px_1fr]">
-      <div className="text-sm text-gray-500">{label}</div>
+      <div className="p-3">{label}</div>
       <div>{String(value ?? "—")}</div>
     </div>
   );

@@ -90,13 +90,13 @@ export default function BookingForm({
   // Initialize React Hook Form
   const {
     // wires inputs → form state
-    register, 
+    register,
     // wraps submit handler with validation
-    handleSubmit, 
+    handleSubmit,
     // built-in state (validation errors, submission status)
-    formState: { errors, isSubmitting }, 
+    formState: { errors, isSubmitting },
     // imperatively set values (used when editing)
-    reset, 
+    reset,
   } = useForm<BookingFormValues>({
     resolver: zodResolver(BookingSchema), // use Zod schema for validation
     /**
@@ -122,22 +122,35 @@ export default function BookingForm({
   }, [defaultValues, reset]);
 
   return (
-    <form onSubmit={handleSubmit((v) => onSubmit(v))} className="grid gap-3">
+    <form
+      // disable native browser validation UI
+      noValidate
+      onSubmit={handleSubmit((v) => onSubmit(v))}
+      className="form-card"
+    >
       {/* Client ID */}
-      <label className="grid gap-1">
-        <span className="text-sm font-medium">Client ID</span>
+      <div className="field">
+        <label style={{ color: "white" }} className="label" htmlFor="client-id">
+            Client ID
+        </label>
+        
         <input
+          id="client-id"
+          style={{ color: "#111827" }}
           type="number"
-          className="border rounded px-3 py-2"
+          min={0}
+          className={`input ${errors.client_id ? "input--error" : ""}`}
           placeholder="e.g., 1"
-          {...register("client_id")}
+          aria-invalid={!!errors.client_id}
+          aria-describedby={errors.client_id ? "client-id-error" : undefined}
+          {...register("client_id" as const)}
         />
         {errors.client_id && (
-          <span className="text-red-600 text-sm">
+          <div id="client-id-error" className="error">
             {errors.client_id.message?.toString()}
-          </span>
+          </div>
         )}
-      </label>
+      </div>
 
       {/* Event Date */}
       <label className="grid gap-1">
@@ -194,7 +207,7 @@ export default function BookingForm({
         <button
           type="button"
           // let parent close modal
-          onClick={onCancel} 
+          onClick={onCancel}
           className="border rounded px-3 py-2"
         >
           Cancel
@@ -202,7 +215,7 @@ export default function BookingForm({
         <button
           type="submit"
           // prevents double-submits
-          disabled={isSubmitting} 
+          disabled={isSubmitting}
           className="bg-black text-white rounded px-3 py-2"
         >
           {isSubmitting ? "Saving..." : submitLabel}
