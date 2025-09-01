@@ -108,8 +108,10 @@ export default function ClientsPage() {
         </div>
       </header>
 
+
       {/* Search input (future-proof: backend may ignore q today) */}
-      <div className="row" style={{ marginBottom: 12 }}>
+      {/* Will worry about this once I implement this logic on the backend */}
+      {/* <div className="row" style={{ marginBottom: 12 }}>
         <input
           className="input"
           placeholder="Search by name or email…"
@@ -121,7 +123,7 @@ export default function ClientsPage() {
             setPage(1);
           }}
         />
-      </div>
+      </div> */}
 
       {/* Loading & Error states (friendly UX) */}
       {isLoading && (

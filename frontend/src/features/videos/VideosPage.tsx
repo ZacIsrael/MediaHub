@@ -91,7 +91,8 @@ export default function VideosPage() {
       </header>
 
       {/* Search (future-proof; backend may ignore q today) */}
-      <div className="row" style={{ marginBottom: 12 }}>
+      {/* Will worry about this once I implement this logic on the backend */}
+      {/* <div className="row" style={{ marginBottom: 12 }}>
         <input
           className="input"
           placeholder="Search by title or URL"
@@ -101,7 +102,7 @@ export default function VideosPage() {
             setPage(1);
           }}
         />
-      </div>
+      </div> */}
 
       {/* Loading & Error states */}
       {isLoading && (
