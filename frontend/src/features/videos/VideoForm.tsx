@@ -240,7 +240,7 @@ export default function VideoForm({
           style={{ color: "#111827" }}
           type="number"
           min={0}
-          className={`input ${errors.title ? "input--error" : ""}`}
+          className={`input ${errors.viewCount ? "input--error" : ""}`}
           placeholder="e.g., 12345"
           aria-invalid={!!errors.viewCount}
           aria-describedby={errors.viewCount ? "video-views-error" : undefined}
