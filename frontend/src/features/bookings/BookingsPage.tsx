@@ -88,7 +88,8 @@ export default function BookingsPage() {
       </div>
 
       {/* Search input (future-proof: backend may ignore q today) */}
-      <div className="flex items-center gap-2 pb-3">
+      {/* Will worry about this once I implement this logic on the backend */}
+      {/* <div className="flex items-center gap-2 pb-3">
         <input
           className="border rounded px-3 py-2 w-full max-w-md"
           placeholder="Search by client id"
@@ -100,7 +101,7 @@ export default function BookingsPage() {
             setPage(1);
           }}
         />
-      </div>
+      </div> */}
 
       {/* Loading & Error states (friendly UX) */}
       {isLoading && <div>Loading...</div>}
