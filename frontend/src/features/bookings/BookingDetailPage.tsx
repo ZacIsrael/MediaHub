@@ -120,8 +120,8 @@ export default function BookingDetailPage() {
 
 function DetailRow({ label, value }: { label: string; value: any }) {
   return (
-    <div className="grid grid-cols-[160px_1fr]">
-      <div className="p-3">{label}</div>
+    <div>
+      <div><h2 className="p-3">{label}</h2></div>
       <div>{String(value ?? "—")}</div>
     </div>
   );
