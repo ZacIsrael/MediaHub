@@ -79,20 +79,26 @@ export default function SocialPostsPage() {
   });
 
   return (
-    <div className="p-4">
+    <>
       {/* Header + “New” button */}
-      <div className="flex items-center justify-between gap-3 pb-3">
-        <h1 className="text-2xl font-semibold">Social Posts</h1>
-        <button
-          onClick={() => setCreateOpen(true)}
-          className="bg-black text-white rounded px-3 py-2"
-        >
-          New Post
-        </button>
-      </div>
+      <header className="page-header">
+        <h1 className="page-title">Social Posts</h1>
+        <div className="toolbar">
+          <button
+            onClick={() => {
+              console.log("'Add New Post' button clicked.");
+              setCreateOpen(true);
+            }}
+            className="bg-black text-white rounded px-3 py-2"
+          >
+            Add New Post
+          </button>
+        </div>
+      </header>
 
       {/* Search (future-proof; backend may ignore q today) */}
-      <div className="flex items-center gap-2 pb-3">
+      {/* Not needed for n ow; will come back to this once I implement search bar logic */}
+      {/* <div className="flex items-center gap-2 pb-3">
         <input
           className="border rounded px-3 py-2 w-full max-w-md"
           placeholder="Search by caption or URL"
@@ -102,34 +108,43 @@ export default function SocialPostsPage() {
             setPage(1);
           }}
         />
-      </div>
+      </div> */}
 
       {/* Loading & Error states */}
-      {isLoading && <div>Loading...</div>}
+      {isLoading && (
+        <div className="empty">
+          <div className="title">Loading…</div>
+          <div>Fetching social posts from the server.</div>
+        </div>
+      )}
       {isError && (
-        <div className="text-red-600">
-          {(error as any)?.message ?? "Failed to load social posts"}
+        <div className="empty">
+          <div className="title">Couldn’t load videos</div>
+          <div>{(error as any)?.message ?? "Failed to load social posts."}</div>
         </div>
       )}
 
       {/* Table */}
       {!isLoading && !isError && (
-        <div className="overflow-x-auto border rounded">
-          <table className="min-w-full text-left">
+        <div className="table-wrap">
+          <table className="table">
             <thead>
               <tr className="bg-gray-50">
-                <th className="p-3">Platform</th>
-                <th className="p-3">Caption</th>
-                <th className="p-3">Hashtags</th>
-                <th className="p-3 w-40">Actions</th>
+                <th>Platform</th>
+                <th className="right">Caption</th>
+                <th className="nowrap">Hashtags</th>
+                <th className="nowrap">Actions</th>
               </tr>
             </thead>
             <tbody>
               {/* Empty state */}
               {items.length === 0 && (
                 <tr>
-                  <td className="p-3" colSpan={4}>
-                    No social posts found
+                  <td colSpan={5}>
+                    <div className="empty">
+                      <div className="title">No social posts found</div>
+                      <div>Try adjusting your search.</div>
+                    </div>
                   </td>
                 </tr>
               )}
@@ -137,14 +152,14 @@ export default function SocialPostsPage() {
               {/* Data rows */}
               {items.map((p) => (
                 <tr key={p._id} className="border-t">
-                  <td className="p-3">{p.platform}</td>
-                  <td className="p-3 truncate max-w-[420px]" title={p.caption}>
+                  <td>{p.platform}</td>
+                  <td className="truncate" title={p.caption}>
                     {p.caption}
                   </td>
-                  <td className="p-3">
+                  <td>
                     {Array.isArray(p.hashtags) ? p.hashtags.join(", ") : ""}
                   </td>
-                  <td className="p-3 flex gap-3">
+                  <td className="actions nowrap">
                     {/* Open the post in a new tab */}
                     <a
                       className="underline"
@@ -155,7 +170,7 @@ export default function SocialPostsPage() {
                       View Post
                     </a>
 
-                    {/* Optional: quick copy link */}
+                    {/* Quick copy link; just incase I don't want to necessarily open the post in a new tab */}
                     <button
                       type="button"
                       className="border rounded px-2 py-1"
@@ -181,21 +196,21 @@ export default function SocialPostsPage() {
       )}
 
       {/* Pagination */}
-      <div className="flex items-center gap-2 pt-3">
+      <div className="pagination">
         <button
           disabled={page <= 1}
           onClick={() => setPage((p) => Math.max(1, p - 1))}
-          className="border rounded px-3 py-2 disabled:opacity-50"
+          className="btn btn-ghost"
         >
           Prev
         </button>
-        <span className="text-sm">
+        <span className="badge" style={{ color: "white" }}>
           Page {page} of {maxPage}
         </span>
         <button
           disabled={page >= maxPage}
           onClick={() => setPage((p) => Math.min(maxPage, p + 1))}
-          className="border rounded px-3 py-2 disabled:opacity-50"
+          className="btn btn-ghost"
         >
           Next
         </button>
@@ -203,8 +218,8 @@ export default function SocialPostsPage() {
 
       {/* Create Modal */}
       {isCreateOpen && (
-        <div className="fixed inset-0 bg-black/30 grid place-items-center p-4">
-          <div className="bg-white rounded-lg p-4 w-full max-w-md">
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg relative">
             <h2 className="text-lg font-semibold pb-2">New Social Post</h2>
             <SocialPostForm
               onSubmit={(v) => createMut.mutate(v)}
@@ -214,6 +229,6 @@ export default function SocialPostsPage() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
