@@ -107,80 +107,140 @@ export default function SocialPostForm({
   }, [defaultValues, reset]);
 
   return (
-    <form onSubmit={handleSubmit((v) => onSubmit(v))} className="grid gap-3">
+    <form
+      // disable native browser validation UI
+      noValidate
+      onSubmit={handleSubmit((v) => onSubmit(v))}
+      className="form-card"
+    >
       {/* Platform */}
-      <label className="grid gap-1">
-        <span className="text-sm font-medium">Platform</span>
+      <div className="field">
+        <label
+          style={{ color: "white" }}
+          className="label"
+          htmlFor="social-post-platform"
+        >
+          Platform
+        </label>
         <input
-          className="border rounded px-3 py-2"
+          id="social-post-platform"
+          style={{ color: "#111827" }}
+          className={`input ${errors.platform ? "input--error" : ""}`}
           placeholder="e.g., Instagram, YouTube, X"
+          aria-invalid={!!errors.platform}
+          aria-describedby={
+            errors.platform ? "social-post-platform-error" : undefined
+          }
           {...register("platform")}
         />
         {errors.platform && (
-          <span className="text-red-600 text-sm">
+          <div id="social-post-platform-error" className="error">
             {errors.platform.message?.toString()}
-          </span>
+          </div>
         )}
-      </label>
+      </div>
 
       {/* URL */}
-      <label className="grid gap-1">
-        <span className="text-sm font-medium">Post URL</span>
+      <div className="field">
+        <label
+          style={{ color: "white" }}
+          className="label"
+          htmlFor="social-post-url"
+        >
+          Post URL
+        </label>
         <input
-          className="border rounded px-3 py-2"
+          id="social-post-url"
+          style={{ color: "#111827" }}
+          className={`input ${errors.url ? "input--error" : ""}`}
           placeholder="https://www.instagram.com/p/..."
+          aria-invalid={!!errors.url}
+          aria-describedby={
+            errors.url ? "social-post-url-error" : "social-post-url-help"
+          }
           {...register("url")}
         />
-        {errors.url && (
-          <span className="text-red-600 text-sm">
-            {errors.url.message?.toString()}
-          </span>
+
+        {!errors.url && (
+          <div id="soical-post-url-help" className="help">
+            Must start with http/https
+          </div>
         )}
-      </label>
+        {errors.url && (
+          <div id="social-post-url-error" className="error">
+            {errors.url.message?.toString()}
+          </div>
+        )}
+      </div>
 
       {/* Caption */}
       <label className="grid gap-1">
         <span className="text-sm font-medium">Caption</span>
         <textarea
-          className="border rounded px-3 py-2 min-h-[96px]"
+          id="social-post-caption"
+          style={{ color: "#111827" }}
+          className={`input ${errors.caption ? "input--error" : ""}`}
           placeholder="Write the post caption..."
+          aria-invalid={!!errors.caption}
+          aria-describedby={errors.caption ? "social-post-caption-error" : undefined}
           {...register("caption")}
         />
         {errors.caption && (
-          <span className="text-red-600 text-sm">
+          <div id="social-post-caption-error" className="error">
             {errors.caption.message?.toString()}
-          </span>
+          </div>
         )}
       </label>
 
       {/* Hashtags (comma-separated) */}
-      <label className="grid gap-1">
-        <span className="text-sm font-medium">Hashtags (comma-separated)</span>
-        <input
-          className="border rounded px-3 py-2"
-          placeholder="#DMV, #Active"
-          {...register("hashtags" as any)} // one text field, comma-separated
-        />
-        {errors.hashtags && (
-          <span className="text-red-600 text-sm">
-            {errors.hashtags.message?.toString?.() ?? "Invalid hashtags"}
-          </span>
-        )}
-      </label>
+      <div className="field">
+        <label
+          style={{ color: "white" }}
+          className="label"
+          htmlFor="social-post-hashtags"
+        >
+          Hashtags (comma-separated)
+          <input
+            id="social-post-hashtags"
+            style={{ color: "#111827" }}
+            className={`input ${errors.hashtags ? "input--error" : ""}`}
+            placeholder="#DMV, #Active"
+            aria-invalid={!!errors.hashtags}
+            aria-describedby={
+              errors.hashtags ? "video-tags-error" : "video-tags-help"
+            }
+            // one text field, comma-separated; schema preprocess accepts either a string or an array
+            {...register("hashtags" as any)}
+          />
+          {!errors.hashtags && (
+            <div id="social-posts-tags-help" className="help">
+              Example: dmv, interview, studio
+            </div>
+          )}
+          {errors.hashtags && (
+            <div id="social-posts-hashtags-error" className="error">
+              {errors.hashtags.message?.toString()}
+            </div>
+          )}
+        </label>
+      </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-2 pt-2">
+      <div className="flex items-center justify-end gap-3 pt-3">
         <button
           type="button"
           onClick={onCancel}
-          className="border rounded px-3 py-2"
+          // Visible on white modal; clear affordance
+          className="px-4 py-2 rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           Cancel
         </button>
+
         <button
           type="submit"
           disabled={isSubmitting}
-          className="bg-black text-white rounded px-3 py-2"
+          // High-contrast primary
+          className="px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           {isSubmitting ? "Saving..." : submitLabel}
         </button>
