@@ -149,14 +149,18 @@ export default function VideoForm({
 
   return (
     <form
-    // disable native browser validation UI
-      noValidate 
+      // disable native browser validation UI
+      noValidate
       onSubmit={handleSubmit((v) => onSubmit(v))}
       className="form-card"
     >
       {/* Title */}
       <div className="field">
-        <label style={{ color: "white" }} className="label" htmlFor="video-title">
+        <label
+          style={{ color: "white" }}
+          className="label"
+          htmlFor="video-title"
+        >
           Title
         </label>
         <input
@@ -203,7 +207,11 @@ export default function VideoForm({
 
       {/* Tags (comma-separated) */}
       <div className="field">
-        <label style={{ color: "white" }} className="label" htmlFor="video-tags">
+        <label
+          style={{ color: "white" }}
+          className="label"
+          htmlFor="video-tags"
+        >
           Tags (comma-separated)
         </label>
         <input
@@ -232,7 +240,11 @@ export default function VideoForm({
 
       {/* View Count */}
       <div className="field">
-        <label style={{ color: "white" }} className="label" htmlFor="video-views">
+        <label
+          style={{ color: "white" }}
+          className="label"
+          htmlFor="video-views"
+        >
           View Count
         </label>
         <input
@@ -255,14 +267,18 @@ export default function VideoForm({
 
       {/* Published At */}
       <div className="field">
-        <label style={{ color: "white" }} className="label" htmlFor="video-published">
+        <label
+          style={{ color: "white" }}
+          className="label"
+          htmlFor="video-published"
+        >
           Published At
         </label>
         <input
           id="video-published"
           style={{ color: "#111827" }}
           type="datetime-local"
-          className={`input ${errors.title ? "input--error" : ""}`}
+          className={`input ${errors.publishedAt ? "input--error" : ""}`}
           placeholder="YYYY-MM-DDTHH:mm"
           aria-invalid={!!errors.publishedAt}
           aria-describedby={
@@ -270,11 +286,11 @@ export default function VideoForm({
               ? "video-published-error"
               : "video-published-help"
           }
-          {...register("publishedAt")} 
+          {...register("publishedAt")}
         />
         {!errors.publishedAt && (
           <div id="video-published-help" className="help">
-            {/* We’ll convert local time to strict UTC (YYYY-MM-DDTHH:mm:ssZ) */}
+            {/* local time gets converted to strict UTC (YYYY-MM-DDTHH:mm:ssZ) */}
           </div>
         )}
         {errors.publishedAt && (
