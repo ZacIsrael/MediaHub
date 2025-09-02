@@ -97,7 +97,7 @@ export default function SocialPostsPage() {
       </header>
 
       {/* Search (future-proof; backend may ignore q today) */}
-      {/* Not needed for n ow; will come back to this once I implement search bar logic */}
+      {/* Not needed for now; will come back to this once I implement search bar logic */}
       {/* <div className="flex items-center gap-2 pb-3">
         <input
           className="border rounded px-3 py-2 w-full max-w-md"
