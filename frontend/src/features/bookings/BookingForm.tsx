@@ -131,9 +131,9 @@ export default function BookingForm({
       {/* Client ID */}
       <div className="field">
         <label style={{ color: "white" }} className="label" htmlFor="client-id">
-            Client ID
+          Client ID
         </label>
-        
+
         <input
           id="client-id"
           style={{ color: "#111827" }}
@@ -153,70 +153,111 @@ export default function BookingForm({
       </div>
 
       {/* Event Date */}
-      <label className="grid gap-1">
-        <span className="text-sm font-medium">Event Date & Time</span>
+      <div className="field">
+        <label
+          style={{ color: "white" }}
+          className="label"
+          htmlFor="event-date"
+        >
+          Event Date & Time
+        </label>
         {/* With datetime-local, the browser returns "YYYY-MM-DDTHH:mm" in local time.
             z.preprocess converts it to strict UTC ISO with seconds. */}
         <input
           type="datetime-local"
-          className="border rounded px-3 py-2"
+          style={{ color: "#111827" }}
+          className={`input ${errors.event_date ? "input--error" : ""}`}
           placeholder="YYYY-MM-DDTHH:mm"
+          aria-invalid={!!errors.event_date}
+          aria-describedby={
+            errors.event_date ? "event-date-error" : "event-date-help"
+          }
           {...register("event_date")}
         />
         {errors.event_date && (
-          <span className="text-red-600 text-sm">
-            {errors.event_date.message?.toString()}
-          </span>
+          <div className="error">{errors.event_date.message?.toString()}</div>
         )}
-      </label>
+      </div>
 
       {/* Event Type */}
-      <label className="grid gap-1">
-        <span className="text-sm font-medium">Event Type</span>
+      <div className="field">
+        <label
+          style={{ color: "white" }}
+          className="label"
+          htmlFor="booking-event-type"
+        >
+          {/* <span className="text-sm font-medium"> */}
+          Event Type
+          {/* </span> */}
+        </label>
         <input
-          className="border rounded px-3 py-2"
+          id="booking-event-type"
+          style={{ color: "#111827" }}
+          className={`input ${errors.event_type ? "input--error" : ""}`}
           placeholder="e.g., Portrait Session"
+          aria-invalid={!!errors.event_type}
+          aria-describedby={
+            errors.event_type ? "booking-event-type-error" : undefined
+          }
           {...register("event_type")}
         />
         {errors.event_type && (
-          <span className="text-red-600 text-sm">
+          <div id="booking-event-type-error" className="error">
+            {/* <span className="text-red-600 text-sm"> */}
             {errors.event_type.message?.toString()}
-          </span>
+            {/* </span> */}
+          </div>
         )}
-      </label>
+      </div>
 
       {/* Price */}
-      <label className="grid gap-1">
-        <span className="text-sm font-medium">Price</span>
+      <div className="field">
+        <label
+          style={{ color: "white" }}
+          className="label"
+          htmlFor="booking-price"
+        >
+          {/* <span className="text-sm font-medium"> */}
+          Price
+          {/* </span> */}
+        </label>
         <input
           type="number"
+          id="booking-price"
+          style={{ color: "#111827" }}
+          // increment by the cent
           step="0.01"
-          className="border rounded px-3 py-2"
+          className={`input ${errors.price ? "input--error" : ""}`}
           placeholder="e.g., 200"
+          aria-invalid={!!errors.price}
+          aria-describedby={errors.price ? "booking-price-error" : undefined}
           {...register("price")}
         />
         {errors.price && (
-          <span className="text-red-600 text-sm">
+          <div id="booking-price-error" className="error">
+            {/* <span className="text-red-600 text-sm"> */}
             {errors.price.message?.toString()}
-          </span>
+            {/* </span> */}
+          </div>
         )}
-      </label>
+      </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-2 pt-2">
+      <div className="flex items-center justify-end gap-3 pt-3">
         <button
           type="button"
-          // let parent close modal
           onClick={onCancel}
-          className="border rounded px-3 py-2"
+          // Visible on white modal; clear affordance
+          className="px-4 py-2 rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           Cancel
         </button>
+
         <button
           type="submit"
-          // prevents double-submits
           disabled={isSubmitting}
-          className="bg-black text-white rounded px-3 py-2"
+          // High-contrast primary
+          className="px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           {isSubmitting ? "Saving..." : submitLabel}
         </button>
