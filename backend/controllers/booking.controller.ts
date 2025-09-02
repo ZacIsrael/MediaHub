@@ -46,7 +46,7 @@ export const createBooking = async (req: Request, res: Response) => {
     if (!booleanVal) {
       // There is no client with id = dto.client_id exists
       return res.status(404).json({
-        error: `Not Found (POST /api/bookings/): Can't add this booking; client with ${dto.client_id} does not exist.`,
+        error: `Not Found (POST /api/bookings/): Can't add this booking; client with id = ${dto.client_id} does not exist.`,
       });
 
       // res.status(404).json({
