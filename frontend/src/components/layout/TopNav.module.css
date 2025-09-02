@@ -1,0 +1,37 @@
+/* src/components/layout/TopNav.module.css */
+.topnav {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.6); /* dark slate backdrop */
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.link {
+  text-decoration: none;
+  color: #cbd5e1; /* slate-300 */
+  font-size: 0.9rem;
+  border-radius: 10px;
+  padding: 6px 10px;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  outline: none;
+}
+
+.link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.link:focus-visible {
+  box-shadow: 0 0 0 2px #818cf8, 0 0 0 4px rgba(15, 23, 42, 0.9);
+}
+
+.active {
+  color: #fff;
+  background: rgba(99, 102, 241, 0.2); /* indigo-500/20 */
+  border: 1px solid rgba(129, 140, 248, 0.45); /* indigo-400/45 */
+  padding: 5px 9px; /* compensate for border */
+  border-radius: 10px;
+}
