@@ -11,6 +11,9 @@ import {
 // function for logging a user out
 import { useLogout } from "../features/auth/useLogout";
 
+// component for styling purposes
+import TopNav from "../components/layout/TopNav";
+
 export default function ProtectedLayout() {
   // read token retreived from login
   const token = localStorage.getItem("token");
@@ -26,21 +29,30 @@ export default function ProtectedLayout() {
 
   return (
     <div className="layout-shell">
-      <nav className="nav" style={{ display: "flex", gap: 12 }}>
-        <Link to="/dashboard/clients">Clients</Link>
+      <header style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+        <TopNav />
+        {/* <nav className="nav" style={{ display: "flex", gap: 12 }}> */}
+        {/* <Link to="/dashboard/clients">Clients</Link>
         <Link to="/dashboard/bookings">Bookings</Link>
         <Link to="/dashboard/videos">Videos</Link>
-        <Link to="/dashboard/social-posts">Social Posts</Link>
+        <Link to="/dashboard/social-posts">Social Posts</Link> */}
         {/* button that prompts a user to logout */}
         <button
           // when this button is clicked, the logout function will be executed
           onClick={logout}
-          className="rounded-md px-3 py-1 border border-gray-300 hover:bg-gray-100"
-          style={{ marginLeft: "auto" }}
+          style={{
+            marginLeft: "auto",
+            padding: "6px 12px",
+            borderRadius: "8px",
+            border: "1px solid rgba(255,255,255,0.15)",
+            background: "transparent",
+            color: "#e2e8f0",
+          }}
         >
           Logout
         </button>
-      </nav>
+      </header>
+      {/* </nav> */}
       <main className="container">
         <Outlet />
       </main>
