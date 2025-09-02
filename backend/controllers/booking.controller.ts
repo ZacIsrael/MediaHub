@@ -45,13 +45,22 @@ export const createBooking = async (req: Request, res: Response) => {
     );
     if (!booleanVal) {
       // There is no client with id = dto.client_id exists
-      return res.status(404).json({
+      // return res.status(404).json({
+      //   error: `Not Found (POST /api/bookings/): Can't add this booking; client with ${dto.client_id} does not exist.`,
+      // });
+
+      res.status(404).json({
         error: `Not Found (POST /api/bookings/): Can't add this booking; client with ${dto.client_id} does not exist.`,
       });
     }
   } catch (err: any) {
     // Error executing query that checks if client exists
-    return res.status(500).json({
+    // return res.status(500).json({
+    //   error: `Server Error (POST /api/bookings/) while checking client existence: ${err.message}`,
+    //   stack: err.stack,
+    // });
+
+    res.status(500).json({
       error: `Server Error (POST /api/bookings/) while checking client existence: ${err.message}`,
       stack: err.stack,
     });
