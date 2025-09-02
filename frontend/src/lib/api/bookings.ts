@@ -51,9 +51,12 @@ export async function getBookingById(id: number): Promise<GetBookingByIdResponse
 export async function createBooking(
     payload: CreateBookingInput
 ): Promise<Booking> {
-    const { data } = await api.post("/api/bookings", payload);
-    console.log('CreateBooking(): data = ', data);
-    return data;
+    // debugging
+    const response = await api.post("/api/bookings", payload);
+    console.log('createBooking(): response = ', response);
+    // const { data } = await api.post("/api/bookings", payload);
+    // console.log('CreateBooking(): data = ', data);
+    return response.data;
 }
 
 

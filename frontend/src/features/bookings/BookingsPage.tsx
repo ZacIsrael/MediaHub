@@ -69,8 +69,19 @@ export default function BookingsPage() {
       // refetch list
       qc.invalidateQueries({ queryKey: ["bookings"] });
     },
-    onError: (e: any) =>
-      toast.error(e?.response?.data?.message ?? "Failed to create booking"),
+    onError: (e: any) => {
+      // debugging
+      console.log("e = ", e);
+      // toast.error(e?.response?.data?.message ?? "Failed to create booking")
+      const payload = e?.response?.data;
+      const msg =
+        (typeof payload === "string" && payload) ||
+        payload?.message ||
+        payload?.error ||
+        e?.message ||
+        "Failed to create booking";
+      toast.error(msg);
+    },
   });
 
   return (
