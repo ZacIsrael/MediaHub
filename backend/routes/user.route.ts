@@ -3,6 +3,7 @@ import express from "express";
 import {
   createUser,
   loginUser,
+  logoutUser
 //   oauthLoginController,
 } from "../controllers/user.controller";
 
@@ -13,6 +14,9 @@ router.post("/register", createUser);
 
 // logs in a user
 router.post("/login", loginUser);
+
+// logs a user out
+router.post("/logout", logoutUser);
 
 // Log in or register using Google access token (for Postman testing)
 // router.post("/oauth-login", oauthLoginController);

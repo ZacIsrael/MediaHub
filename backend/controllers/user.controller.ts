@@ -87,5 +87,11 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 };
 
+export const logoutUser = async (req: Request, res: Response) => {
+  // JWT setup is stateless, no need to do anything else here
+  // Once the front end receives this response, it'll hadle everything else
+  return res.status(204).end();
+}
+
 // POST /api/auth/oauth-login
 // export const oauthLoginController = async (req: Request, res: Response) => {};
