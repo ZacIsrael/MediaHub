@@ -21,6 +21,9 @@ import BookingForm, { type BookingFormValues } from "./BookingForm";
 
 import { Link } from "react-router-dom";
 
+// Used for reading custom error messages from backend API
+import { getApiErrorMessage } from "../../lib/api/getApiErrorMessage";
+
 // Encapsulate the query so the component stays readable.
 // - queryKey includes page + q → separate cache entries per search/page
 // - placeholderData keeps old page results visible during fetch for smooth UX
@@ -72,15 +75,8 @@ export default function BookingsPage() {
     onError: (e: any) => {
       // debugging
       console.log("e = ", e);
-      // toast.error(e?.response?.data?.message ?? "Failed to create booking")
-      const payload = e?.response?.data;
-      const msg =
-        (typeof payload === "string" && payload) ||
-        payload?.message ||
-        payload?.error ||
-        e?.message ||
-        "Failed to create booking";
-      toast.error(msg);
+      // Used for reading custom error messages from backend API
+      toast.error(getApiErrorMessage(e));
     },
   });
 

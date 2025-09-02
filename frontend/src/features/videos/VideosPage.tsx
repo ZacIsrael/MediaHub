@@ -20,6 +20,7 @@ import { type Video } from "../../lib/api/types";
 import VideoForm, { type VideoFormValues } from "./VideoForm";
 
 import { Link } from "react-router-dom";
+import { getApiErrorMessage } from "../../lib/api/getApiErrorMessage";
 
 // Encapsulate the query so the component stays readable.
 // - queryKey includes page + q → separate cache entries per search/page
@@ -68,8 +69,12 @@ export default function VideosPage() {
       // refetch list
       qc.invalidateQueries({ queryKey: ["videos"] });
     },
-    onError: (e: any) =>
-      toast.error(e?.response?.data?.message ?? "Failed to add video"),
+    onError: (e: any) => {
+      // debugging
+      console.log("e = ", e);
+      // Used for reading custom error messages from backend API
+      toast.error(getApiErrorMessage(e));
+    },
   });
 
   return (
