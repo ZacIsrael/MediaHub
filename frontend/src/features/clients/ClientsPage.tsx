@@ -16,7 +16,7 @@ import {
 import { toast } from "react-hot-toast";
 
 // Typed API functions for Client
-import { listClients, createClient, updateClient } from "../../lib/api/clients";
+import { getClients, createClient, updateClient } from "../../lib/api/clients";
 
 import { type Client } from "../../lib/api/types";
 
@@ -34,7 +34,7 @@ function useClientsTable(page: number, q: string) {
   return useQuery({
     queryKey: ["clients", { page, q }],
     // backend may ignore q (future-proof)
-    queryFn: () => listClients({ page, limit: 10, q }),
+    queryFn: () => getClients({ page, limit: 10, q }),
     // smoother pagination UX
     placeholderData: keepPreviousData,
   });
