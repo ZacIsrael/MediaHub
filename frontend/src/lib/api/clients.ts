@@ -15,7 +15,7 @@ export type Paginated<T> = {
 
 export type ListClientsQuery = { page?: number; limit?: number; q?: string };
 
-export async function listClients(params: ListClientsQuery = {}): Promise<Paginated<Client>> {
+export async function getClients(params: ListClientsQuery = {}): Promise<Paginated<Client>> {
   // data retreived from GET request sent to the backend API
   const { data } = await api.get('/api/clients', { params });
 
