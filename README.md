@@ -48,3 +48,15 @@ Future iterations will expand MediaHub into a **multi-user platform** with role-
 ## 📂 Project Structure
 /backend → RESTful API (Express, TypeScript, PostgreSQL, MongoDB)
 /frontend → React app (Vite, TypeScript, React Router, TanStack Query)
+
+### UX highlight: “Create Client” from Bookings
+
+MediaHub prevents invalid bookings by letting you **pick only valid clients** (FK-safe) and—if the client doesn’t exist—**create one inline** without leaving the form.
+
+- **Dropdown** lists `{id}: {name}` for all clients (no free-typed IDs).
+- **Inline “Create Client…” modal** uses the same Zod + RHF validation as the Clients page.
+- On save, the new client is **optimistically added** to the dropdown.
+- Database still enforces integrity with a **foreign key** on `bookings.client_id`.
+
+This pattern keeps data clean and the flow fast (no context switches), while the DB guarantees correctness.
+
