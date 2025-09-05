@@ -91,12 +91,12 @@ export const BookingSchema = z
     if (typeof data.client_id === "undefined") {
       // Custom validation error to the context
       ctx.addIssue({
-        // generic/custom error type 
+        // generic/custom error type
         code: z.ZodIssueCode.custom,
         // Point the error at the "client_id" field in the form
         path: ["client_id"],
         // What's shown to the user instead of "NaN"
-        message: "Please select a client", 
+        message: "Please select a client",
       });
     }
   });
@@ -139,6 +139,8 @@ export default function BookingForm({
     setValue,
     // watch allows the current client_id to be read
     watch,
+    clearErrors,
+    trigger,
   } = useForm<BookingFormValues>({
     resolver: zodResolver(BookingSchema), // use Zod schema for validation
     /**
@@ -206,7 +208,7 @@ export default function BookingForm({
 
         {/* Client (dropdown instead of free-typed number) */}
         <div className="field">
-          {/* Label so screen readers know what this select is for */}
+          {/* Label so users know what this select is for */}
           <label
             style={{ color: "white" }}
             className="label"
@@ -380,7 +382,18 @@ export default function BookingForm({
         // After creating, auto-select the new client in the dropdown
         onCreated={(client) => {
           // Programmatically set RHF value to the new client id
-          setValue("client_id", client.id, { shouldValidate: true });
+          setValue("client_id", client.id, {
+            shouldValidate: true,
+            shouldDirty: true,
+            shouldTouch: true,
+          });
+
+          // clear any prior error message immediately
+          clearErrors("client_id");
+
+          // re-run validation on this field so UI reflects success
+          void trigger("client_id");
+
           // Ensure the modal is closed after success
           setOpenCreate(false);
         }}
