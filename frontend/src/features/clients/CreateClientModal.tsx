@@ -1,5 +1,3 @@
-
-
 // Import React’s state to manage the form inputs
 import { useState } from "react";
 // Import React Query for the create mutation + cache invalidation
@@ -7,6 +5,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 // Import your existing API call that creates a client
 import { createClient } from "../../lib/api/clients";
 
+import type { Client, CreateClientInput } from "../../lib/api/types";
+import ClientForm, { type ClientFormValues } from "./ClientForm";
 // Define the modal component props
 export default function CreateClientModal({
   open,
@@ -15,24 +15,30 @@ export default function CreateClientModal({
 }: {
   open: boolean;
   onClose: () => void;
-  onCreated: (client: { id: number; name: string }) => void;
+  onCreated: (client: Client) => void;
 }) {
-  // Local state for the new client’s name field
-  const [name, setName] = useState("");
-  // Local state for the new client’s email field
-  const [email, setEmail] = useState("");
   // Get the query client so we can refresh the clients list after create
   const qc = useQueryClient();
 
   // Create a mutation that calls createClient API
-  const { mutateAsync, isPending } = useMutation({
+  const { mutateAsync, isPending } = useMutation<
+    Client,
+    unknown,
+    CreateClientInput
+  >({
     // Tell React Query how to perform the create
-    mutationFn: async () => {
+    mutationFn: async (values) => {
+      // Error checking
+
       // make API with the new client payload
-      return await createClient({ name, email });
+      return await createClient(values);
     },
     // When successful, refresh any cached client lists
-    onSuccess: () => {
+    onSuccess: (created) => {
+      // 1) Optimistically add to current options
+      qc.setQueryData<Client[]>(["client-options"], (old) =>
+        old ? [...old, created] : [created]
+      );
       // Invalidate the cache so dropdowns refetch fresh options
       qc.invalidateQueries({ queryKey: ["client-options"] });
     },
@@ -50,45 +56,20 @@ export default function CreateClientModal({
         {/* Title to describe what this modal does */}
         <h3>Create Client</h3>
 
-        {/* Field for the client name (required) */}
-        <label>Name *</label>
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
+        <ClientForm
+          defaultValues={{ name: "", email: "", phone: "" }}
+          onSubmit={async (values: ClientFormValues) => {
+            // make API call with validated payload (name, email, phone)
+            const client = await mutateAsync(values);
+            // created client (that contains the id) goes to the parent booking form
+            onCreated(client);
+            onClose();
+          }}
+          // Allow user to cancel/close without saving
+          onCancel={onClose}
+          // Disable submit button while request is inflight
+          submitLabel={isPending ? "Saving..." : "Save"}
         />
-
-        {/* Field for the client email (optional in UI) */}
-        {/* <label>Email (optional)</label>
-        <input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        /> */}
-
-        {/* Action buttons to cancel or save */}
-        <div className="actions">
-          {/* Close the modal without saving */}
-          <button onClick={onClose} disabled={isPending}>
-            Cancel
-          </button>
-          {/* Save the new client then notify the parent */}
-          <button
-            onClick={async () => {
-              // Create the client on the server
-              const client = await mutateAsync();
-              // Pass the created client back to the parent
-              onCreated(client);
-              // Reset local inputs for next time
-              setName("");
-              setEmail("");
-              // Close the modal after success
-              onClose();
-            }}
-            disabled={!name || isPending}
-          >
-            {isPending ? "Saving…" : "Save"}
-          </button>
-        </div>
       </div>
     </div>
   );
