@@ -3,7 +3,7 @@
 // Import the axios library, a promise-based HTTP client
 import api from "./axios";
 
-import { type Client } from "./types";
+import { type Client, type CreateClientInput } from "./types";
 
 // structure for basic pagination
 export type Paginated<T> = {
@@ -36,7 +36,7 @@ export async function getClients(params: ListClientsQuery = {}): Promise<Paginat
   return { items: [], page: 1, limit: 10, total: 0 };
 }
 
-export type CreateClientInput = { name: string; email: string; phone?: string };
+
 export async function createClient(
   payload: CreateClientInput
 ): Promise<Client> {
