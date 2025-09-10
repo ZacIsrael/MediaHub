@@ -13,17 +13,40 @@ import { useLogout } from "../features/auth/useLogout";
 
 // component for styling purposes
 import TopNav from "../components/layout/TopNav";
+import { useEffect, useState } from "react";
+import { tryRestoreSession } from "../lib/api/auth";
 
 export default function ProtectedLayout() {
-  // read token retreived from login
-  const token = localStorage.getItem("token");
-  const location = useLocation();
+  // State to track whether session validity is still being checked
+  const [loading, setLoading] = useState(true);
+  // State to track if the user currently has a valid access token in localStorage
+  const [hasToken, setHasToken] = useState(!!localStorage.getItem("token"));
 
-  const navigate = useNavigate();
+  // Access current route location (used for redirect if not authenticated)
+  const location = useLocation();
+  // logout function (clears token + refresh cookie, handles redirect)
   const { logout } = useLogout();
 
-  // if not logged in, send to /login and remember where the user came from
-  if (!token) {
+  // On mount or when hasToken changes, attempt to restore session if no token is found
+  useEffect(() => {
+    if (!hasToken) {
+      // Try to hit /auth/refresh; success sets token, failure marks user as logged out
+      tryRestoreSession()
+        .then(() => setHasToken(true))
+        .catch(() => setHasToken(false))
+        // Always stop loading after attempt
+        .finally(() => setLoading(false));
+    } else {
+      // If token already exists, no need to refresh, stop loading immediately
+      setLoading(false);
+    }
+  }, [hasToken]);
+
+  // display this message if session validity is still being checked
+  if (loading) return <div className="text-white">Loading session...</div>;
+
+  // redirect the user to the login page if they have an invalid session
+  if (!hasToken) {
     return <Navigate to="/login" replace state={{ from: location }} />;
   }
 

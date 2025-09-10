@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import api from "../../lib/api/axios";
 
 import { getApiErrorMessage } from "../../lib/api/getApiErrorMessage";
+import { login } from "../../lib/api/auth";
 
 const LoginSchema = z.object({
   // ensure that user enters a valid email
@@ -30,11 +31,31 @@ export default function LoginForm() {
 
   const onSubmit = async (values: LoginValues) => {
     try {
-      const res = await api.post("/api/auth/login", {
-        ...values,
-        provider: "local",
-      });
-      localStorage.setItem("token", res.data.token);
+      const res = await login(values.email, values.password, "local");
+      // const res = await api.post("/api/auth/login", {
+      //   ...values,
+      //   provider: "local",
+      // });
+
+      console.log("LoginPage: res = ", res);
+      /*
+      Structure of the response
+      res = {
+        "message": "User has been logged in.",
+        "user": {
+          "id": 1,
+          "name": "Test User",
+          "email": "testuser@gmail.com",
+          "password_hash": "$2b$10$W4VUa/AexEfINvm4jnmdrOS.k/An48JU9bJIQ/zS.81nnI50t6QUq",
+          "provider": "local",
+          "provider_id": "",
+          "created_at": "2025-07-25T20:01:06.398Z",
+          "updated_at": "2025-07-25T20:01:06.398Z"
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3R1c2VyQGdtYWlsLmNvbSIsImlkIjoxLCJpYXQiOjE3NTc1MjcxNTQsImV4cCI6MTc1NzUzMDc1NH0.i-thW2k4PbRg8b3DHb9SFy9zeCFn6UtCxTh1OqoqodU"
+      }
+      */
+      localStorage.setItem("token", res.token);
       navigate("/dashboard");
     } catch (err: any) {
       // Retreive custom error message from backend
