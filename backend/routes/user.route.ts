@@ -3,6 +3,7 @@ import express from "express";
 import {
   createUser,
   loginUser,
+  refresh,
   logoutUser
 //   oauthLoginController,
 } from "../controllers/user.controller";
@@ -14,6 +15,10 @@ router.post("/register", createUser);
 
 // logs in a user
 router.post("/login", loginUser);
+
+// Refresh endpoint; reads httpOnly cookie "rt"
+// Returns a new access token when the previous one has expired
+router.get("/refresh", refresh);
 
 // logs a user out
 router.post("/logout", logoutUser);
