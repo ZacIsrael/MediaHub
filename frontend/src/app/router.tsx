@@ -26,7 +26,7 @@ export default function AppRoutes() {
         <Route path="social-posts" element={<SocialPostsPage />} />
       </Route>
       {/* Catch-all route: if no path matches, redirect user back to /dashboard. */}
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 }
