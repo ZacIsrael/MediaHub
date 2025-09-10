@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import api from "../../lib/api/axios";
+// import api from "../../lib/api/axios";
 
 import { getApiErrorMessage } from "../../lib/api/getApiErrorMessage";
 import { login } from "../../lib/api/auth";
@@ -37,7 +37,7 @@ export default function LoginForm() {
       //   provider: "local",
       // });
 
-      console.log("LoginPage: res = ", res);
+      // console.log("LoginPage: res = ", res);
       /*
       Structure of the response
       res = {
@@ -52,7 +52,7 @@ export default function LoginForm() {
           "created_at": "2025-07-25T20:01:06.398Z",
           "updated_at": "2025-07-25T20:01:06.398Z"
         },
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3R1c2VyQGdtYWlsLmNvbSIsImlkIjoxLCJpYXQiOjE3NTc1MjcxNTQsImV4cCI6MTc1NzUzMDc1NH0.i-thW2k4PbRg8b3DHb9SFy9zeCFn6UtCxTh1OqoqodU"
+        "token": "example token here"
       }
       */
       localStorage.setItem("token", res.token);
