@@ -52,9 +52,19 @@ connectToPostgres();
 // Middleware
 // ==========================
 
-// Enable cross-origin requests with credentials for SPA dev
+// Enable cross-origin requests with credentials for production and development
 // Ensure origin matches frontend URL exactly
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(
+  cors({
+    origin: [
+      // development
+      "http://localhost:5173",
+      // whatever the production url is whenever I deploy the frontend
+      // "https://mediahub-production-domain.com",
+    ],
+    credentials: true,
+  })
+);
 
 // Parse cookies from incoming requests
 // Required for reading refresh tokens stored in httpOnly cookies
@@ -74,7 +84,7 @@ app.use(bodyParser.json());
 
 // Enables CORS for all incoming requests
 // This is necessary if the frontend is running on a different port (e.g., React on localhost:5173)
-app.use(cors());
+// app.use(cors());
 
 // debug
 app.use((req, res, next) => {
