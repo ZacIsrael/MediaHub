@@ -8,6 +8,8 @@ import bodyParser from "body-parser";
 // Enables Cross-Origin Resource Sharing, allowing frontend apps on different ports (like React) to make requests to this backend
 import cors from "cors";
 
+import cookieParser from "cookie-parser";
+
 // postgreSQL module
 import pg from "pg";
 
@@ -50,6 +52,14 @@ connectToPostgres();
 // Middleware
 // ==========================
 
+// Enable cross-origin requests with credentials for SPA dev
+// Ensure origin matches frontend URL exactly
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+
+// Parse cookies from incoming requests
+// Required for reading refresh tokens stored in httpOnly cookies
+app.use(cookieParser());
+
 // Registers middleware that parses URL-encoded data from incoming HTTP requests
 // This is especially useful for handling form submissions (e.g., login, registration)
 app.use(
@@ -91,16 +101,14 @@ app.post("/api/post-test", (req: Request, res: Response): void => {
   console.log("Headers:", req.headers);
   console.log("Body:", req.body);
   res.status(200).json({
-    message: 'POST works'
+    message: "POST works",
   });
 });
-
 
 // Healthcheck route to verify backend is running
 app.get("/api/healthcheck", (_, res) => {
   res.send("I'm alive 🚀");
 });
-
 
 // dfeault GET route
 app.get("/", (req: Request, res: Response): void => {
