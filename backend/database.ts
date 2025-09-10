@@ -13,7 +13,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // PostgreSQL client using the pg library
-/*
+ /*
 // local testing
 const db = new pg.Client({
   user: process.env.PG_USERNAME,
@@ -24,7 +24,7 @@ const db = new pg.Client({
   password: process.env.PG_PASSWORD,
   port: Number(process.env.PG_PORT),
 });
-*/
+ */
 
 /*
 // Docker testing
@@ -40,7 +40,7 @@ const db = new pg.Client({
 */
 
 
-
+///*
 // railway (production)
 const db = new pg.Client({
   connectionString: process.env.DATABASE_URL,
@@ -48,6 +48,7 @@ const db = new pg.Client({
     rejectUnauthorized: false
   }
 });  
+//*/
 
 
 

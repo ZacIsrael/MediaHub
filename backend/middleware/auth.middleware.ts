@@ -31,7 +31,10 @@ export const verifyAccessToken = (
     (err, decoded) => {
       // If token verification fails, return unauthorized error
       if (err) {
-        return res.status(403).json({ message: "Invalid or expired token" });
+        return res.status(401).json({ message: "Invalid or expired token" });
+        // When users can have different roles, 403 status codes can be sent but as of right now,
+        // in v1 of this app, there aren't any so always send 401 status code (easier on frontend).
+        // return res.status(403).json({ message: "Invalid or expired token" });
       }
 
       // debugging
