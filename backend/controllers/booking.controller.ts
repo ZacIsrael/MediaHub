@@ -1,4 +1,4 @@
-// This file is responsible for handling API requests that come in for clients
+// This file is responsible for handling API requests that come in for bookings
 
 import { db } from "../database";
 import { Request, Response } from "express";
@@ -16,7 +16,7 @@ export const createBooking = async (req: Request, res: Response) => {
   // data transfer object (object that will hold the processed request)
   let dto: CreateBookingDTO;
 
-  // process the body of the request (see client.dto.ts)
+  // process the body of the request (see booking.dto.ts)
   try {
     dto = new CreateBookingDTO(req.body);
   } catch (err: any) {

@@ -120,7 +120,7 @@ app.get("/api/healthcheck", (_, res) => {
   res.send("I'm alive 🚀");
 });
 
-// dfeault GET route
+// default GET route
 app.get("/", (req: Request, res: Response): void => {
   res.send("Welcome to the Media Hub API!");
 });

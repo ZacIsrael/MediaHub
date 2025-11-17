@@ -26,7 +26,7 @@ const db = new pg.Client({
 });
  */
 
-/*
+
 // Docker testing
 const db = new pg.Client({
   user: process.env.PG_USERNAME,
@@ -37,10 +37,10 @@ const db = new pg.Client({
   password: process.env.PG_PASSWORD,
   port: Number(process.env.PG_PORT),
 }); 
-*/
 
 
-///*
+
+/*
 // railway (production)
 const db = new pg.Client({
   connectionString: process.env.DATABASE_URL,
@@ -48,7 +48,7 @@ const db = new pg.Client({
     rejectUnauthorized: false
   }
 });  
-//*/
+*/
 
 
 
@@ -69,9 +69,9 @@ async function connectToMongoDB() {
   try {
     // "as string" ensures that the Mongo DB URI is a string
     // local host testing
-    // await mongoose.connect(process.env.MONGO_DB_URI as string);
+    await mongoose.connect(process.env.MONGO_DB_URI as string);
     // Docker & railway
-    await mongoose.connect(process.env.MONGO_URI as string);
+    // await mongoose.connect(process.env.MONGO_URI as string);
   } catch (err) {
     console.error("Error connecting to MongoDB: ", err);
     process.exit(1);

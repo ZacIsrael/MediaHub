@@ -1,34 +1,66 @@
+# Specifies the Compose file format version
 version: '3.8'
+
+# Defines all of the application’s services (containers) that will run together
 services:
+  # --- BACKEND SERVICE ---
   backend:
+    # Builds the backend container using the Dockerfile in the ./backend directory
     build: ./backend
+
+    # Assigns a readable name to the container
     container_name: mediahub_backend
+
+    # Maps port 4000 on the host to port 4000 inside the container
     ports:
       - '4000:4000'
+
+    # Loads environment variables from the backend’s .env file
     env_file:
       - ./backend/.env
+
+    # Mounts the local backend folder into the container for live code updates
     volumes:
       - ./backend:/app
+
+    # Ensures backend starts only after mongo and postgres containers are up
     depends_on:
       - mongo
       - postgres
 
+  # --- MONGO DATABASE SERVICE ---
   mongo:
+    # Uses the official MongoDB version 6 image from Docker Hub
     image: mongo:6
+
+    # Maps MongoDB’s default port 27017 to the same port on the host machine
     ports:
       - '27017:27017'
+
+    # Creates a named volume to persist MongoDB data across container restarts
     volumes:
       - mongodata:/data/db
 
+  # --- POSTGRES DATABASE SERVICE ---
   postgres:
+    # Uses the official PostgreSQL version 15 image
     image: postgres:15
+
+    # Loads environment variables (e.g., POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB)
+    # from the backend’s .env file
     env_file:
       - ./backend/.env
+
+    # Maps PostgreSQL’s default internal port (5432) to host port 5433
     ports:
       - '5433:5432'
+
+    # Creates a named volume to persist PostgreSQL data
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+# --- NAMED VOLUMES ---
+# These persist database data even if the containers are removed
 volumes:
   mongodata:
   pgdata:

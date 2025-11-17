@@ -1,5 +1,4 @@
 // This file handles the interaction between the API & the bookings table in the postgreSQL database
-
 import { CreateBookingDTO } from "../dtos/booking.dto";
 import { db } from "../database";
 import { itemExistsById } from "../utils/helpers";
